@@ -1,7 +1,7 @@
 # Личный проект «Угадай мелодию» [![Build status][travis-image]][travis-url]
 
 * Студент: [Николай Регулярный](https://up.htmlacademy.ru/ecmascript/7/user/663633).
-* Наставник: `Неизвестно`.
+* Наставник: [Сергей Ключковский] (https://htmlacademy.ru/profile/id44700).
 
 ---
 
