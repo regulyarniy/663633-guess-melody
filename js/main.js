@@ -44,13 +44,15 @@ document.addEventListener(`DOMContentLoaded`, function () {
   // Управление с клавиатуры
   const bindKeys = function () {
     document.addEventListener(`keydown`, function (e) {
-      switch (e.key) {
-        case `ArrowLeft`:
-          showScreen(state.currentScreen - 1);
-          break;
-        case `ArrowRight`:
-          showScreen(state.currentScreen + 1);
-          break;
+      if (!e.altKey && !e.ctrlKey && !e.shiftKey && !e.metaKey) {
+        switch (e.key) {
+          case `ArrowLeft`:
+            showScreen(state.currentScreen - 1);
+            break;
+          case `ArrowRight`:
+            showScreen(state.currentScreen + 1);
+            break;
+        }
       }
     });
   };
