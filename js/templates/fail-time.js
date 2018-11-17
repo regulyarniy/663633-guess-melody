@@ -1,5 +1,4 @@
 // Экран проигрыша по таймауту
-import render from '../render.js';
 import utils from '../utils.js';
 
 const template = `
