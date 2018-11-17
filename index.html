@@ -244,5 +244,27 @@
   </section>
 </template>
 
+<!--Кнопки управления экранами-->
+<template id="control-buttons">
+  <div class="arrows__wrap">
+    <style>
+      .arrows__wrap {
+        position: absolute;
+        top: 135px;
+        left: 50%;
+        margin-left: -56px;
+      }
+      .arrows__btn {
+        background: white;
+        border: 2px solid black;
+        padding: 5px 20px;
+      }
+    </style>
+    <button class="arrows__btn arrows__btn--prev"><-</button>
+    <button class="arrows__btn arrows__btn--next">-></button>
+  </div>
+</template>
+
+<script src="js/main.js"></script>
 </body>
 </html>
