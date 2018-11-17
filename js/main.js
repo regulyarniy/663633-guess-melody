@@ -26,15 +26,16 @@ document.addEventListener(`DOMContentLoaded`, function () {
     }
   };
 
+  // Зацикливание индекса массива, возвращает индекс существующего элемента массива
+  const cycleArray = function (array, index) {
+    const len = array.length;
+    return (len + index) % len;
+  };
+
   //  Переключение экранов
   const showScreen = function (screenIndex) {
     clearNode();
-    if (screenIndex < 0) {
-      screenIndex = templates.length - 1;
-    }
-    if (screenIndex >= templates.length) {
-      screenIndex = 0;
-    }
+    screenIndex = cycleArray(templates, screenIndex);
     const content = document.importNode(templates[screenIndex].content, true);
     main.appendChild(content);
     state.currentScreen = screenIndex;
