@@ -1,7 +1,7 @@
 // Экран выигрыша
-import render from '../render.js';
-import utils from '../utils.js';
-import screenWelcome from './welcome.js';
+import render from '../render';
+import utils from '../utils';
+import screenWelcome from './welcome';
 
 const template = `
 <section class="result">

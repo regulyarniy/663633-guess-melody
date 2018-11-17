@@ -1,7 +1,7 @@
 // Экран приветствия
-import render from '../render.js';
-import utils from '../utils.js';
-import screenGameGenre from './game-genre.js';
+import render from '../render';
+import utils from '../utils';
+import screenGameGenre from './game-genre';
 
 const template = `
 <section class="welcome">

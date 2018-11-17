@@ -1,5 +1,5 @@
-import render from './render.js';
-import screenWelcome from './templates/welcome.js';
+import render from './render';
+import screenWelcome from './templates/welcome';
 
 //  Действия после загрузки документа
 document.addEventListener(`DOMContentLoaded`, function () {

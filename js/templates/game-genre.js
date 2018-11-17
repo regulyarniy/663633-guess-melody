@@ -1,8 +1,8 @@
 // Экран игры на выбор жанра
-import render from '../render.js';
-import utils from '../utils.js';
-import screenGameArtist from './game-artist.js';
-import screenWelcome from "./welcome.js";
+import render from '../render';
+import utils from '../utils';
+import screenGameArtist from './game-artist';
+import screenWelcome from "./welcome";
 
 const template = `
 <section class="game game--genre">

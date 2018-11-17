@@ -1,9 +1,9 @@
 // Экран игры на выбор исполнителя
-import render from '../render.js';
-import utils from '../utils.js';
-import screenResultSuccess from './result-success.js';
-import screenFailTries from './fail-tries.js';
-import screenWelcome from "./welcome.js";
+import render from '../render';
+import utils from '../utils';
+import screenResultSuccess from './result-success';
+import screenFailTries from './fail-tries';
+import screenWelcome from "./welcome";
 
 const template = `
 <section class="game game--artist">
