@@ -1,4 +1,3 @@
-"use strict";
 //  Действия после загрузки документа
 document.addEventListener(`DOMContentLoaded`, function () {
   const templates = [
