@@ -1,5 +1,8 @@
 // Экран игры на выбор жанра
-import generateFragment from '../utils.js';
+import render from '../render.js';
+import utils from '../utils.js';
+import screenGameArtist from './game-artist.js';
+import screenWelcome from "./welcome.js";
 
 const template = `
 <section class="game game--genre">
@@ -36,7 +39,7 @@ const template = `
           <audio></audio>
         </div>
         <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="answer-1" id="answer-1">
+          <input class="game__input visually-hidden" type="checkbox" name="answer" value="1" id="answer-1">
           <label class="game__check" for="answer-1">Отметить</label>
         </div>
       </div>
@@ -47,7 +50,7 @@ const template = `
           <audio></audio>
         </div>
         <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="answer-1" id="answer-2">
+          <input class="game__input visually-hidden" type="checkbox" name="answer" value="2" id="answer-2">
           <label class="game__check" for="answer-2">Отметить</label>
         </div>
       </div>
@@ -58,7 +61,7 @@ const template = `
           <audio></audio>
         </div>
         <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="answer-1" id="answer-3">
+          <input class="game__input visually-hidden" type="checkbox" name="answer" value="3" id="answer-3">
           <label class="game__check" for="answer-3">Отметить</label>
         </div>
       </div>
@@ -69,7 +72,7 @@ const template = `
           <audio></audio>
         </div>
         <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="answer-1" id="answer-4">
+          <input class="game__input visually-hidden" type="checkbox" name="answer" value="4" id="answer-4">
           <label class="game__check" for="answer-4">Отметить</label>
         </div>
       </div>
@@ -80,4 +83,41 @@ const template = `
 </section>
 `;
 
-export default generateFragment(template);
+const fragment = utils.generateFragment(template);
+const form = fragment.querySelector(`.game__tracks`);
+const answerElements = form.elements[`answer`];
+const buttonAnswer = fragment.querySelector(`.game__submit`);
+const buttonBack = fragment.querySelector(`.game__back`);
+
+// Без выбора пользователя кнопка ответа неактивна
+buttonAnswer.setAttribute(`disabled`, `true`);
+
+// При изменении формы проверяем чекбоксы и активируем кнопку, если выбран ответ
+form.addEventListener(`change`, function () {
+  const answer = [];
+  answerElements.forEach(function (item) {
+    answer.push(item.checked);
+  });
+  const answered = answer.some((item) => {
+    return item;
+  });
+  if (answered) {
+    buttonAnswer.removeAttribute(`disabled`);
+  } else {
+    buttonAnswer.setAttribute(`disabled`, `true`);
+  }
+});
+
+// Переход на экран второй игры
+buttonAnswer.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  render(screenGameArtist);
+});
+
+// Возврат на экран приветствия
+buttonBack.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  render(screenWelcome);
+});
+
+export default fragment;

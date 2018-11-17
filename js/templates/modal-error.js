@@ -1,5 +1,6 @@
 // Модальное окно ошибки
-import generateFragment from '../utils.js';
+import render from '../render.js';
+import utils from '../utils.js';
 
 const template = `
 <section class="modal">
@@ -8,4 +9,6 @@ const template = `
 </section>
 `;
 
-export default generateFragment(template);
+const fragment = utils.generateFragment(template);
+
+export default fragment;

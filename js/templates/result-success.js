@@ -1,5 +1,7 @@
 // Экран выигрыша
-import generateFragment from '../utils.js';
+import render from '../render.js';
+import utils from '../utils.js';
+import screenWelcome from './welcome.js';
 
 const template = `
 <section class="result">
@@ -11,4 +13,13 @@ const template = `
 </section>
 `;
 
-export default generateFragment(template);
+const fragment = utils.generateFragment(template);
+const buttonReplay = fragment.querySelector(`.result__replay`);
+
+// Переход на экран приветствия
+buttonReplay.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  render(screenWelcome);
+});
+
+export default fragment;

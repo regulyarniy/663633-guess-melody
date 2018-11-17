@@ -1,5 +1,9 @@
 // Экран игры на выбор исполнителя
-import generateFragment from '../utils.js';
+import render from '../render.js';
+import utils from '../utils.js';
+import screenResultSuccess from './result-success.js';
+import screenFailTries from './fail-tries.js';
+import screenWelcome from "./welcome.js";
 
 const template = `
 <section class="game game--artist">
@@ -35,7 +39,7 @@ const template = `
 
     <form class="game__artist">
       <div class="artist">
-        <input class="artist__input visually-hidden" type="radio" name="answer" value="artist-1" id="answer-1">
+        <input class="artist__input visually-hidden" type="radio" name="answer" value="1" id="answer-1">
         <label class="artist__name" for="answer-1">
           <img class="artist__picture" src="http://placehold.it/134x134" alt="Пелагея">
           Пелагея
@@ -43,7 +47,7 @@ const template = `
       </div>
 
       <div class="artist">
-        <input class="artist__input visually-hidden" type="radio" name="answer" value="artist-2" id="answer-2">
+        <input class="artist__input visually-hidden" type="radio" name="answer" value="2" id="answer-2">
         <label class="artist__name" for="answer-2">
           <img class="artist__picture" src="http://placehold.it/134x134" alt="Пелагея">
           Краснознаменная дивизия имени моей бабушки
@@ -51,7 +55,7 @@ const template = `
       </div>
 
       <div class="artist">
-        <input class="artist__input visually-hidden" type="radio" name="answer" value="artist-3" id="answer-3">
+        <input class="artist__input visually-hidden" type="radio" name="answer" value="3" id="answer-3">
         <label class="artist__name" for="answer-3">
           <img class="artist__picture" src="http://placehold.it/134x134" alt="Пелагея">
           Lorde
@@ -62,4 +66,24 @@ const template = `
 </section>
 `;
 
-export default generateFragment(template);
+const fragment = utils.generateFragment(template);
+const form = fragment.querySelector(`.game__artist`);
+const answerElements = form.elements[`answer`];
+const buttonBack = fragment.querySelector(`.game__back`);
+
+// Переход на экран победы или проигрыша(случайно)
+answerElements.forEach(function (item) {
+  item.addEventListener(`click`, function () {
+    let screen = utils.getRandomInt(0, 2);
+    screen = screen ? screenResultSuccess : screenFailTries;
+    render(screen);
+  });
+});
+
+// Возврат на экран приветствия
+buttonBack.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  render(screenWelcome);
+});
+
+export default fragment;

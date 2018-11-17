@@ -1,5 +1,7 @@
 // Экран приветствия
-import generateFragment from '../utils.js';
+import render from '../render.js';
+import utils from '../utils.js';
+import screenGameGenre from './game-genre.js';
 
 const template = `
 <section class="welcome">
@@ -15,4 +17,13 @@ const template = `
 </section>
 `;
 
-export default generateFragment(template);
+const fragment = utils.generateFragment(template);
+const buttonPlay = fragment.querySelector(`.welcome__button`);
+
+// Переход на экран игры
+buttonPlay.addEventListener(`click`, function (e) {
+  e.preventDefault();
+  render(screenGameGenre);
+});
+
+export default fragment;
