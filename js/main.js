@@ -19,11 +19,16 @@ document.addEventListener(`DOMContentLoaded`, function () {
     currentScreen: 0
   };
 
+  // Очистка узла
+  const clearNode = function (elem = main) {
+    while (elem.firstChild) {
+      elem.removeChild(main.firstChild);
+    }
+  };
+
   //  Переключение экранов
   const showScreen = function (screenIndex) {
-    while (main.firstChild) {
-      main.removeChild(main.firstChild);
-    }
+    clearNode();
     if (screenIndex < 0) {
       screenIndex = templates.length - 1;
     }
