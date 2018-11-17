@@ -36,7 +36,7 @@ document.addEventListener(`DOMContentLoaded`, function () {
   const showScreen = function (screenIndex) {
     clearNode();
     screenIndex = cycleArray(templates, screenIndex);
-    const content = document.importNode(templates[screenIndex].content, true);
+    const content = templates[screenIndex].content.cloneNode(true);
     main.appendChild(content);
     state.currentScreen = screenIndex;
   };
@@ -57,7 +57,7 @@ document.addEventListener(`DOMContentLoaded`, function () {
 
   //  Рендер элементов управления
   const addControls = function () {
-    const content = document.importNode(templateControls.content, true);
+    const content = templateControls.content.cloneNode(true);
     app.appendChild(content);
   };
 
