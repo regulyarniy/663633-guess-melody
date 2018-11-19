@@ -1,7 +1,9 @@
 // Отрисовка шаблона в DOM
-export default function (fragment) {
-  const app = document.querySelector(`.app`);
+const app = document.querySelector(`.app`);
+
+export default function render(screenName, screens) {
   const main = document.querySelector(`.main`);
   app.removeChild(main);
-  app.appendChild(fragment);
+  const screen = new screens[screenName](screens, render);
+  app.appendChild(screen.generate());
 }

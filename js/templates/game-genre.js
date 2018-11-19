@@ -1,10 +1,8 @@
 // Экран игры на выбор жанра
-import render from '../render';
 import utils from '../utils';
-import screenGameArtist from './game-artist';
-import screenWelcome from "./welcome";
 
-const template = `
+const GameGenre = function (screens, render) {
+  const template = `
 <section class="game game--genre">
   <header class="game__header">
     <a class="game__back" href="#">
@@ -83,41 +81,46 @@ const template = `
 </section>
 `;
 
-const fragment = utils.generateFragment(template);
-const form = fragment.querySelector(`.game__tracks`);
-const answerElements = form.elements[`answer`];
-const buttonAnswer = fragment.querySelector(`.game__submit`);
-const buttonBack = fragment.querySelector(`.game__back`);
+  const fragment = utils.generateFragment(template);
+  const form = fragment.querySelector(`.game__tracks`);
+  const answerElements = form.elements[`answer`];
+  const buttonAnswer = fragment.querySelector(`.game__submit`);
+  const buttonBack = fragment.querySelector(`.game__back`);
 
-// Без выбора пользователя кнопка ответа неактивна
-buttonAnswer.setAttribute(`disabled`, `true`);
+  // Без выбора пользователя кнопка ответа неактивна
+  buttonAnswer.setAttribute(`disabled`, `true`);
 
-// При изменении формы проверяем чекбоксы и активируем кнопку, если выбран ответ
-form.addEventListener(`change`, function () {
-  const answer = [];
-  answerElements.forEach(function (item) {
-    answer.push(item.checked);
+  // При изменении формы проверяем чекбоксы и активируем кнопку, если выбран ответ
+  form.addEventListener(`change`, function () {
+    const answer = [];
+    answerElements.forEach(function (item) {
+      answer.push(item.checked);
+    });
+    const answered = answer.some((item) => {
+      return item;
+    });
+    if (answered) {
+      buttonAnswer.removeAttribute(`disabled`);
+    } else {
+      buttonAnswer.setAttribute(`disabled`, `true`);
+    }
   });
-  const answered = answer.some((item) => {
-    return item;
+
+  // Переход на экран второй игры
+  buttonAnswer.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    render(`screenGameArtist`, screens);
   });
-  if (answered) {
-    buttonAnswer.removeAttribute(`disabled`);
-  } else {
-    buttonAnswer.setAttribute(`disabled`, `true`);
-  }
-});
 
-// Переход на экран второй игры
-buttonAnswer.addEventListener(`click`, function (e) {
-  e.preventDefault();
-  render(screenGameArtist);
-});
+  // Возврат на экран приветствия
+  buttonBack.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    render(`screenWelcome`, screens);
+  });
 
-// Возврат на экран приветствия
-buttonBack.addEventListener(`click`, function (e) {
-  e.preventDefault();
-  render(screenWelcome);
-});
+  this.generate = function () {
+    return fragment;
+  };
+};
 
-export default fragment;
+export default GameGenre;

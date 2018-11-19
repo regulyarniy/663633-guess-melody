@@ -1,11 +1,9 @@
 // Экран игры на выбор исполнителя
-import render from '../render';
 import utils from '../utils';
-import screenResultSuccess from './result-success';
-import screenFailTries from './fail-tries';
-import screenWelcome from "./welcome";
 
-const template = `
+const GameArtist = function (screens, render) {
+
+  const template = `
 <section class="game game--artist">
   <header class="game__header">
     <a class="game__back" href="#">
@@ -66,24 +64,29 @@ const template = `
 </section>
 `;
 
-const fragment = utils.generateFragment(template);
-const form = fragment.querySelector(`.game__artist`);
-const answerElements = form.elements[`answer`];
-const buttonBack = fragment.querySelector(`.game__back`);
+  const fragment = utils.generateFragment(template);
+  const form = fragment.querySelector(`.game__artist`);
+  const answerElements = form.elements[`answer`];
+  const buttonBack = fragment.querySelector(`.game__back`);
 
-// Переход на экран победы или проигрыша(случайно)
-answerElements.forEach(function (item) {
-  item.addEventListener(`click`, function () {
-    let screen = utils.getRandomInt(0, 2);
-    screen = screen ? screenResultSuccess : screenFailTries;
-    render(screen);
+  // Переход на экран победы или проигрыша(случайно)
+  answerElements.forEach(function (item) {
+    item.addEventListener(`click`, function () {
+      let screen = utils.getRandomInt(0, 2);
+      screen = screen ? `screenResultSuccess` : `screenFailTries`;
+      render(screen, screens);
+    });
   });
-});
 
-// Возврат на экран приветствия
-buttonBack.addEventListener(`click`, function (e) {
-  e.preventDefault();
-  render(screenWelcome);
-});
+  // Возврат на экран приветствия
+  buttonBack.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    render(`screenWelcome`, screens);
+  });
 
-export default fragment;
+  this.generate = function () {
+    return fragment;
+  };
+};
+
+export default GameArtist;
