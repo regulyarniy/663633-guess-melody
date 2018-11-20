@@ -1,9 +1,8 @@
 // Экран выигрыша
-import render from '../render';
 import utils from '../utils';
-import screenWelcome from './welcome';
 
-const template = `
+const ResultSucess = function (screens, render) {
+  const template = `
 <section class="result">
   <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
   <h2 class="result__title">Вы настоящий меломан!</h2>
@@ -13,13 +12,19 @@ const template = `
 </section>
 `;
 
-const fragment = utils.generateFragment(template);
-const buttonReplay = fragment.querySelector(`.result__replay`);
+  const fragment = utils.generateFragment(template);
+  const buttonReplay = fragment.querySelector(`.result__replay`);
 
-// Переход на экран приветствия
-buttonReplay.addEventListener(`click`, function (e) {
-  e.preventDefault();
-  render(screenWelcome);
-});
+  // Переход на экран приветствия
+  buttonReplay.addEventListener(`click`, function (e) {
+    e.preventDefault();
+    render(`screenWelcome`, screens);
+  });
 
-export default fragment;
+  this.generate = function () {
+    return fragment;
+  };
+};
+
+
+export default ResultSucess;
