@@ -1,6 +1,6 @@
 import {assert} from 'chai';
 import gameplay from './gameplay';
-import {MAX_QUESTIONS} from './gameplay';
+import {MAX_QUESTIONS, RESULT_FAIL_TRIES, RESULT_FAIL_TIME} from './gameplay';
 
 let answers = [];
 let statistics = [];
@@ -344,14 +344,85 @@ describe(`Функция подсчёта очков`, () => {
   });
 });
 
-describe(`Функция вывода результата`, () => {
+describe(`Функция вывода результата игры`, () => {
   it(`вернула результат при проигрыше по попыткам`, () => {
     statistics = [1, 2, 3, 4, 5];
     playerResult = {
       score: 4,
-      livesLeft: 2,
+      livesLeft: 0,
       timeLeft: 45
     };
-    assert.equal(gameplay.getResult(statistics, playerResult), `У вас закончились все попытки. Ничего, повезёт в следующий раз!`);
+    assert.equal(gameplay.getResult(statistics, playerResult), RESULT_FAIL_TRIES);
   });
+  it(`вернула результат при проигрыше по времени`, () => {
+    statistics = [1, 2, 3, 4, 5];
+    playerResult = {
+      score: 4,
+      livesLeft: 1,
+      timeLeft: 0
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), RESULT_FAIL_TIME);
+  });
+  it(`вернула результат при выигрыше(1 место)`, () => {
+    statistics = [1, 2, 3, 4, 5];
+    playerResult = {
+      score: 6,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 6 игроков. Это лучше, чем у 83% игроков`);
+    statistics = [1, 2, 3, 4];
+    playerResult = {
+      score: 6,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 5 игроков. Это лучше, чем у 80% игроков`);
+    statistics = [1];
+    playerResult = {
+      score: 6,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 2 игроков. Это лучше, чем у 50% игроков`);
+  });
+  it(`вернула результат при выигрыше(последнее место)`, () => {
+    statistics = [1, 2, 3, 4, 5];
+    playerResult = {
+      score: 0,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 6 место из 6 игроков. Это лучше, чем у 0% игроков`);
+    statistics = [1, 2, 3, 4];
+    playerResult = {
+      score: 0,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 5 место из 5 игроков. Это лучше, чем у 0% игроков`);
+    statistics = [1];
+    playerResult = {
+      score: 0,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 2 место из 2 игроков. Это лучше, чем у 0% игроков`);
+    statistics = [4, 5, 6];
+    playerResult = {
+      score: 3,
+      livesLeft: 3,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 4 место из 4 игроков. Это лучше, чем у 0% игроков`);
+  });
+  it(`вернула регультат при выигрыше(место в середине)`, () => {
+    statistics = [1, 2, 4, 5];
+    playerResult = {
+      score: 3,
+      livesLeft: 1,
+      timeLeft: 10
+    };
+    assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 3 место из 5 игроков. Это лучше, чем у 40% игроков`);
+  })
 });
