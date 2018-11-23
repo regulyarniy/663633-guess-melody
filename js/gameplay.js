@@ -9,7 +9,10 @@ export const MAX_QUESTIONS = 10; // Вопросов на игру
 export const RESULT_FAIL_TRIES = `У вас закончились все попытки. Ничего, повезёт в следующий раз!`; // Ответ при проигрыше по попыткам
 export const RESULT_FAIL_TIME = `Время вышло! Вы не успели отгадать все мелодии`; // Ответ при проигрыше по времени
 const MIN_TIME_LEFT = 0; // Минимальное количество секунд до проигрыша
-
+const LIVES_DECREMENT = 1; // Декремент жизней при неверном ответе
+const LEVEL_MAX = 10; // Максимальный уровень
+const LEVEL_INCREMENT = 1; // Инкремент уровня
+const LEVEL_ENDGAME = -1; // Уровень конца игры
 
 export default {
   // Подсчёт набранных баллов игрока
@@ -46,5 +49,16 @@ export default {
     const playersCount = newStatistics.length;
     const playerRating = Math.floor(((playersCount - position) / playersCount) * 100);
     return `Вы заняли ${position} место из ${playersCount} игроков. Это лучше, чем у ${playerRating}% игроков`;
+  },
+  // Подсчет жизней из ответа
+  countLives(answer, livesLeft) {
+    return answer.success ? livesLeft : livesLeft - LIVES_DECREMENT;
+  },
+  changeLevel(currentLevel, livesLeft) {
+    if (livesLeft === 0 || currentLevel >= LEVEL_MAX) {
+      return LEVEL_ENDGAME;
+    } else {
+      return currentLevel + LEVEL_INCREMENT;
+    }
   }
 };

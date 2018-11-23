@@ -5,6 +5,7 @@ import {MAX_QUESTIONS, RESULT_FAIL_TRIES, RESULT_FAIL_TIME} from './gameplay';
 let answers = [];
 let statistics = [];
 let playerResult = {};
+let answer = {};
 
 describe(`Функция подсчёта очков`, () => {
   it(`вернула результат, если игрок ответил меньше, чем на ${MAX_QUESTIONS} вопросов`, () => {
@@ -424,5 +425,35 @@ describe(`Функция вывода результата игры`, () => {
       timeLeft: 10
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 3 место из 5 игроков. Это лучше, чем у 40% игроков`);
-  })
+  });
+});
+
+describe(`Функция управления жизнями игрока`, () => {
+  it(`вернула результат, если игрок ответил правильно`, () => {
+    answer = {success: true, time: 20};
+    assert.equal(gameplay.countLives(answer, 3), 3);
+    assert.equal(gameplay.countLives(answer, 2), 2);
+    assert.equal(gameplay.countLives(answer, 1), 1);
+  });
+  it(`вернула результат, если игрок ответил неправильно`, () => {
+    answer = {success: false, time: 20};
+    assert.equal(gameplay.countLives(answer, 3), 2);
+    assert.equal(gameplay.countLives(answer, 2), 1);
+    assert.equal(gameplay.countLives(answer, 1), 0);
+  });
+});
+
+describe(`Функция переключения уровней`, () => {
+  it(`вернула номер следующего уровня, если текущий уровень меньше максимального`, () => {
+    assert.equal(gameplay.changeLevel(1, 3), 2);
+    assert.equal(gameplay.changeLevel(8, 3), 9);
+    assert.equal(gameplay.changeLevel(2, 3), 3);
+  });
+  it(`вернула -1, если текущий уровень максимальный`, () => {
+    assert.equal(gameplay.changeLevel(10, 3), -1);
+  });
+  it(`вернула -1, если закончились жизни`, () => {
+    assert.equal(gameplay.changeLevel(9, 0), -1);
+    assert.equal(gameplay.changeLevel(10, 0), -1);
+  });
 });
