@@ -12,70 +12,70 @@ describe(`Функция подсчёта очков`, () => {
     answers = [
       {
         success: true,
-        time: 10
+        time: 10,
       },
       {
         success: true,
-        time: 20
+        time: 20,
       },
       {
         success: true,
-        time: 30
+        time: 30,
       },
       {
         success: true,
-        time: 40
-      }
+        time: 40,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 3), -1);
     answers = [
       {
         success: true,
-        time: 10
+        time: 10,
       },
       {
         success: false,
-        time: 20
+        time: 20,
       },
       {
         success: true,
-        time: 30
+        time: 30,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
-      }
+        time: 40,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 2), -1);
     answers = [
       {
         success: true,
-        time: 10
+        time: 10,
       },
       {
         success: false,
-        time: 20
+        time: 20,
       },
       {
         success: false,
-        time: 30
+        time: 30,
       },
       {
         success: true,
-        time: 40
-      }
+        time: 40,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 1), -1);
   });
@@ -83,44 +83,44 @@ describe(`Функция подсчёта очков`, () => {
     answers = [
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
+        time: 40,
       },
       {
         success: true,
-        time: 40
-      }
+        time: 40,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 3), 10);
   });
@@ -128,44 +128,44 @@ describe(`Функция подсчёта очков`, () => {
     answers = [
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 30
+        time: 30,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
-      }
+        time: 25,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 3), 20);
   });
@@ -173,173 +173,173 @@ describe(`Функция подсчёта очков`, () => {
     answers = [
       {
         success: false,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 32
+        time: 32,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
-      }
+        time: 25,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 0), -1);
     answers = [
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 31
-      }
+        time: 31,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 2), 7);
     answers = [
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 31
-      }
+        time: 31,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 1), 4);
     answers = [
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 31
+        time: 31,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: true,
-        time: 25
+        time: 25,
       },
       {
         success: false,
-        time: 31
+        time: 31,
       },
       {
         success: false,
-        time: 31
-      }
+        time: 31,
+      },
     ];
     assert.equal(gameplay.countScore(answers, 1), 6);
   });
@@ -351,7 +351,7 @@ describe(`Функция вывода результата игры`, () => {
     playerResult = {
       score: 4,
       livesLeft: 0,
-      timeLeft: 45
+      timeLeft: 45,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), RESULT_FAIL_TRIES);
   });
@@ -360,7 +360,7 @@ describe(`Функция вывода результата игры`, () => {
     playerResult = {
       score: 4,
       livesLeft: 1,
-      timeLeft: 0
+      timeLeft: 0,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), RESULT_FAIL_TIME);
   });
@@ -369,21 +369,21 @@ describe(`Функция вывода результата игры`, () => {
     playerResult = {
       score: 6,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 6 игроков. Это лучше, чем у 83% игроков`);
     statistics = [1, 2, 3, 4];
     playerResult = {
       score: 6,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 5 игроков. Это лучше, чем у 80% игроков`);
     statistics = [1];
     playerResult = {
       score: 6,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 1 место из 2 игроков. Это лучше, чем у 50% игроков`);
   });
@@ -392,28 +392,28 @@ describe(`Функция вывода результата игры`, () => {
     playerResult = {
       score: 0,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 6 место из 6 игроков. Это лучше, чем у 0% игроков`);
     statistics = [1, 2, 3, 4];
     playerResult = {
       score: 0,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 5 место из 5 игроков. Это лучше, чем у 0% игроков`);
     statistics = [1];
     playerResult = {
       score: 0,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 2 место из 2 игроков. Это лучше, чем у 0% игроков`);
     statistics = [4, 5, 6];
     playerResult = {
       score: 3,
       livesLeft: 3,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 4 место из 4 игроков. Это лучше, чем у 0% игроков`);
   });
@@ -422,7 +422,7 @@ describe(`Функция вывода результата игры`, () => {
     playerResult = {
       score: 3,
       livesLeft: 1,
-      timeLeft: 10
+      timeLeft: 10,
     };
     assert.equal(gameplay.getResult(statistics, playerResult), `Вы заняли 3 место из 5 игроков. Это лучше, чем у 40% игроков`);
   });
@@ -455,5 +455,23 @@ describe(`Функция переключения уровней`, () => {
   it(`вернула -1, если закончились жизни`, () => {
     assert.equal(gameplay.changeLevel(9, 0), -1);
     assert.equal(gameplay.changeLevel(10, 0), -1);
+  });
+});
+
+describe(`Функция отсчёта времени`, () => {
+  let second;
+  it(`уменьшает переменную c 10  до нуля`, (done) => {
+    second = 10;
+    gameplay.countdown(second, (secondInTheEnd) => {
+      assert.equal(secondInTheEnd, 0);
+      done();
+    }, 2);
+  });
+  it(`уменьшает переменную c 300 до нуля`, (done) => {
+    second = 300;
+    gameplay.countdown(second, (secondInTheEnd) => {
+      assert.equal(secondInTheEnd, 0);
+      done();
+    }, 2);
   });
 });

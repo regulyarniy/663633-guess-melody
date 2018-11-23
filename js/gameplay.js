@@ -13,6 +13,8 @@ const LIVES_DECREMENT = 1; // Декремент жизней при невер�
 const LEVEL_MAX = 10; // Максимальный уровень
 const LEVEL_INCREMENT = 1; // Инкремент уровня
 const LEVEL_ENDGAME = -1; // Уровень конца игры
+const COUNTDOWN_DEFAULT_INTERVAL = 1000; // Интервал отсчёта в мс по умолчанию
+const COUNTDOWN_END = 0; // Конец отчёта в секундах
 
 export default {
   // Подсчёт набранных баллов игрока
@@ -60,5 +62,14 @@ export default {
     } else {
       return currentLevel + LEVEL_INCREMENT;
     }
+  },
+  countdown(timeLeft, endCountdown, timeoutInterval = COUNTDOWN_DEFAULT_INTERVAL) {
+    const decrementTimeLeft = setInterval(() => {
+      --timeLeft;
+      if (timeLeft === COUNTDOWN_END) {
+        clearInterval(decrementTimeLeft);
+        endCountdown(timeLeft);
+      }
+    }, timeoutInterval);
   }
 };
