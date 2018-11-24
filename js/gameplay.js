@@ -27,12 +27,10 @@ export default {
       return FAIL_RESULT;
     }
     const reducer = (accumulator, currentValue) => {
-      const RADIX = 10;
-
+      const {success, time} = currentValue;
       // Считаем баллы за ответ
-      let increment = parseInt((currentValue.success) ? SCORE_SUCCESS : SCORE_FAIL, RADIX);
-      //  Умножаем если был быстрый успешный ответ
-      increment *= (currentValue.time <= BONUS_TIME && increment === SCORE_SUCCESS) ? BONUS_SUCCESS : BONUS_FAIL;
+      const bonus = (time <= BONUS_TIME) ? BONUS_SUCCESS : BONUS_FAIL;
+      const increment = (success) ? SCORE_SUCCESS * bonus : SCORE_FAIL;
       return accumulator + increment;
     };
     return answers.reduce(reducer, REDUCER_INITIAL_VALUE);
