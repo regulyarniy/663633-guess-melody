@@ -1,6 +1,5 @@
 import {assert} from 'chai';
-import gameplay from './gameplay';
-import {RESULT_FAIL_TRIES, RESULT_FAIL_TIME} from './gameplay';
+import gameplay, {RESULT_FAIL_TRIES, RESULT_FAIL_TIME} from './gameplay';
 
 describe(`Функция вывода результата игры`, () => {
   let statistics = [];

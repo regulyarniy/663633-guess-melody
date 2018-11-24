@@ -1,6 +1,5 @@
 import {assert} from 'chai';
-import gameplay from './gameplay';
-import {MAX_QUESTIONS} from './gameplay';
+import gameplay, {MAX_QUESTIONS} from './gameplay';
 
 describe(`Функция подсчёта очков`, () => {
   let answers = [];
