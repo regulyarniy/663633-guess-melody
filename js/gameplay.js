@@ -13,8 +13,10 @@ const LIVES_DECREMENT = 1; // Декремент жизней при невер�
 export const LEVEL_MAX = 10; // Максимальный уровень
 const LEVEL_INCREMENT = 1; // Инкремент уровня
 const LEVEL_ENDGAME = -1; // Уровень конца игры
-const COUNTDOWN_DEFAULT_INTERVAL = 1000; // Интервал отсчёта в мс по умолчанию
-const COUNTDOWN_END = 0; // Конец отчёта в секундах
+const DATE_MS_TO_SEC_MULTIPLY = 1000; // Множитель миллисекунд в секунды
+const TIMER_END = 0; // Конец отчёта в секундах
+const TIMER_END_RESULT = -1; // Вывод функции при истекшем таймере
+
 
 export default {
   // Подсчёт набранных баллов игрока
@@ -56,6 +58,7 @@ export default {
   countLives(answer, livesLeft) {
     return answer.success ? livesLeft : livesLeft - LIVES_DECREMENT;
   },
+  // Смена уровня
   changeLevel(currentLevel, livesLeft) {
     if (livesLeft === 0 || currentLevel >= LEVEL_MAX) {
       return LEVEL_ENDGAME;
@@ -63,13 +66,11 @@ export default {
       return currentLevel + LEVEL_INCREMENT;
     }
   },
-  countdown(timeLeft, endCountdown, timeoutInterval = COUNTDOWN_DEFAULT_INTERVAL) {
-    const decrementTimeLeft = setInterval(() => {
-      --timeLeft;
-      if (timeLeft === COUNTDOWN_END) {
-        clearInterval(decrementTimeLeft);
-        endCountdown(timeLeft);
-      }
-    }, timeoutInterval);
+  // Проверка таймера
+  getTimeLeft(startDate, timer, checkDate = new Date()) {
+    const checkDateInSeconds = checkDate.getTime() / DATE_MS_TO_SEC_MULTIPLY;
+    const startDateInSeconds = startDate.getTime() / DATE_MS_TO_SEC_MULTIPLY;
+    const timeLeft = checkDateInSeconds - startDateInSeconds + timer;
+    return (timeLeft >= TIMER_END) ? timeLeft : TIMER_END_RESULT;
   }
 };
