@@ -56,6 +56,7 @@ export default {
   countLives(answer, livesLeft) {
     return answer.success ? livesLeft : livesLeft - LIVES_DECREMENT;
   },
+  // Смена уровня
   changeLevel(currentLevel, livesLeft) {
     if (livesLeft === 0 || currentLevel >= LEVEL_MAX) {
       return LEVEL_ENDGAME;
@@ -63,13 +64,11 @@ export default {
       return currentLevel + LEVEL_INCREMENT;
     }
   },
-  countdown(timeLeft, endCountdown, timeoutInterval = COUNTDOWN_DEFAULT_INTERVAL) {
-    const decrementTimeLeft = setInterval(() => {
-      --timeLeft;
-      if (timeLeft === COUNTDOWN_END) {
-        clearInterval(decrementTimeLeft);
-        endCountdown(timeLeft);
-      }
-    }, timeoutInterval);
+  // Проверка таймера
+  getTimeLeft(startDate, timer, checkDate = new Date()) {
+    const checkDateInSeconds = checkDate.getTime() / 1000;
+    const startDateInSeconds = startDate.getTime() / 1000;
+    const timeLeft = checkDateInSeconds - startDateInSeconds + timer;
+    return (timeLeft >= 0) ? timeLeft : -1;
   }
 };
