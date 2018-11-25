@@ -9,10 +9,10 @@ describe(`Функция переключения уровней`, () => {
     livesLeft = 3;
     assert.equal(gameplay.changeLevel(currentLevel, livesLeft), 2);
   });
-  it(`вернула номер следующего уровня, если текущий уровень(9) меньше максимального`, () => {
-    currentLevel = 9;
+  it(`вернула номер следующего уровня, если текущий уровень(8) меньше максимального`, () => {
+    currentLevel = LEVEL_MAX - 1;
     livesLeft = 3;
-    assert.equal(gameplay.changeLevel(currentLevel, livesLeft), 10);
+    assert.equal(gameplay.changeLevel(currentLevel, livesLeft), LEVEL_MAX);
   });
   it(`вернула -1, если текущий уровень максимальный`, () => {
     livesLeft = 3;

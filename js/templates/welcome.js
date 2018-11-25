@@ -1,7 +1,9 @@
 // Экран приветствия
 import utils from '../utils';
+import gameplay from '../gameplay/gameplay';
 
-const Welcome = function (screens, render) {
+const Welcome = function (context) {
+  const {render} = context;
   const template = `
 <section class="welcome">
   <div class="welcome__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
@@ -20,12 +22,13 @@ const Welcome = function (screens, render) {
   const buttonPlay = fragment.querySelector(`.welcome__button`);
 
   // Переход на экран игры
-  buttonPlay.addEventListener(`click`, function (e) {
+  buttonPlay.addEventListener(`click`, (e) => {
     e.preventDefault();
-    render(`screenGameGenre`, screens);
+    context.startNewGame();
+    render(gameplay.getGameMode(context.ANSWERS_DATA[context.game.currentLevel]), context);
   });
 
-  this.generate = function () {
+  this.generate = () => {
     return fragment;
   };
 };

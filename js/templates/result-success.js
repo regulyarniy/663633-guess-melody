@@ -1,7 +1,8 @@
 // Экран выигрыша
 import utils from '../utils';
 
-const ResultSucess = function (screens, render) {
+const ResultSucess = function (context) {
+  const {render} = context;
   const template = `
 <section class="result">
   <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
@@ -18,7 +19,7 @@ const ResultSucess = function (screens, render) {
   // Переход на экран приветствия
   buttonReplay.addEventListener(`click`, function (e) {
     e.preventDefault();
-    render(`screenWelcome`, screens);
+    render(`Welcome`, context);
   });
 
   this.generate = function () {

@@ -10,12 +10,13 @@ export const RESULT_FAIL_TRIES = `У вас закончились все поп
 export const RESULT_FAIL_TIME = `Время вышло! Вы не успели отгадать все мелодии`; // Ответ при проигрыше по времени
 const MIN_TIME_LEFT = 0; // Минимальное количество секунд до проигрыша
 const LIVES_DECREMENT = 1; // Декремент жизней при неверном ответе
-export const LEVEL_MAX = 10; // Максимальный уровень
+export const LEVEL_MAX = 9; // Максимальный уровень
 const LEVEL_INCREMENT = 1; // Инкремент уровня
 const LEVEL_ENDGAME = -1; // Уровень конца игры
 const DATE_MS_TO_SEC_MULTIPLY = 1000; // Множитель миллисекунд в секунды
 const TIMER_END = 0; // Конец отчёта в секундах
 const TIMER_END_RESULT = -1; // Вывод функции при истекшем таймере
+const RADIX = 10; // Основание для приведения к целому
 
 
 export default {
@@ -70,5 +71,45 @@ export default {
     const startDateInSeconds = startDate.getTime() / DATE_MS_TO_SEC_MULTIPLY;
     const timeLeft = checkDateInSeconds - startDateInSeconds + timer;
     return (timeLeft >= TIMER_END) ? timeLeft : TIMER_END_RESULT;
+  },
+  // Получить тип игры по составу обьекта с вариантами ответов
+  getGameMode(answerData) {
+    if (!(typeof answerData === `object`)) {
+      return -1;
+    }
+    if (answerData.hasOwnProperty(`genre`)) {
+      return `GameGenre`;
+    } else if (answerData.hasOwnProperty(`audioURL`)) {
+      return `GameArtist`;
+    } else {
+      return -1;
+    }
+  },
+  // Функция проверки ответа для игры по жанрам
+  checkAnswerByGenre(questions, answers) {
+    // Клонируем ключи ответов
+    const questionsValid = [];
+    questions.slice().forEach((item) => {
+      questionsValid.push(item.valid);
+    });
+    for (const i of questionsValid.keys()) {
+      if (questionsValid[i] !== answers[i]) {
+        return false;
+      }
+    }
+    return true;
+  },
+  // Функция проверки ответа для игры по артисту
+  checkAnswerByArtist(questions, answer) {
+    // Находим id правильного ответа
+    let validId;
+    for (const question of questions) {
+      if (question.valid === true) {
+        validId = question.id;
+        break;
+      }
+    }
+    return parseInt(answer, RADIX) === validId;
+
   }
 };

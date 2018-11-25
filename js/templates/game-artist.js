@@ -1,13 +1,15 @@
 // Экран игры на выбор исполнителя
 import utils from '../utils';
 import gameHeader from './game-header';
+import gameplay from "../gameplay/gameplay";
+import FailTries from "./fail-tries";
 
-const tracks = [
-  {id: 1, artist: `Пелагея`, pictureURL: `http://placehold.it/134x134`},
-  {id: 1, artist: `Краснознаменная дивизия имени моей бабушки`, pictureURL: `http://placehold.it/134x134`},
-  {id: 1, artist: `Lorde`, pictureURL: `http://placehold.it/134x134`}
-];
-const getArtistTemplate = (data) => `
+const GameArtist = function (context) {
+  const {render, game} = context;
+
+  // Генерируем шаблон
+  const getArtistTemplate = (data) => {
+    return `
 <div class="artist">
   <input class="artist__input visually-hidden" type="radio" name="answer" value="${data.id}" id="answer-${data.id}">
   <label class="artist__name" for="answer-${data.id}">
@@ -16,23 +18,21 @@ const getArtistTemplate = (data) => `
   </label>
 </div>
 `;
-
-const artistsTemplate = tracks.reduce((accumulator,currentValue) => {
-  return accumulator + getArtistTemplate(currentValue);
-},``);
-
-
-const GameArtist = function (screens, render) {
-
+  };
+  const tracks = context.ANSWERS_DATA[game.currentLevel].answers;
+  const audioURL = context.ANSWERS_DATA[game.currentLevel].audioURL;
+  const artistsTemplate = tracks.reduce((accumulator, currentValue) => {
+    return accumulator + getArtistTemplate(currentValue);
+  }, ``);
   const template = `
 <section class="game game--artist">
-  ${gameHeader}
+  ${gameHeader(context)}
 
   <section class="game__screen">
     <h2 class="game__title">Кто исполняет эту песню?</h2>
     <div class="game__track">
       <button class="track__button track__button--play" type="button"></button>
-      <audio></audio>
+      <audio src="${audioURL}"></audio>
     </div>
 
     <form class="game__artist">
@@ -41,27 +41,40 @@ const GameArtist = function (screens, render) {
   </section>
 </section>
 `;
-
   const fragment = utils.generateFragment(template);
+
+  // Кешируем элементы шаблона
   const form = fragment.querySelector(`.game__artist`);
   const answerElements = form.elements[`answer`];
   const buttonBack = fragment.querySelector(`.game__back`);
 
-  // Переход на экран победы или проигрыша(случайно)
+  // Переход к следующему экрану
   answerElements.forEach(function (item) {
-    item.addEventListener(`click`, function () {
-      let screen = utils.getRandomInt(0, 2);
-      screen = screen ? `screenResultSuccess` : `screenFailTries`;
-      render(screen, screens);
+    item.addEventListener(`click`, function (e) {
+      e.preventDefault();
+      const answer = e.target.value;
+      const isAnswerSuccessful = gameplay.checkAnswerByArtist(context.ANSWERS_DATA[context.game.currentLevel].answers, answer);
+      const playerAnswer = {success: isAnswerSuccessful, time: 35}; // TODO implement time count
+      context.game.answers.push(playerAnswer);
+      context.game.livesLeft = gameplay.countLives(playerAnswer, context.game.livesLeft);
+      context.game.currentLevel = gameplay.changeLevel(game.currentLevel, game.livesLeft);
+      if (!(context.game.currentLevel === -1)) {
+        render(gameplay.getGameMode(context.ANSWERS_DATA[context.game.currentLevel]), context);
+      } else if (context.game.livesLeft > 0) {
+        render(`ResultSuccess`, context);
+      } else {
+        render(`FailTries`, context);
+      }
     });
   });
 
   // Возврат на экран приветствия
   buttonBack.addEventListener(`click`, function (e) {
     e.preventDefault();
-    render(`screenWelcome`, screens);
+    render(`Welcome`, context);
   });
 
+  // Метод возвращает разметку
   this.generate = function () {
     return fragment;
   };

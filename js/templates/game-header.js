@@ -1,6 +1,14 @@
 // Шапка на экранах с вопросами
+const MAX_LIVES = 3;
+const generateLives = (lives) => {
+  return Array(MAX_LIVES)
+    .fill(`<div class="correct"></div>`, 0, lives)
+    .fill(`<div class="wrong"></div>`, lives, MAX_LIVES + 1)
+    .join(``);
+};
 
-const gameHeader = `
+const gameHeader = (context) => {
+  return `
 <header class="game__header">
   <a class="game__back" href="#">
     <span class="visually-hidden">Сыграть ещё раз</span>
@@ -19,11 +27,10 @@ const gameHeader = `
   </div>
 
   <div class="game__mistakes">
-    <div class="wrong"></div>
-    <div class="wrong"></div>
-    <div class="wrong"></div>
+    ${generateLives(context.game.livesLeft)}
   </div>
 </header>
 `;
+};
 
 export default gameHeader;
