@@ -2,6 +2,7 @@
 import utils from '../utils';
 import gameHeader from './game-header';
 import gameplay from '../gameplay/gameplay';
+import audio from '../audio';
 
 const GameGenre = function (context) {
   const {render, game} = context;
@@ -49,6 +50,9 @@ const GameGenre = function (context) {
   const answerElements = form.elements[`answer`];
   const buttonAnswer = fragment.querySelector(`.game__submit`);
   const buttonBack = fragment.querySelector(`.game__back`);
+
+  // Инициализируем кнопки проигрывания
+  audio.initializeTracks(`.track__button`, `audio`, fragment);
 
   // Без выбора пользователя кнопка ответа неактивна
   buttonAnswer.setAttribute(`disabled`, `true`);

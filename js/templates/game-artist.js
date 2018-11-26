@@ -1,7 +1,8 @@
 // Экран игры на выбор исполнителя
 import utils from '../utils';
 import gameHeader from './game-header';
-import gameplay from "../gameplay/gameplay";
+import gameplay from '../gameplay/gameplay';
+import audio from '../audio';
 
 const GameArtist = function (context) {
   const {render, game} = context;
@@ -46,6 +47,9 @@ const GameArtist = function (context) {
   const form = fragment.querySelector(`.game__artist`);
   const answerElements = form.elements[`answer`];
   const buttonBack = fragment.querySelector(`.game__back`);
+
+  // Инициализируем кнопки проигрывания
+  audio.initializeTracks(`.track__button`, `audio`, fragment);
 
   // Переход к следующему экрану
   answerElements.forEach(function (item) {
