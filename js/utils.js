@@ -55,7 +55,7 @@ export default {
     if (minutes > 0) {
       minutesString = `${convertNumericToPluralString(minutes, `минут`)} и `;
     }
-    return `${minutesString}${secondsString}`
+    return `${minutesString}${secondsString}`;
   },
   convertNumericToPluralString
 };

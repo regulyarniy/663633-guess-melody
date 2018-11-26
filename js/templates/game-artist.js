@@ -2,7 +2,6 @@
 import utils from '../utils';
 import gameHeader from './game-header';
 import gameplay from "../gameplay/gameplay";
-import FailTries from "./fail-tries";
 
 const GameArtist = function (context) {
   const {render, game} = context;

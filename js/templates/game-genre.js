@@ -83,7 +83,7 @@ const GameGenre = function (context) {
     const playerAnswer = {success: isAnswerSuccessful, time: 35}; // TODO implement time count
     context.game.answers.push(playerAnswer);
     context.game.livesLeft = gameplay.countLives(playerAnswer, context.game.livesLeft);
-    context.game.currentLevel = gameplay.changeLevel(game.currentLevel, game.livesLeft); // TODO implement success screen
+    context.game.currentLevel = gameplay.changeLevel(game.currentLevel, game.livesLeft);
     if (!(context.game.currentLevel === -1)) {
       render(gameplay.getGameMode(context.ANSWERS_DATA[context.game.currentLevel]), context);
     } else if (context.game.livesLeft > 0) {

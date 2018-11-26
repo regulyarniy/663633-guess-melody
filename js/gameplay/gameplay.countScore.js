@@ -4,7 +4,7 @@ const BONUS_FAIL = 1; // Мультипликатор без бонуса
 const FAIL_RESULT = -1; // Возвращаемое значение при проигрыше
 const SCORE_SUCCESS = 1; // Баллы за успешный ответ
 const SCORE_FAIL = -2; // Баллы за ошибку
-const MIN_LIVES = 0; // Минимум жизней // TODO вынести в DATA
+const MIN_LIVES = 0; // Минимум жизней
 export const MAX_QUESTIONS = 10; // Вопросов на игру
 const REDUCER_INITIAL_VALUE = 0; // Начальное значение для
 

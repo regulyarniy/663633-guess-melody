@@ -1,3 +1,4 @@
+// TODO use lowercase modules names
 import changeLevel from './gameplay.changeLevel';
 import checkAnswerByArtist from './gameplay.checkAnswerByArtist';
 import checkAnswerByGenre from './gameplay.checkAnswerByGenre';
