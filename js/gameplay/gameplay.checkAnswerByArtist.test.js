@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import gameplay from './gameplay';
+import checkAnswerByArtist from './gameplay.checkAnswerByArtist';
 
 describe(`Функция проверки ответа для игры по артисту`, () => {
   let questions = [
@@ -10,14 +10,14 @@ describe(`Функция проверки ответа для игры по ар
   let answer;
   it(`возвращает true при правильном ответе`, () => {
     answer = 3;
-    assert.equal(gameplay.checkAnswerByArtist(questions, answer), true);
+    assert.equal(checkAnswerByArtist(questions, answer), true);
   });
   it(`возвращает true при правильном ответе, записанном строкой`, () => {
     answer = `3`;
-    assert.equal(gameplay.checkAnswerByArtist(questions, answer), true);
+    assert.equal(checkAnswerByArtist(questions, answer), true);
   });
   it(`возвращает false при неправильном ответе`, () => {
     answer = 1;
-    assert.equal(gameplay.checkAnswerByArtist(questions, answer), false);
+    assert.equal(checkAnswerByArtist(questions, answer), false);
   });
 });

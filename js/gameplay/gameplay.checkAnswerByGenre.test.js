@@ -1,5 +1,5 @@
 import {assert} from 'chai';
-import gameplay from './gameplay';
+import checkAnswerByGenre from './gameplay.checkAnswerByGenre';
 
 describe(`Функция проверки ответа для игры по жанрам`, () => {
   let questions = [
@@ -11,10 +11,10 @@ describe(`Функция проверки ответа для игры по жа
   let answers = [];
   it(`возвращает true при правильном ответе`, () => {
     answers = [true, true, false, false];
-    assert.equal(gameplay.checkAnswerByGenre(questions, answers), true);
+    assert.equal(checkAnswerByGenre(questions, answers), true);
   });
   it(`возвращает false при неправильном ответе`, () => {
     answers = [true, true, true, false];
-    assert.equal(gameplay.checkAnswerByGenre(questions, answers), false);
+    assert.equal(checkAnswerByGenre(questions, answers), false);
   });
 });

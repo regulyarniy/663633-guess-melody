@@ -4,7 +4,8 @@ export const NEW_GAME = Object.freeze({
   livesLeft: 3,
   answers: [],
   timeLeft: 300,
-  bonusTimeLeft: 30
+  bonusTimeLeft: 30,
+  score: 0
 });
 
 // Данные для ответов
