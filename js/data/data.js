@@ -5,7 +5,8 @@ export const NEW_GAME = Object.freeze({
   answers: [],
   timeLeft: 300,
   bonusTimeLeft: 30,
-  score: 0
+  score: 0,
+  startTime: new Date(`1 Jan 2018`)
 });
 
 // Данные для ответов

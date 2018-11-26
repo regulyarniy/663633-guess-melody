@@ -13,6 +13,7 @@ const context = {
   NEW_GAME,
   startNewGame() {
     this.game = JSON.parse(JSON.stringify(this.NEW_GAME));
+    this.game.startTime = new Date();
   }
 };
 
