@@ -1,7 +1,7 @@
 // Начальное состояние игры
 export const NEW_GAME = Object.freeze({
   currentLevel: 0,
-  livesLeft: 3,
+  livesLeft: 4,
   answers: [],
   timeLeft: 300,
   bonusTimeLeft: 30,

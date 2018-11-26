@@ -1,9 +1,10 @@
 // Шапка на экранах с вопросами
-const MAX_LIVES = 3;
+const MAX_TRIES = 3; // Количество попыток
+const TRIES_DECREMENT = 1; // Поправка на количество попыток
 const generateLives = (lives) => {
-  return Array(MAX_LIVES)
+  return Array(MAX_TRIES)
     .fill(`<div class="correct"></div>`, 0, lives)
-    .fill(`<div class="wrong"></div>`, lives, MAX_LIVES + 1)
+    .fill(`<div class="wrong"></div>`, lives, MAX_TRIES + 1)
     .join(``);
 };
 
@@ -27,7 +28,7 @@ const gameHeader = (context) => {
   </div>
 
   <div class="game__mistakes">
-    ${generateLives(context.game.livesLeft)}
+    ${generateLives(context.game.livesLeft - TRIES_DECREMENT)}
   </div>
 </header>
 `;
