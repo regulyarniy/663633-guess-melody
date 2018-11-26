@@ -7,6 +7,7 @@ import countScore from './gameplay.countScore';
 import getGameMode from './gameplay.getGameMode';
 import getResult from './gameplay.getResult';
 import getTimeLeft from './gameplay.getTimeLeft';
+import countBonusScore from './gameplay.countBonusScore';
 
 export default {
   // Подсчёт набранных баллов игрока
@@ -24,5 +25,7 @@ export default {
   // Функция проверки ответа для игры по жанрам
   checkAnswerByGenre,
   // Функция проверки ответа для игры по артистам
-  checkAnswerByArtist
+  checkAnswerByArtist,
+  // Функция подсчёта бонусных очков
+  countBonusScore
 };
