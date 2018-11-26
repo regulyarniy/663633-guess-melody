@@ -7,7 +7,7 @@
  * @param {String} numericString
  * @return {*}
  */
-const convertNumericToPluralString = (number, numericString) => {
+export const convertNumericToPluralString = (number, numericString) => {
   const numberLong = number % 100;
   if (numberLong > 10 && numberLong < 15) {
     return numericString;
@@ -51,11 +51,10 @@ export default {
     const minutes = Math.floor(seconds / 60);
     const secondsAfterMinutes = seconds % 60;
     let minutesString = ``;
-    const secondsString = convertNumericToPluralString(secondsAfterMinutes, `секунд`);
+    const secondsString = `${secondsAfterMinutes} ${convertNumericToPluralString(secondsAfterMinutes, `секунд`)}`;
     if (minutes > 0) {
-      minutesString = `${convertNumericToPluralString(minutes, `минут`)} и `;
+      minutesString = `${minutes} ${convertNumericToPluralString(minutes, `минут`)} и `;
     }
     return `${minutesString}${secondsString}`;
-  },
-  convertNumericToPluralString
+  }
 };
