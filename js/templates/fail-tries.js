@@ -1,7 +1,8 @@
 // Экран проигрыша по попыткам
 import utils from '../utils';
 
-const FailTries = function (screens, render) {
+const FailTries = function (context) {
+  const {render} = context;
   const template = `
 <section class="result">
   <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
@@ -17,7 +18,7 @@ const FailTries = function (screens, render) {
   // Переход на экран приветствия
   buttonReplay.addEventListener(`click`, function (e) {
     e.preventDefault();
-    render(`screenWelcome`, screens);
+    render(`Welcome`, context);
   });
 
   this.generate = function () {

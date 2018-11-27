@@ -1,9 +1,8 @@
 // Отрисовка шаблона в DOM
-const app = document.querySelector(`.app`);
-
-export default function render(screenName, screens) {
-  const main = document.querySelector(`.main`);
-  app.removeChild(main);
-  const screen = new screens[screenName](screens, render);
-  app.appendChild(screen.generate());
+export default function render(screenName, context) {
+  const {application, templates} = context;
+  const main = application.querySelector(`.main`);
+  application.removeChild(main);
+  const screen = new templates[screenName](context);
+  application.appendChild(screen.generate());
 }

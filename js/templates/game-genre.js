@@ -1,102 +1,75 @@
 // Экран игры на выбор жанра
 import utils from '../utils';
+import gameHeader from './game-header';
+import gameplay from '../gameplay/gameplay';
+import audio from '../audio';
 
-const GameGenre = function (screens, render) {
+const GameGenre = function (context) {
+  const {render, game} = context;
+
+  // Генерируем шаблон
+  const getTrackTemplate = (data) => {
+    return `
+<div class="track">
+  <button class="track__button track__button--play" type="button"></button>
+  <div class="track__status">
+    <audio src="${data.audioURL}"></audio>
+  </div>
+  <div class="game__answer">
+    <input class="game__input visually-hidden" type="checkbox" name="answer" value="${data.id}" id="answer-${data.id}">
+    <label class="game__check" for="answer-${data.id}">Отметить</label>
+  </div>
+</div>
+`;
+  };
+  const tracksAnswers = context.ANSWERS_DATA[game.currentLevel].answers;
+  const genre = context.ANSWERS_DATA[game.currentLevel].genre;
+  const tracksTemplate = tracksAnswers.reduce((accumulator, currentValue) => {
+    return accumulator + getTrackTemplate(currentValue);
+  }, ``);
   const template = `
 <section class="game game--genre">
-  <header class="game__header">
-    <a class="game__back" href="#">
-      <span class="visually-hidden">Сыграть ещё раз</span>
-      <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
-    </a>
 
-    <svg xmlns="http://www.w3.org/2000/svg" class="timer" viewBox="0 0 780 780">
-      <circle class="timer__line" cx="390" cy="390" r="370"
-              style="filter: url(#blur); transform: rotate(-90deg) scaleY(-1); transform-origin: center"/>
-    </svg>
-
-    <div class="timer__value" xmlns="http://www.w3.org/1999/xhtml">
-      <span class="timer__mins">05</span>
-      <span class="timer__dots">:</span>
-      <span class="timer__secs">00</span>
-    </div>
-
-    <div class="game__mistakes">
-      <div class="wrong"></div>
-      <div class="wrong"></div>
-      <div class="wrong"></div>
-    </div>
-  </header>
+  ${gameHeader(context)}
 
   <section class="game__screen">
-    <h2 class="game__title">Выберите инди-рок треки</h2>
+    <h2 class="game__title">Выберите ${genre} треки</h2>
     <form class="game__tracks">
-      <div class="track">
-        <button class="track__button track__button--play" type="button"></button>
-        <div class="track__status">
-          <audio></audio>
-        </div>
-        <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="1" id="answer-1">
-          <label class="game__check" for="answer-1">Отметить</label>
-        </div>
-      </div>
-
-      <div class="track">
-        <button class="track__button track__button--play" type="button"></button>
-        <div class="track__status">
-          <audio></audio>
-        </div>
-        <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="2" id="answer-2">
-          <label class="game__check" for="answer-2">Отметить</label>
-        </div>
-      </div>
-
-      <div class="track">
-        <button class="track__button track__button--pause" type="button"></button>
-        <div class="track__status">
-          <audio></audio>
-        </div>
-        <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="3" id="answer-3">
-          <label class="game__check" for="answer-3">Отметить</label>
-        </div>
-      </div>
-
-      <div class="track">
-        <button class="track__button track__button--play" type="button"></button>
-        <div class="track__status">
-          <audio></audio>
-        </div>
-        <div class="game__answer">
-          <input class="game__input visually-hidden" type="checkbox" name="answer" value="4" id="answer-4">
-          <label class="game__check" for="answer-4">Отметить</label>
-        </div>
-      </div>
-
+    
+      ${tracksTemplate}
+      
       <button class="game__submit button" type="submit">Ответить</button>
     </form>
   </section>
 </section>
 `;
-
   const fragment = utils.generateFragment(template);
+
+  // Кешируем элементы шаблона
   const form = fragment.querySelector(`.game__tracks`);
   const answerElements = form.elements[`answer`];
   const buttonAnswer = fragment.querySelector(`.game__submit`);
   const buttonBack = fragment.querySelector(`.game__back`);
 
+  // Инициализируем кнопки проигрывания
+  audio.initializeTracks(`.track__button`, `audio`, fragment);
+
   // Без выбора пользователя кнопка ответа неактивна
   buttonAnswer.setAttribute(`disabled`, `true`);
 
+  // Функция получения массива ответов
+  const getAnswers = () => {
+    const answers = [];
+    answerElements.forEach(function (item) {
+      answers.push(item.checked);
+    });
+    return answers;
+  };
+
   // При изменении формы проверяем чекбоксы и активируем кнопку, если выбран ответ
   form.addEventListener(`change`, function () {
-    const answer = [];
-    answerElements.forEach(function (item) {
-      answer.push(item.checked);
-    });
-    const answered = answer.some((item) => {
+    const answers = getAnswers();
+    const answered = answers.some((item) => {
       return item;
     });
     if (answered) {
@@ -106,18 +79,31 @@ const GameGenre = function (screens, render) {
     }
   });
 
-  // Переход на экран второй игры
+  // Переход к следующему экрану
   buttonAnswer.addEventListener(`click`, function (e) {
     e.preventDefault();
-    render(`screenGameArtist`, screens);
+    const answers = getAnswers();
+    const isAnswerSuccessful = gameplay.checkAnswerByGenre(context.ANSWERS_DATA[context.game.currentLevel].answers, answers);
+    const playerAnswer = {success: isAnswerSuccessful, time: 35}; // TODO implement time count
+    context.game.answers.push(playerAnswer);
+    context.game.livesLeft = gameplay.countLives(playerAnswer, context.game.livesLeft);
+    context.game.currentLevel = gameplay.changeLevel(game.currentLevel, game.livesLeft);
+    if (!(context.game.currentLevel === -1)) {
+      render(gameplay.getGameMode(context.ANSWERS_DATA[context.game.currentLevel]), context);
+    } else if (context.game.livesLeft > 0) {
+      render(`ResultSuccess`, context);
+    } else {
+      render(`FailTries`, context);
+    }
   });
 
   // Возврат на экран приветствия
   buttonBack.addEventListener(`click`, function (e) {
     e.preventDefault();
-    render(`screenWelcome`, screens);
+    render(`Welcome`, context);
   });
 
+  // Метод возвращает разметку
   this.generate = function () {
     return fragment;
   };
