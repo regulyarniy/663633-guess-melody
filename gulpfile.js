@@ -111,12 +111,18 @@ gulp.task(`build`, [`assemble`], () => {
 gulp.task(`test`, () => {
   return gulp
     .src([`js/**/*.test.js`])
+    .pipe(plumber())
     .pipe(rollup({
       plugins: [
         commonjs()
-      ]}, `cjs`))
+      ],
+      format: `cjs`}))
     .pipe(gulp.dest(`build/test`))
     .pipe(mocha({
-      reporter: `spec`
+      reporter: `min`
     }));
+});
+
+gulp.task(`tdd`, () => {
+  gulp.watch([`js/**/*.js`], [`test`]);
 });
