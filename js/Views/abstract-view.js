@@ -10,17 +10,37 @@ export default class AbstractView {
    * @abstract
    */
   get template() {
-    throw new Error(`You have to implement the method 'template'!`);
+    if (!this._isTested) {
+      throw new Error(`You have to implement the method 'template'!`);
+    } else {
+      return `<p>test</p>`;
+    }
+  }
+
+  /**
+   * Возвращает DOM-элемент с обработчиками
+   * @return {HTMLElement}
+   */
+  get element() {
+    if (!this._element) {
+      this._element = this.render();
+      this.bind();
+    }
+    return this._element;
   }
 
   /**
    * Создает DOM-элемент из разметки
+   * @param {string} [wrapperTag = `section`] Тег для обертки
+   * @param {Array} [wrapperClasses = [`main`]] Массив с классами для обертки
    * @return {HTMLElement}
    */
-  render() {
-    const wrapper = document.createElement(`section`);
+  render(wrapperTag = `section`, wrapperClasses = [`main`]) {
+    const wrapper = document.createElement(wrapperTag);
     wrapper.innerHTML = this.template.trim();
-    wrapper.classList.add(`main`);
+    wrapperClasses.forEach((item) => {
+      wrapper.classList.add(item);
+    });
     return wrapper;
   }
 
@@ -28,6 +48,12 @@ export default class AbstractView {
    * @abstract
    */
   bind() {
-    throw new Error(`You have to implement the method 'bind'!`);
+    if (!this._isTested) {
+      throw new Error(`You have to implement the method 'bind'!`);
+    } else {
+      this._element.addEventListener(`click`, () => {
+        return;
+      });
+    }
   }
 }
