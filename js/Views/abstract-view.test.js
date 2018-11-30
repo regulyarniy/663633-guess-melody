@@ -15,4 +15,11 @@ describe(`Класс AbstractView`, () => {
     assert.equal(typeof abstractView.render === `function`, true);
   });
 
+  abstractView = new AbstractView();
+  it(`имеет абстрактный  метод bind`, () => {
+    assert.throws(() => {
+      abstractView.bind();
+    }, `You have to implement the method 'bind'!`);
+  });
+
 });
