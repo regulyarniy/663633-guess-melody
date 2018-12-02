@@ -1,6 +1,15 @@
 import AbstractFailView from './abstract-fail-view';
 
 export default class FailTimeView extends AbstractFailView {
+  /**
+   * Класс экрана проигрыша по времени
+   */
+  constructor() {
+    super();
+  }
+  /** Шаблон
+   * @return {string} Возвращает разметку
+   */
   get template() {
     return `<section class="result">
   <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
