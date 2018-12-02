@@ -1,6 +1,11 @@
 import {assert} from 'chai';
-import jsdom from 'mocha-jsdom';
 import AbstractView from './abstract-view';
+import jsdom from 'jsdom';
+
+const {JSDOM} = jsdom;
+const {document} = new JSDOM(`<!doctype html><html><body></body></html>`).window;
+global.document = document;
+global.window = document.defaultView;
 
 // Переопределяем асбтрактные методы
 const TestView = class TestView extends AbstractView {
@@ -18,9 +23,6 @@ const TestView = class TestView extends AbstractView {
 };
 
 describe(`Класс AbstractView`, () => {
-  jsdom({
-    url: `http://localhost/`
-  });
 
   const abstractView = new AbstractView();
   it(`имеет абстрактный геттер template`, () => {

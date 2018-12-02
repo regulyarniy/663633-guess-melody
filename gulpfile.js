@@ -116,7 +116,7 @@ gulp.task(`test`, () => {
       plugins: [
         commonjs()
       ],
-      external: [`chai`, `mocha-jsdom`]}, `cjs`))
+      external: [`chai`, `jsdom`]}, `cjs`))
     .pipe(gulp.dest(`build/test`))
     .pipe(mocha({
       reporter: `min`
