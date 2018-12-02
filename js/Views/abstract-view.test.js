@@ -2,12 +2,27 @@ import {assert} from 'chai';
 import jsdom from 'mocha-jsdom';
 import AbstractView from './abstract-view';
 
+// Переопределяем асбтрактные методы
+const TestView = class TestView extends AbstractView {
+  constructor(wrapperTag = `div`, wrapperClasses = [`test`]) {
+    super(wrapperTag, wrapperClasses);
+  }
+
+  get template() {
+    return `<p>test</p>`;
+  }
+
+  bind() {
+    throw new Error(`bind executed`);
+  }
+};
+
 describe(`Класс AbstractView`, () => {
   jsdom({
     url: `http://localhost/`
   });
 
-  let abstractView = new AbstractView();
+  const abstractView = new AbstractView();
   it(`имеет абстрактный геттер template`, () => {
     assert.throws(() => {
       abstractView.template.toString();
@@ -26,28 +41,23 @@ describe(`Класс AbstractView`, () => {
     });
   });
 
-  const abstractViewDOM = new AbstractView();
-  abstractViewDOM._isTested = true;
-
-  it(`свойство template возвращает строку с тестовой разметкой <p>test</p>`, () => {
-    assert.equal(abstractViewDOM.template, `<p>test</p>`);
-  });
+  // Потомок с переопределенными свойствами
+  const testView = new TestView();
 
   it(`метод render возвращает разметку`, () => {
-    assert.equal(abstractViewDOM.render().outerHTML, `<section class="main"><p>test</p></section>`);
+    assert.equal(testView.render().outerHTML, `<div class="test"><p>test</p></div>`);
   });
 
-  it(`метод render возвращает разметку в теге div`, () => {
-    assert.equal(abstractViewDOM.render(`div`).outerHTML, `<div class="main"><p>test</p></div>`);
+  it(`геттер element вызывает bind при первом обращении`, () => {
+    assert.throws(() => {
+      document.body.appendChild(testView.element);
+    }, `bind executed`);
   });
 
-  it(`метод render возвращает разметку cо списком классов`, () => {
-    assert.equal(abstractViewDOM.render(undefined, [`test1`, `test2`]).outerHTML, `<section class="test1 test2"><p>test</p></section>`);
+  it(`геттер element не вызывает bind при последующих обращениях`, () => {
+    assert(() => {
+      document.body.appendChild(testView.element);
+    }, `element не кешируется!`);
   });
-
-  it(`свойство element содержит разметку c обработчиком`, () => {
-    assert.equal(abstractViewDOM.element.outerHTML, `<section class="test1 test2"><p>test</p></section>`);
-  });
-
 
 });

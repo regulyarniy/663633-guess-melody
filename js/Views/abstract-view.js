@@ -1,20 +1,19 @@
 export default class AbstractView {
   /** Базовый класс для представлений
    * @constructor
+   * @param {string} [wrapperTag = `section`] Тег для обертки
+   * @param {Array} [wrapperClasses = [`main`]] Массив с классами для обертки
    */
-  constructor() {
-
+  constructor(wrapperTag = `section`, wrapperClasses = [`main`]) {
+    this.wrapperTag = wrapperTag;
+    this.wrapperClasses = wrapperClasses;
   }
 
   /** Возвращает разметку
    * @abstract
    */
   get template() {
-    if (!this._isTested) {
-      throw new Error(`You have to implement the method 'template'!`);
-    } else {
-      return `<p>test</p>`;
-    }
+    throw new Error(`You have to implement the method 'template'!`);
   }
 
   /**
@@ -31,14 +30,12 @@ export default class AbstractView {
 
   /**
    * Создает DOM-элемент из разметки
-   * @param {string} [wrapperTag = `section`] Тег для обертки
-   * @param {Array} [wrapperClasses = [`main`]] Массив с классами для обертки
    * @return {HTMLElement}
    */
-  render(wrapperTag = `section`, wrapperClasses = [`main`]) {
-    const wrapper = document.createElement(wrapperTag);
+  render() {
+    const wrapper = document.createElement(this.wrapperTag);
     wrapper.innerHTML = this.template.trim();
-    wrapperClasses.forEach((item) => {
+    this.wrapperClasses.forEach((item) => {
       wrapper.classList.add(item);
     });
     return wrapper;
@@ -48,12 +45,6 @@ export default class AbstractView {
    * @abstract
    */
   bind() {
-    if (!this._isTested) {
-      throw new Error(`You have to implement the method 'bind'!`);
-    } else {
-      this._element.addEventListener(`click`, () => {
-        return;
-      });
-    }
+    throw new Error(`You have to implement the method 'bind'!`);
   }
 }
