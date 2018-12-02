@@ -1,19 +1,24 @@
 import {assert} from 'chai';
 import testSet from '../services/test-set';
-import GameStatusView from './game-status-view';
+import AbstractGameView from './abstract-game-view';
 
 testSet();
 
-describe(`Класс для представления блока со статусом игры`, () => {
+describe(`Базовый класс для основных экранов игры`, () => {
+  const TestView = class TestView extends AbstractGameView {
+    get template() {
+      return `<p>test</p>`;
+    }
+  };
   const data = {
     livesLeft: 2,
     timeLeft: 50,
     bonusTimeLeft: 30
   };
-  const gameStatusView = new GameStatusView(data);
+  const testView = new TestView(data);
 
-  it(`метод render() возвращает правильную разметку`, () => {
-    assert.equal(gameStatusView.render().outerHTML, `<header class="game__header"><a class="game__back" href="#">
+  it(`метод render() возвращает разметку со статусом игры и тестовым шаблоном`, () => {
+    assert.equal(testView.render().outerHTML, `<section class="main"><header class="game__header"><a class="game__back" href="#">
     <span class="visually-hidden">Сыграть ещё раз</span>
     <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
   </a>
@@ -30,14 +35,20 @@ describe(`Класс для представления блока со стат�
 
   <div class="game__mistakes">
     <div class="correct"></div><div class="wrong"></div><div class="wrong"></div>
-  </div></header>`);
+  </div></header><p>test</p></section>`);
   });
 
-  it(`нажатие на кнопку 'Сыграть ещё раз' выполняет событие onResetGame`, () => {
+  it(`имеет абстрактный  метод onResetGame`, () => {
+    assert.throws(() => {
+      testView.onResetGame();
+    }, `You have to implement the method 'onResetGame'!`);
+  });
+
+  it(`событие onResetGame всплывает из блока статуса`, () => {
     let test = false;
     document.body.innerHTML = ``;
-    document.body.appendChild(gameStatusView.element);
-    gameStatusView.onResetGame = () => {
+    document.body.appendChild(testView.element);
+    testView.onResetGame = () => {
       test = true;
     };
     const button = document.querySelector(`.game__back`);

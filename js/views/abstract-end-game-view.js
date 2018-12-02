@@ -2,6 +2,7 @@ import AbstractView from "./abstract-view";
 
 export default class AbstractEndGameView extends AbstractView {
   /**
+   * @abstract
    * Базовый класс для представлений экрана результатов
    * Потомок должен содержать в шаблоне кнопку с классом result__replay!
    */
