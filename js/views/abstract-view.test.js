@@ -1,11 +1,8 @@
 import {assert} from 'chai';
+import testSet from '../services/test-set';
 import AbstractView from './abstract-view';
-import jsdom from 'jsdom';
 
-const {JSDOM} = jsdom;
-const {document} = new JSDOM(`<!doctype html><html><body></body></html>`).window;
-global.document = document;
-global.window = document.defaultView;
+testSet();
 
 // Переопределяем асбтрактные методы
 const TestView = class TestView extends AbstractView {

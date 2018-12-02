@@ -1,11 +1,8 @@
 import {assert} from 'chai';
+import testSet from '../services/test-set';
 import AbstractFailView from './abstract-fail-view';
-import jsdom from 'jsdom';
 
-const {JSDOM} = jsdom;
-const {document} = new JSDOM(`<!doctype html><html><body></body></html>`).window;
-global.document = document;
-global.window = document.defaultView;
+testSet();
 
 describe(`Класс AbstractFailView`, () => {
 

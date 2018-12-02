@@ -1,10 +1,8 @@
 import {assert} from 'chai';
+import testSet from '../services/test-set';
 import WelcomeView from './welcome-view';
-import jsdom from 'jsdom';
-const {JSDOM} = jsdom;
-const {document} = new JSDOM(`<!doctype html><html><body></body></html>`).window;
-global.document = document;
-global.window = document.defaultView;
+
+testSet();
 
 describe(`Класс WelcomeView`, () => {
 
