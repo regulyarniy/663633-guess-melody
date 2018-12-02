@@ -6,13 +6,7 @@ const {convertSecondsToHumanReadableString} = utils;
 export default class SuccessView extends AbstractEndGameView {
   /**
    * Класс экрана выигрыша и вывода результатов
-   * @param {Object} data Обьект вида {
-    time: 75,
-    score: 12,
-    bonusScore: 4,
-    mistakes: 2,
-    rating: `Вы заняли 1 место из 6 игроков. Это лучше, чем у 83% игроков`
-  }
+   * @param {Object} data Данные для представления
    */
   constructor(data) {
     super();
