@@ -1,6 +1,6 @@
-import AbstractFailView from './abstract-fail-view';
+import AbstractEndGameView from './abstract-end-game-view';
 
-export default class FailTimeView extends AbstractFailView {
+export default class FailTimeView extends AbstractEndGameView {
   /**
    * Класс экрана проигрыша по времени
    */

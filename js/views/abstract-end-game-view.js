@@ -1,9 +1,9 @@
 import AbstractView from "./abstract-view";
 
-export default class AbstractFailView extends AbstractView {
+export default class AbstractEndGameView extends AbstractView {
   /**
-   * Базовый класс для представлений экрана проигрыша
-   * Потомок должен содержать в шаблоне кнопку с классом!
+   * Базовый класс для представлений экрана результатов
+   * Потомок должен содержать в шаблоне кнопку с классом result__replay!
    */
   constructor() {
     super();

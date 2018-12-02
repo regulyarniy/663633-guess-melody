@@ -1,12 +1,12 @@
 import {assert} from 'chai';
 import testSet from '../services/test-set';
-import AbstractFailView from './abstract-fail-view';
+import AbstractEndGameView from './abstract-end-game-view';
 
 testSet();
 
 describe(`Класс AbstractFailView`, () => {
 
-  const TestView = class TestView extends AbstractFailView {
+  const TestView = class TestView extends AbstractEndGameView {
     get template() {
       return `<button class="result__replay" type="button">Попробовать ещё раз</button>`;
     }
