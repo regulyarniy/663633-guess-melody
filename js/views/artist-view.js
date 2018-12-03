@@ -29,7 +29,7 @@ export default class ArtistView extends AbstractView {
 
     buttonAnswer.addEventListener(`click`, (e) => {
       e.preventDefault();
-      this.onAnswer();
+      this.onAnswer(this.id);
     });
   }
 
