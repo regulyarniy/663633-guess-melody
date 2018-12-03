@@ -1,5 +1,5 @@
 // Экран проигрыша по попыткам
-import utils from '../utils';
+import utils from '../services/utils';
 
 const FailTries = function (context) {
   const {render} = context;

@@ -1,5 +1,5 @@
 // Экран игры на выбор жанра
-import utils from '../utils';
+import utils from '../services/utils';
 import gameHeader from './game-header';
 import gameplay from '../gameplay/gameplay';
 import audio from '../audio';

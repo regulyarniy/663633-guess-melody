@@ -1,5 +1,5 @@
 // Экран выигрыша
-import utils from '../utils';
+import utils from '../services/utils';
 import gameplay from '../gameplay/gameplay';
 
 const ResultSucess = function (context) {

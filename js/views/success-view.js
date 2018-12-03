@@ -1,5 +1,5 @@
 import AbstractEndGameView from './abstract-end-game-view';
-import utils from '../utils';
+import utils from '../services/utils';
 
 const {convertSecondsToHumanReadableString} = utils;
 
