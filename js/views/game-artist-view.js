@@ -1,7 +1,7 @@
 import AbstractGameView from "./abstract-game-view";
 import ArtistView from "./artist-view";
 
-export default class GameArtist extends AbstractGameView {
+export default class GameArtistView extends AbstractGameView {
   /**
    * Класс представления игры на угадывание артиста
    * @param {Object} data Обьект c данными для представления
@@ -77,6 +77,12 @@ export default class GameArtist extends AbstractGameView {
   /** Слушатель на событие ответа
    */
   onAnswer() {
+
+  }
+
+  /** Слушатель на событие сброса игры
+   */
+  onResetGame() {
 
   }
 }

@@ -1,7 +1,6 @@
 import templates from './templates';
 import {NEW_GAME, ANSWERS_DATA} from './data/data';
 import render from './render';
-import animateTimer from './animation/animate-timer';
 
 const application = document.querySelector(`.app`); // Контейнер приложения
 
@@ -20,11 +19,5 @@ const context = {
 
 //  Действия после загрузки документа
 document.addEventListener(`DOMContentLoaded`, () => {
-  if (document.querySelector(`.test-timer`)) { // Тест анимации таймера
-    const timerElement = document.querySelector(`.timer__line`);
-    animateTimer(timerElement, 30);
-  } else {
-    // Переход на экран приветствия
-    render(`Welcome`, context);
-  }
+  templates.welcome(context);
 });
