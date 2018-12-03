@@ -8,6 +8,7 @@ export default class GameGenreView extends AbstractGameView {
    */
   constructor(data) {
     super(data);
+    this.answers = [];
     this.initializeTracks();
   }
 
@@ -32,7 +33,14 @@ export default class GameGenreView extends AbstractGameView {
   initializeTracks() {
     this._trackInstances = [];
     this.tracks.forEach((data) => {
-      this._trackInstances.push(new TrackView((data)));
+      const trackInstance = new TrackView(data);
+      this._trackInstances.push(trackInstance);
+      const answerIndexOfInstance = this.answers.length;
+      this.answers.push(false); // Создаем ответ в массиве ответов TODO move to constants
+      // Подписываемся на слушатель отметки трека
+      trackInstance.onChangeAnswer = () => {
+        this.answers[answerIndexOfInstance] = !this.answers[answerIndexOfInstance]; // Меняем ответ
+      };
     });
   }
 
@@ -56,6 +64,12 @@ export default class GameGenreView extends AbstractGameView {
    */
   bind() {
     super.bind();
+    const buttonAnswer = this.element.querySelector(`.game__submit`);
+
+    buttonAnswer.addEventListener(`click`, (e) => {
+      e.preventDefault();
+      this.onAnswer(this.answers);
+    });
   }
 
   /** Слушатель на событие сброса игры

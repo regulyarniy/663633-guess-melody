@@ -88,5 +88,38 @@ describe(`Класс представления игры на жанр'`, () => 
     assert.equal(gameReseted, true);
   });
 
+  it(`клик по чекбоксу в треке меняет массив ответов`, () => {
+    const testAnswers = gameGenreView.answers.slice();
+    testAnswers[0] = true;
+    document.body.innerHTML = ``;
+    document.body.appendChild(gameGenreView.element);
+    const button = document.querySelector(`.game__check[for=answer-1]`);
+    button.click();
+    assert.deepEqual(gameGenreView.answers, testAnswers);
+  });
+
+  it(`клик по кнопке 'Ответить' вызывает событие onAnswer`, () => {
+    let gameAnswered = false;
+    document.body.innerHTML = ``;
+    document.body.appendChild(gameGenreView.element);
+    gameGenreView.onAnswer = () => {
+      gameAnswered = true;
+    };
+    const button = document.querySelector(`.game__submit`);
+    button.click();
+    assert.equal(gameAnswered, true);
+  });
+
+  it(`в событие onAnswer первым аргументом попадает массив ответов`, () => {
+    let gameAnswers = [];
+    document.body.innerHTML = ``;
+    document.body.appendChild(gameGenreView.element);
+    gameGenreView.onAnswer = (answers) => {
+      gameAnswers = answers.slice();
+    };
+    const button = document.querySelector(`.game__submit`);
+    button.click();
+    assert.deepEqual(gameAnswers, gameGenreView.answers);
+  });
 
 });
