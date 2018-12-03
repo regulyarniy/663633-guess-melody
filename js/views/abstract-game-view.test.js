@@ -44,6 +44,12 @@ describe(`Базовый класс для основных экранов иг�
     }, `You have to implement the method 'onResetGame'!`);
   });
 
+  it(`имеет абстрактный  метод onResetGame`, () => {
+    assert.throws(() => {
+      testView.onAnswer();
+    }, `You have to implement the method 'onAnswer'!`);
+  });
+
   it(`событие onResetGame всплывает из блока статуса`, () => {
     let test = false;
     document.body.innerHTML = ``;

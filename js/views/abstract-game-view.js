@@ -46,11 +46,18 @@ export default class AbstractGameView extends AbstractView {
     };
   }
 
-  /** Слушатель на кнопку сброса игры
+  /** Слушатель на событие сброса игры
    * @abstract
    */
   onResetGame() {
     throw new Error(`You have to implement the method 'onResetGame'!`);
+  }
+
+  /** Слушатель на событие ответа
+   * @abstract
+   */
+  onAnswer() {
+    throw new Error(`You have to implement the method 'onAnswer'!`);
   }
 
 }

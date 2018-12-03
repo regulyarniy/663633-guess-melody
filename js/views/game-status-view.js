@@ -3,11 +3,7 @@ import AbstractView from "./abstract-view";
 export default class GameStatusView extends AbstractView {
   /**
    * Класс для представления блока со статусом игры
-   * @param {Object} data Обьект вида {
-    livesLeft: 2,
-    timeLeft: 50,
-    bonusTimeLeft: 30
-  }
+   * @param {Object} data Обьект c данными для представления
    */
   constructor(data) {
     super(`header`, [`game__header`]);
