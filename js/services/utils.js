@@ -1,3 +1,6 @@
+const APP_ROOT_ELEMENT_SELECTOR = `.app`;
+const APP_SCREEN_ELEMENT_SELECTOR = `.main`;
+
 /**
  * Конвертирует число в числительное в множественной форме
  * @example
@@ -19,6 +22,16 @@ export const convertNumericToPluralString = (number, numericString) => {
       return `${numericString}ы`;
   }
   return numericString;
+};
+
+/**
+ * Функция смены экранов в DOM-дереве
+ * @param {HTMLElement} newScreen Узел нового экрана
+ * @param {HTMLElement} [parentElement = .APP_ROOT_ELEMENT_SELECTOR] Корневой узел
+ */
+export const changeScreen = (newScreen, parentElement = document.querySelector(APP_ROOT_ELEMENT_SELECTOR)) => {
+  const oldScreen = parentElement.querySelector(APP_SCREEN_ELEMENT_SELECTOR);
+  parentElement.replaceChild(newScreen, oldScreen);
 };
 
 export default {

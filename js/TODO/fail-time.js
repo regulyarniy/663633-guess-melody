@@ -1,5 +1,5 @@
 // Экран проигрыша по таймауту
-import utils from '../utils';
+import utils from '../services/utils';
 
 const template = `
 <section class="result">
