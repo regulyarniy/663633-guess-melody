@@ -70,7 +70,7 @@ describe(`Класс представления игры на жанр'`, () => 
     <input class="game__input visually-hidden" type="checkbox" name="answer" value="4" id="answer-4">
     <label class="game__check" for="answer-4">Отметить</label>
   </div></div>
-      <button class="game__submit button" type="submit">Ответить</button>
+      <button class="game__submit button" disabled="" type="submit">Ответить</button>
     </form>
   </section>
 </section></section>`);

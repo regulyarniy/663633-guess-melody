@@ -10,7 +10,6 @@ export default class GameGenreView extends AbstractGameView {
     super(data);
     this.answers = [];
     this.initializeTracks();
-    this.buttonAnswer.toggleAttribute(`disabled`, true);
   }
 
   /** Шаблон
@@ -22,7 +21,7 @@ export default class GameGenreView extends AbstractGameView {
   <section class="game__screen">
     <h2 class="game__title">Выберите ${this.genre} треки</h2>
     <form class="game__tracks">
-      <button class="game__submit button" type="submit">Ответить</button>
+      <button class="game__submit button" disabled="" type="submit">Ответить</button>
     </form>
   </section>
 </section>`;
