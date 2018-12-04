@@ -1,13 +1,8 @@
-import templates from './templates';
+import templates from './templates/index';
 import {NEW_GAME, ANSWERS_DATA} from './data/data';
-import render from './render';
-
-const application = document.querySelector(`.app`); // Контейнер приложения
 
 const context = {
-  application,
   templates,
-  render,
   game: {},
   ANSWERS_DATA,
   NEW_GAME,

@@ -2,7 +2,6 @@
 import {changeScreen} from '../services/utils';
 import gameplay from '../gameplay/gameplay';
 import SuccessView from "../views/success-view";
-import templates from "../templates";
 
 const result = function (context) {
   const {game: gameStatus} = context;
@@ -25,7 +24,7 @@ const result = function (context) {
 
   // Возврат к экрану начала игры
   view.onResetGame = () => {
-    templates.welcome(context);
+    context.templates.welcome(context);
   };
 
   // Отрисовка в DOM

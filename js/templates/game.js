@@ -1,6 +1,5 @@
 import GameGenreView from "../views/game-genre-view";
 import GameArtistView from "../views/game-artist-view";
-import templates from "../templates";
 import gameplay from "../gameplay/gameplay";
 import {changeScreen} from "../services/utils";
 
@@ -19,9 +18,9 @@ const game = function (context) {
     if (!(gameStatus.currentLevel === -1)) {
       game(context);
     } else if (gameStatus.livesLeft > 0) {
-      templates.result(context);
+      context.templates.result(context);
     } else {
-      templates.failByTries(context);
+      context.templates.failByTries(context);
     }
   };
 
@@ -68,7 +67,7 @@ const game = function (context) {
 
   // Возврат к экрану начала игры
   view.onResetGame = () => {
-    templates.welcome(context);
+    context.templates.welcome(context);
   };
 
   // Отрисовка в DOM
