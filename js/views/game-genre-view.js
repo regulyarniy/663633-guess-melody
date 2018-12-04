@@ -10,6 +10,7 @@ export default class GameGenreView extends AbstractGameView {
     super(data);
     this.answers = [];
     this.initializeTracks();
+    this.buttonAnswer.toggleAttribute(`disabled`, true);
   }
 
   /** Шаблон
