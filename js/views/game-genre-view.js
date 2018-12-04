@@ -28,6 +28,17 @@ export default class GameGenreView extends AbstractGameView {
   }
 
   /**
+   * Возвращает элемент кнопки ответа
+   * @return {HTMLElement}
+   */
+  get buttonAnswer() {
+    if (!this._buttonAnswer) {
+      this._buttonAnswer = this.element.querySelector(`.game__submit`);
+    }
+    return this._buttonAnswer;
+  }
+
+  /**
    * Генерирует треки
    */
   initializeTracks() {
@@ -40,6 +51,11 @@ export default class GameGenreView extends AbstractGameView {
       // Подписываемся на слушатель отметки трека
       trackInstance.onChangeAnswer = () => {
         this.answers[answerIndexOfInstance] = !this.answers[answerIndexOfInstance]; // Меняем ответ
+        // Кнопка неактивна если не выбран ответ
+        const answered = this.answers.some((item) => {
+          return item === true;
+        });
+        this.buttonAnswer.toggleAttribute(`disabled`, !answered);
       };
     });
   }
@@ -64,9 +80,8 @@ export default class GameGenreView extends AbstractGameView {
    */
   bind() {
     super.bind();
-    const buttonAnswer = this.element.querySelector(`.game__submit`);
 
-    buttonAnswer.addEventListener(`click`, (e) => {
+    this.buttonAnswer.addEventListener(`click`, (e) => {
       e.preventDefault();
       this.onAnswer(this.answers);
     });
