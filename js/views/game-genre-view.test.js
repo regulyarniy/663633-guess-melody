@@ -20,7 +20,9 @@ describe(`Класс представления игры на жанр'`, () => 
   const gameGenreView = new GameGenreView(data);
 
   it(`метод render() возвращает правильную разметку`, () => {
-    assert.equal(gameGenreView.render().outerHTML, `<section class="main"><header class="game__header"><a class="game__back" href="#">
+    assert.equal(gameGenreView.render().outerHTML, `<section class="main"><section class="game game--genre">
+
+  <header class="game__header"><a class="game__back" href="#">
     <span class="visually-hidden">Сыграть ещё раз</span>
     <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
   </a>
@@ -37,9 +39,7 @@ describe(`Класс представления игры на жанр'`, () => 
 
   <div class="game__mistakes">
     <div class="correct"></div><div class="wrong"></div><div class="wrong"></div>
-  </div></header><section class="game game--genre">
-
-  <section class="game__screen">
+  </div></header><section class="game__screen">
     <h2 class="game__title">Выберите инди-поп треки</h2>
     <form class="game__tracks"><div class="track"><button class="track__button track__button--play" type="button"></button>
   <div class="track__status">

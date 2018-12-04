@@ -7,7 +7,7 @@ testSet();
 describe(`Базовый класс для основных экранов игры`, () => {
   const TestView = class TestView extends AbstractGameView {
     get template() {
-      return `<p>test</p>`;
+      return `<section class="game"><section class="game__screen">test</section></section>`;
     }
   };
   const data = {
@@ -18,7 +18,7 @@ describe(`Базовый класс для основных экранов иг�
   const testView = new TestView(data);
 
   it(`метод render() возвращает разметку со статусом игры и тестовым шаблоном`, () => {
-    assert.equal(testView.render().outerHTML, `<section class="main"><header class="game__header"><a class="game__back" href="#">
+    assert.equal(testView.render().outerHTML, `<section class="main"><section class="game"><header class="game__header"><a class="game__back" href="#">
     <span class="visually-hidden">Сыграть ещё раз</span>
     <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
   </a>
@@ -35,7 +35,7 @@ describe(`Базовый класс для основных экранов иг�
 
   <div class="game__mistakes">
     <div class="correct"></div><div class="wrong"></div><div class="wrong"></div>
-  </div></header><p>test</p></section>`);
+  </div></header><section class="game__screen">test</section></section></section>`);
   });
 
   it(`имеет абстрактный  метод onResetGame`, () => {

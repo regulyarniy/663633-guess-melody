@@ -4,7 +4,7 @@ import GameArtistView from './game-artist-view';
 
 testSet();
 
-describe(`Класс представления игры на жанр'`, () => {
+describe(`Класс представления игры на артиста'`, () => {
   const data = {
     audioURL: `https://www.y.com/`,
     artists: [
@@ -19,7 +19,8 @@ describe(`Класс представления игры на жанр'`, () => 
   const gameArtistView = new GameArtistView(data);
 
   it(`метод render() возвращает правильную разметку`, () => {
-    assert.strictEqual(gameArtistView.render().outerHTML, `<section class="main"><header class="game__header"><a class="game__back" href="#">
+    assert.strictEqual(gameArtistView.render().outerHTML, `<section class="main"><section class="game game--artist">
+  <header class="game__header"><a class="game__back" href="#">
     <span class="visually-hidden">Сыграть ещё раз</span>
     <img class="game__logo" src="img/melody-logo-ginger.png" alt="Угадай мелодию">
   </a>
@@ -36,8 +37,7 @@ describe(`Класс представления игры на жанр'`, () => 
 
   <div class="game__mistakes">
     <div class="correct"></div><div class="wrong"></div><div class="wrong"></div>
-  </div></header><section class="game game--artist">
-  <section class="game__screen">
+  </div></header><section class="game__screen">
     <h2 class="game__title">Кто исполняет эту песню?</h2>
     <div class="game__track">
       <button class="track__button track__button--play" type="button"></button>

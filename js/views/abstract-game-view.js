@@ -29,10 +29,11 @@ export default class AbstractGameView extends AbstractView {
    * @return {HTMLElement}
    */
   render() {
-    // Добавляем блок статуса перед основной разметкой
+    // Добавляем блок статуса перед экраном игры
     const resultTemplate = super.render();
-    const firstChildInResultTemplate = resultTemplate.firstChild;
-    resultTemplate.insertBefore(this._statusTemplate, firstChildInResultTemplate);
+    const gameLayout = resultTemplate.querySelector(`.game`);
+    const gameScreen = gameLayout.querySelector(`.game__screen`);
+    gameLayout.insertBefore(this._statusTemplate, gameScreen);
     return resultTemplate;
   }
 
