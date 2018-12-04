@@ -44,8 +44,7 @@ export default class TrackView extends AbstractView {
     // Выбор ответа
     const buttonAnswer = this.element.querySelector(`.game__check`);
 
-    buttonAnswer.addEventListener(`click`, (e) => {
-      e.preventDefault();
+    buttonAnswer.addEventListener(`click`, () => {
       this.onChangeAnswer();
     });
 
