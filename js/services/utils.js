@@ -32,7 +32,7 @@ export const convertNumericToPluralString = (number, numericString) => {
 export const changeScreen = (newScreen, parentElement = document.querySelector(APP_ROOT_ELEMENT_SELECTOR)) => {
   const oldScreen = parentElement.querySelector(APP_SCREEN_ELEMENT_SELECTOR);
   parentElement.replaceChild(newScreen, oldScreen);
-}
+};
 
 export default {
   /**
