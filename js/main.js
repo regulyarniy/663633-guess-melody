@@ -1,5 +1,5 @@
 import templates from './templates/index';
-import {NEW_GAME, ANSWERS_DATA} from './data/data';
+import {NEW_GAME, ANSWERS_DATA} from './constants/constants';
 
 const context = {
   templates,

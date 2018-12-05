@@ -5,12 +5,11 @@ export const NEW_GAME = Object.freeze({
   answers: [],
   timeLeft: 300,
   bonusTimeLeft: 30,
-  score: 0,
-  startTime: new Date(`1 Jan 2018`)
+  score: 0
 });
 
 // Данные для ответов
-export const ANSWERS_DATA = [
+export const ANSWERS_DATA = Object.freeze([
   {
     genre: `Jazz`,
     answers: [
@@ -96,4 +95,4 @@ export const ANSWERS_DATA = [
       {id: 3, artist: `Quincas Moreira`, pictureURL: `https://c1.staticflickr.com/5/4292/35845376076_fb06d3f3dc_b.jpg`, valid: true}
     ]
   }
-];
+]);
