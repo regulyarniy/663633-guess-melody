@@ -40,4 +40,22 @@ describe(`Модель игры`, () => {
     gameModel._saveAnswer(answer);
     assert.deepEqual(gameModel.state.answers, testAnswers);
   });
+
+  it(`_saveAnswer(answer) добавляет верный ответ игры на артиста в массив с ответами пользователя`, () => {
+    const gameModel = new GameModel();
+    gameModel._state.currentLevel = 1;
+    const answer = 3;
+    const testAnswers = [true];
+    gameModel._saveAnswer(answer);
+    assert.deepEqual(gameModel.state.answers, testAnswers);
+  });
+
+  it(`_saveAnswer(answer) добавляет неверный ответ игры на артиста в массив с ответами пользователя`, () => {
+    const gameModel = new GameModel();
+    gameModel._state.currentLevel = 1;
+    const answer = 2;
+    const testAnswers = [false];
+    gameModel._saveAnswer(answer);
+    assert.deepEqual(gameModel.state.answers, testAnswers);
+  });
 });

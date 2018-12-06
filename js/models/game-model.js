@@ -69,6 +69,11 @@ export default class GameModel {
     this._changeLevel();
   }
 
+  /**
+   * Проверяет и сохраняет ответ игрока
+   * @param {Array|Number} answer Ответ игрока
+   * @private
+   */
   _saveAnswer(answer) {
     // Игра на жанр
     if (this.isCurrentQuestionAboutGenre) {
@@ -80,7 +85,15 @@ export default class GameModel {
       });
       this._state.answers.push(!isAnswerFalse);
     } else { // Игра на артиста
-
+      let validId;
+      for (const question of this.currentQuestion.answers) {
+        if (question.valid === true) {
+          validId = question.id;
+          break;
+        }
+      }
+      const isAnswerFalse = validId !== answer;
+      this._state.answers.push(!isAnswerFalse);
     }
   }
 }
