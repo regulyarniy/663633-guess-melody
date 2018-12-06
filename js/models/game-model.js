@@ -1,5 +1,4 @@
-import {NEW_GAME, ANSWERS_DATA} from '../constants/constants';
-import {Settings} from '../constants/constants';
+import {NEW_GAME, ANSWERS_DATA, Settings} from '../constants/constants';
 
 export default class GameModel {
   /**
@@ -51,6 +50,7 @@ export default class GameModel {
 
   /**
    * Переключает игру на следующий уровень
+   * @private
    */
   _changeLevel() {
     if (this._state.livesLeft === 0 || this._state.currentLevel >= Settings.LEVEL_MAX) {
@@ -66,6 +66,7 @@ export default class GameModel {
    */
   setAnswer(answer) {
     this._saveAnswer(answer);
+    this._recountLives();
     this._changeLevel();
   }
 
@@ -81,13 +82,13 @@ export default class GameModel {
         return value.valid === answer[index];
       });
       const isAnswerFalse = equalAnswers.some((item) => {
-        return item === false;
+        return item === Settings.FAILED_ANSWER;
       });
       this._state.answers.push(!isAnswerFalse);
     } else { // Игра на артиста
       let validId;
       for (const question of this.currentQuestion.answers) {
-        if (question.valid === true) {
+        if (question.valid === Settings.SUCCESS_ANSWER) {
           validId = question.id;
           break;
         }
@@ -95,5 +96,16 @@ export default class GameModel {
       const isAnswerFalse = validId !== answer;
       this._state.answers.push(!isAnswerFalse);
     }
+  }
+
+  /**
+   * Пересчитывает жизни игрока согласно последнему ответу
+   * @private
+   */
+  _recountLives() {
+    const lastIndexOfAnswers = this.state.answers.length - 1;
+    const lastAnswer = this.state.answers[lastIndexOfAnswers];
+    const livesResultForFail = this.state.livesLeft - Settings.LIVES_DECREMENT;
+    this._state.livesLeft = lastAnswer ? this.state.livesLeft : livesResultForFail;
   }
 }

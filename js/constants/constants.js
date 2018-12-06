@@ -102,4 +102,8 @@ export const Settings = Object.freeze({
   LEVEL_MAX: 9, // Максимальный уровень
   LEVEL_INCREMENT: 1, // Инкремент уровня
   LEVEL_ENDGAME: -1, // Уровень конца игры
+  LIVES_DECREMENT: 1, // Декремент количества попыток при неправильном ответе
+  SUCCESS_ANSWER: true, // Успешный ответ
+  FAILED_ANSWER: false // Неуспешный  ответ
 });
+
