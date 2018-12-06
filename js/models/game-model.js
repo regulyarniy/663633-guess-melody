@@ -26,6 +26,22 @@ export default class GameModel {
   }
 
   /**
+   * Возвращает текущий вопрос
+   * @return {Object} Обьект с данными вопроса
+   */
+  get currentQuestion() {
+    return this.questions[this._state.currentLevel];
+  }
+
+  /**
+   * Возвращает, является ли текущий вопрос о жанре, или об артисте
+   * @return {boolean} true если вопрос о жанре
+   */
+  get isCurrentQuestionAboutGenre() {
+    return this.currentQuestion.hasOwnProperty(`genre`);
+  }
+
+  /**
    * Начинает новую игру
    */
   startNewGame() {
@@ -36,7 +52,7 @@ export default class GameModel {
   /**
    * Переключает игру на следующий уровень
    */
-  changeLevel() {
+  _changeLevel() {
     if (this._state.livesLeft === 0 || this._state.currentLevel >= Settings.LEVEL_MAX) {
       this._state.currentLevel = Settings.LEVEL_ENDGAME;
     } else {
@@ -44,4 +60,27 @@ export default class GameModel {
     }
   }
 
+  /**
+   * Обрабатывает ответ игрока
+   * @param {Array|Number} answer Ответ игрока
+   */
+  setAnswer(answer) {
+    this._saveAnswer(answer);
+    this._changeLevel();
+  }
+
+  _saveAnswer(answer) {
+    // Игра на жанр
+    if (this.isCurrentQuestionAboutGenre) {
+      const equalAnswers = this.currentQuestion.answers.map((value, index) => {
+        return value.valid === answer[index];
+      });
+      const isAnswerFalse = equalAnswers.some((item) => {
+        return item === false;
+      });
+      this._state.answers.push(!isAnswerFalse);
+    } else { // Игра на артиста
+
+    }
+  }
 }

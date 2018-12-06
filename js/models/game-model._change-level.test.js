@@ -4,25 +4,25 @@ import {Settings} from '../constants/constants';
 
 describe(`Модель игры`, () => {
 
-  it(`changeLevel() сменил уровень на 1, если текущий уровень(0) меньше максимального`, () => {
+  it(`_changeLevel() сменил уровень на 1, если текущий уровень(0) меньше максимального`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 0;
-    gameModel.changeLevel();
+    gameModel._changeLevel();
     assert.strictEqual(gameModel.state.currentLevel, 1);
   });
 
-  it(`changeLevel() сменил уровень на -1, если текущий уровень максимальный`, () => {
+  it(`_changeLevel() сменил уровень на -1, если текущий уровень максимальный`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = Settings.LEVEL_MAX;
-    gameModel.changeLevel();
+    gameModel._changeLevel();
     assert.strictEqual(gameModel.state.currentLevel, -1);
   });
 
-  it(`changeLevel() сменил уровень на -1, если закончились жизни`, () => {
+  it(`_changeLevel() сменил уровень на -1, если закончились жизни`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 2;
     gameModel._state.livesLeft = 0;
-    gameModel.changeLevel();
+    gameModel._changeLevel();
     assert.strictEqual(gameModel.state.currentLevel, -1);
   });
 
