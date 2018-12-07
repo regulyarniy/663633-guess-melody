@@ -1,4 +1,4 @@
-import {NEW_GAME, ANSWERS_DATA, Settings} from '../constants/constants';
+import {NEW_GAME, ANSWERS_DATA, Settings, Timer} from '../constants/constants';
 
 export default class GameModel {
   /**
@@ -107,5 +107,19 @@ export default class GameModel {
     const lastAnswer = this.state.answers[lastIndexOfAnswers];
     const livesResultForFail = this.state.livesLeft - Settings.LIVES_DECREMENT;
     this._state.livesLeft = lastAnswer ? this.state.livesLeft : livesResultForFail;
+  }
+
+  /**
+   * Вычисляет время до окончания таймера
+   * @param {Date} startDate Начало отсчёта(инстанс Data)
+   * @param {Number} timer Таймер(секунды)
+   * @param {Date} checkDate Момент проверки(инстанс Data)
+   * @return {number} Возвращает количество секунд до истечения таймера или -1, если таймер истек
+   */
+  static getTimeLeft(startDate, timer, checkDate = new Date()) {
+    const checkDateInSeconds = checkDate.getTime() / Timer.DATE_MS_TO_SEC_MULTIPLY;
+    const startDateInSeconds = startDate.getTime() / Timer.DATE_MS_TO_SEC_MULTIPLY;
+    const timeLeft = checkDateInSeconds - startDateInSeconds + timer;
+    return (timeLeft >= Timer.TIMER_END) ? timeLeft : Timer.TIMER_END_RESULT;
   }
 }

@@ -107,3 +107,9 @@ export const Settings = Object.freeze({
   FAILED_ANSWER: false // Неуспешный  ответ
 });
 
+// Константы для функции вычисления времени таймера GameModel.getTimeLeft
+export const Timer = Object.freeze({
+  DATE_MS_TO_SEC_MULTIPLY: 1000, // Множитель миллисекунд в секунды
+  TIMER_END: 0, // Конец отчёта в секундах
+  TIMER_END_RESULT: -1, // Вывод функции при истекшем таймере
+});
