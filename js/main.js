@@ -1,5 +1,7 @@
 import templates from './templates/index';
 import {NEW_GAME, ANSWERS_DATA} from './constants/constants';
+import GameModel from "./models/game-model";
+import GameController from "./controllers/game-controller";
 
 const context = {
   templates,
@@ -13,6 +15,10 @@ const context = {
 };
 
 //  Действия после загрузки документа
-document.addEventListener(`DOMContentLoaded`, () => {
-  templates.welcome(context);
-});
+// document.addEventListener(`DOMContentLoaded`, () => {
+//   templates.welcome(context);
+// });
+
+const gameModel = new GameModel();
+const gameController = new GameController(gameModel);
+gameController.showQuestion();

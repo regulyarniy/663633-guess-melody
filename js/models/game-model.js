@@ -25,6 +25,26 @@ export default class GameModel {
   }
 
   /**
+   * Данные для вопроса //TODO test
+   * @return {*}
+   */
+  get questionData() {
+    if (this.isCurrentQuestionAboutGenre) {
+      return {
+        genre: this.currentQuestion.genre,
+        tracks: this.currentQuestion.answers,
+        livesLeft: this.state.livesLeft,
+      };
+    } else {
+      return {
+        audioURL: this.currentQuestion.audioURL,
+        artists: this.currentQuestion.answers,
+        livesLeft: this.state.livesLeft,
+      };
+    }
+  }
+
+  /**
    * Возвращает текущий вопрос
    * @return {Object} Обьект с данными вопроса
    */

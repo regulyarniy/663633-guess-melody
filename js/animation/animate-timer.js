@@ -1,5 +1,3 @@
-const INTERVAL = 20; // Интервал обновления в мс
-const INTERVALS_IN_SECOND = 1000 / INTERVAL; // Интервалов в секунде
 const RADIX = 10; // Основание системы счисления
 const CIRCLE_FORMULA = 2 * Math.PI;
 /**
@@ -11,23 +9,13 @@ export default (timerElement, time) => {
   const radius = parseInt(timerElement.getAttribute(`r`), RADIX); // Радиус окружности
   const circumference = Math.floor(CIRCLE_FORMULA * radius); // Длина окружности
   timerElement.setAttribute(`stroke-dasharray`, circumference.toString(RADIX)); // Устанавливаем начальное значение обводки
-  let stepCount = time * INTERVALS_IN_SECOND; // Количество шагов
-  const stepLength = circumference / stepCount; // Смещение шага
-  let currentOffset = 0; // Начальное смещение
-  timerElement.setAttribute(`stroke-dashoffset`, currentOffset); // Устанавливаем начальное смещение обводки
-  // Смещение обводки
-  const nextStep = () => {
-    currentOffset = currentOffset + stepLength;
-    timerElement.setAttribute(`stroke-dashoffset`, currentOffset);
-  };
-  // Вызываем смещение по интервалу
-  const animate = setInterval(() => {
-    if (stepCount <= 0) {
-      clearInterval(animate);
-    } else {
-      nextStep();
-      stepCount--;
-    }
-  }, INTERVAL);
+  const timerElementClassList = [...timerElement.classList].join(`.`); // Получаем список классов элемента
+  const style = document.createElement(`style`); // Создаем элемент с тегом style
+  style.innerHTML = `${
+    timerElement.tagName
+  }.${timerElementClassList} {transition: ${time}s stroke-dashoffset linear; will-change: stroke-dashoffset;}`; // Задаем transition c нужным временем
+  timerElement.appendChild(style); // Присоединяем элемент style
+  setTimeout(()=> {
+    timerElement.setAttribute(`stroke-dashoffset`, circumference);
+  }, 100); // Устанавливаем начальное смещение обводки
 };
-

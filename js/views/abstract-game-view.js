@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view';
 import GameStatus from './game-status-view';
+import animateBonusTimer from "../animation/animate-timer";
 
 export default class AbstractGameView extends AbstractView {
   /**
@@ -61,4 +62,19 @@ export default class AbstractGameView extends AbstractView {
     throw new Error(`You have to implement the method 'onAnswer'!`);
   }
 
+  /** // TODO test
+   * Функция обновления таймера
+   * @param {number} timeLeft Количество секунд
+   */
+  updateTimer(timeLeft) {
+    this._gameStatus.updateTimer(timeLeft);
+  }
+
+  /** // TODO test?
+   * Функция старта анимации бонусного таймера
+   * @param {number} bonusTimeLeft Количество секунд
+   */
+  startBonusTimerAnimation(bonusTimeLeft) {
+    this._gameStatus.startBonusTimerAnimation(bonusTimeLeft);
+  }
 }

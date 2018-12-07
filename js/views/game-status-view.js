@@ -1,4 +1,5 @@
 import AbstractView from "./abstract-view";
+import animateBonusTimer from '../animation/animate-timer';
 
 export default class GameStatusView extends AbstractView {
   /**
@@ -8,6 +9,8 @@ export default class GameStatusView extends AbstractView {
   constructor(data) {
     super(`header`, [`game__header`]);
     Object.assign(this, data); // Сливаем свойства data с инстансом
+    this._minutesElement = null;
+    this._secondsElement = null;
   }
 
   /**
@@ -65,6 +68,30 @@ export default class GameStatusView extends AbstractView {
       e.preventDefault();
       this.onResetGame();
     });
+
+    // Кешируем элементы таймеров
+    this._minutesElement = this.element.querySelector(`.timer__mins`);
+    this._secondsElement = this.element.querySelector(`.timer__secs`);
+    this._bonusTimer = this.element.querySelector(`.timer__line`);
+  }
+
+  /** // TODO test
+   * Функция обновления таймера
+   * @param {number} timeLeft Количество секунд
+   */
+  updateTimer(timeLeft) {
+    const minutesLeft = Math.floor(timeLeft / 60);
+    const secondsLeft = timeLeft % 60;
+    this._minutesElement.textContent = minutesLeft < 10 ? `0` + minutesLeft : minutesLeft;
+    this._secondsElement.textContent = secondsLeft < 10 ? `0` + secondsLeft : secondsLeft;
+  }
+
+  /** // TODO test?
+   * Функция старта анимации бонусного таймера
+   * @param {number} bonusTimeLeft Количество секунд
+   */
+  startBonusTimerAnimation(bonusTimeLeft) {
+    animateBonusTimer(this._bonusTimer, bonusTimeLeft);
   }
 
 }
