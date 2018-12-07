@@ -45,7 +45,6 @@ export default class GameModel {
    */
   startNewGame() {
     this._state = JSON.parse(JSON.stringify(NEW_GAME));
-    this._state.startTime = new Date();
   }
 
   /**
@@ -77,14 +76,14 @@ export default class GameModel {
    */
   _saveAnswer(answer) {
     // Игра на жанр
+    let isAnswerFalse;
     if (this.isCurrentQuestionAboutGenre) {
       const equalAnswers = this.currentQuestion.answers.map((value, index) => {
         return value.valid === answer[index];
       });
-      const isAnswerFalse = equalAnswers.some((item) => {
+      isAnswerFalse = equalAnswers.some((item) => {
         return item === Settings.FAILED_ANSWER;
       });
-      this._state.answers.push(!isAnswerFalse);
     } else { // Игра на артиста
       let validId;
       for (const question of this.currentQuestion.answers) {
@@ -93,9 +92,9 @@ export default class GameModel {
           break;
         }
       }
-      const isAnswerFalse = validId !== answer;
-      this._state.answers.push(!isAnswerFalse);
+      isAnswerFalse = validId !== answer;
     }
+    this._state.answers.push({success: !isAnswerFalse, time: this.state.bonusTimeLeft});
   }
 
   /**
@@ -104,22 +103,59 @@ export default class GameModel {
    */
   _recountLives() {
     const lastIndexOfAnswers = this.state.answers.length - 1;
-    const lastAnswer = this.state.answers[lastIndexOfAnswers];
+    const lastAnswer = this.state.answers[lastIndexOfAnswers].success;
     const livesResultForFail = this.state.livesLeft - Settings.LIVES_DECREMENT;
     this._state.livesLeft = lastAnswer ? this.state.livesLeft : livesResultForFail;
+    this.onUpdateLives();
   }
 
   /**
-   * Вычисляет время до окончания таймера
-   * @param {Date} startDate Начало отсчёта(инстанс Data)
-   * @param {Number} timer Таймер(секунды)
-   * @param {Date} checkDate Момент проверки(инстанс Data)
-   * @return {number} Возвращает количество секунд до истечения таймера или -1, если таймер истек
+   * Запуск таймеров
    */
-  static getTimeLeft(startDate, timer, checkDate = new Date()) {
-    const checkDateInSeconds = checkDate.getTime() / Timer.DATE_MS_TO_SEC_MULTIPLY;
-    const startDateInSeconds = startDate.getTime() / Timer.DATE_MS_TO_SEC_MULTIPLY;
-    const timeLeft = checkDateInSeconds - startDateInSeconds + timer;
-    return (timeLeft >= Timer.TIMER_END) ? timeLeft : Timer.TIMER_END_RESULT;
+  startTimers() {
+    this._timer = setTimeout(() => {
+      this._tick();
+      this.startTimers();
+    }, Timer.DATE_MS_TO_SEC_MULTIPLY);
+  }
+
+  /**
+   * Остановка таймеров
+   */
+  stopTimers() {
+    clearTimeout(this._timer);
+  }
+
+  /**
+   * Функция обновления таймеров
+   * @private
+   */
+  _tick() {
+    this._state.timeLeft--;
+    this.onUpdateTimer();
+    this._state.bonusTimeLeft--;
+    this.onUpdateBonusTimer();
+  }
+
+  /**
+   * Слушатель на обновление основного таймера
+   */
+  onUpdateTimer() {
+
+  }
+
+  /**
+   * Слушатель на обновление бонусного таймера
+   */
+  onUpdateBonusTimer() {
+
+  }
+
+  /**
+   * Слушатель на обновление жизней
+   */
+  onUpdateLives() {
+
   }
 }
+

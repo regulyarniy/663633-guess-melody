@@ -11,8 +11,7 @@ describe(`Модель игры`, () => {
       answers: [],
       timeLeft: 300,
       bonusTimeLeft: 30,
-      score: 0,
-      startTime: new Date()
+      score: 0
     };
 
     gameModel._state.currentLevel++;
@@ -23,7 +22,6 @@ describe(`Модель игры`, () => {
     gameModel._state.score++;
 
     gameModel.startNewGame();
-    testState.startTime = gameModel.state.startTime; // поправка на время для теста
 
     assert.deepEqual(gameModel.state, testState);
   });

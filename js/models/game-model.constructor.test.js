@@ -11,8 +11,7 @@ describe(`Модель игры`, () => {
       answers: [],
       timeLeft: 300,
       bonusTimeLeft: 30,
-      score: 0,
-      startTime: gameModel.state.startTime // поправка на время для теста
+      score: 0
     };
 
     assert.deepEqual(gameModel.state, testState);

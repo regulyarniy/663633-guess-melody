@@ -27,7 +27,7 @@ describe(`Модель игры`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 0;
     const answer = [true, true, false, false];
-    const testAnswers = [true];
+    const testAnswers = [{success: true, time: 30}];
     gameModel._saveAnswer(answer);
     assert.deepEqual(gameModel.state.answers, testAnswers);
   });
@@ -36,7 +36,7 @@ describe(`Модель игры`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 0;
     const answer = [true, true, true, false];
-    const testAnswers = [false];
+    const testAnswers = [{success: false, time: 30}];
     gameModel._saveAnswer(answer);
     assert.deepEqual(gameModel.state.answers, testAnswers);
   });
@@ -45,7 +45,7 @@ describe(`Модель игры`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 1;
     const answer = 3;
-    const testAnswers = [true];
+    const testAnswers = [{success: true, time: 30}];
     gameModel._saveAnswer(answer);
     assert.deepEqual(gameModel.state.answers, testAnswers);
   });
@@ -54,7 +54,7 @@ describe(`Модель игры`, () => {
     const gameModel = new GameModel();
     gameModel._state.currentLevel = 1;
     const answer = 2;
-    const testAnswers = [false];
+    const testAnswers = [{success: false, time: 30}];
     gameModel._saveAnswer(answer);
     assert.deepEqual(gameModel.state.answers, testAnswers);
   });
