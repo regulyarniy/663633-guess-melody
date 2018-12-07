@@ -1,24 +1,5 @@
-import templates from './templates/index';
-import {NEW_GAME, ANSWERS_DATA} from './constants/constants';
-import GameModel from "./models/game-model";
-import GameController from "./controllers/game-controller";
+import Router from "./services/router";
 
-const context = {
-  templates,
-  game: {},
-  ANSWERS_DATA,
-  NEW_GAME,
-  startNewGame() {
-    this.game = JSON.parse(JSON.stringify(this.NEW_GAME));
-    this.game.startTime = new Date();
-  }
-};
-
-//  Действия после загрузки документа
-// document.addEventListener(`DOMContentLoaded`, () => {
-//   templates.welcome(context);
-// });
-
-const gameModel = new GameModel();
-const gameController = new GameController(gameModel);
-gameController.showQuestion();
+document.addEventListener(`DOMContentLoaded`, () => {
+  Router.showWelcome();
+});

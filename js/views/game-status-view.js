@@ -1,5 +1,5 @@
 import AbstractView from "./abstract-view";
-import animateBonusTimer from '../animation/animate-timer';
+import animateBonusTimer from '../services/animate-timer';
 
 export default class GameStatusView extends AbstractView {
   /**

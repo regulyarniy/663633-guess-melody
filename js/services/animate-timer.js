@@ -1,5 +1,5 @@
 const RADIX = 10; // Основание системы счисления
-const CIRCLE_FORMULA = 2 * Math.PI;
+const CIRCLE_FORMULA = 2 * Math.PI; // Радиус круга
 /**
  * Анимирует таймер заданное количество секунд
  * @param {Element} timerElement Элемент таймера

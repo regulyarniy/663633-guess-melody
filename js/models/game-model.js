@@ -1,4 +1,4 @@
-import {NEW_GAME, ANSWERS_DATA, Settings, Timer} from '../constants/constants';
+import {NEW_GAME, ANSWERS_DATA, Settings, Timer, ScoreSettings, RatingSettings} from '../constants/constants';
 
 export default class GameModel {
   /**
@@ -61,10 +61,65 @@ export default class GameModel {
   }
 
   /**
-   * Начинает новую игру
+   * Считает набранные баллы
+   * @return {Number} Возвращает количество баллов или -1, если закончились попытки или получены не все ответы
    */
-  startNewGame() {
-    this._state = JSON.parse(JSON.stringify(NEW_GAME));
+  get score() {
+    if (this.questions.length < ScoreSettings.MAX_QUESTIONS || this.state.livesLeft <= ScoreSettings.MIN_LIVES) {
+      return ScoreSettings.FAIL_RESULT;
+    }
+    const reducer = (accumulator, currentValue) => {
+      const {success, time} = currentValue;
+      const bonus = (time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.BONUS_SUCCESS : ScoreSettings.BONUS_FAIL;
+      const increment = (success) ? ScoreSettings.SCORE_SUCCESS * bonus : ScoreSettings.SCORE_FAIL;
+      return accumulator + increment;
+    };
+    return this.state.answers.reduce(reducer, ScoreSettings.REDUCER_INITIAL_VALUE);
+  }
+
+  /**
+   * Считает набранные бонусные баллы
+   * @return {Number} Возвращает количество баллов или -1, если закончились попытки или получены не все ответы
+   */
+  get bonusScore() {
+    if (this.questions.length < ScoreSettings.MAX_QUESTIONS || this.state.livesLeft <= ScoreSettings.MIN_LIVES) {
+      return ScoreSettings.FAIL_RESULT;
+    }
+    const reducer = (accumulator, currentValue) => {
+      const {success, time} = currentValue;
+      const increment = (success && time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.SCORE_SUCCESS * ScoreSettings.BONUS_SUCCESS : ScoreSettings.SCORE_FAIL_FOR_BONUS_SCORE;
+      return accumulator + increment;
+    };
+    return this.state.answers.reduce(reducer, ScoreSettings.REDUCER_INITIAL_VALUE);
+  }
+
+  /**
+   * Статистика игроков
+   * @return {number[]}
+   * @private
+   */
+  get _statistics() {
+    return [4, 6, 8, 1, 12, 10, 6, 8, 2]; // TODO it's fake
+  }
+
+  /**
+   * Вычисляет сообщение о результате игрока // TODO move to view?
+   * @return {string} Возвращает строку с результатом игры
+   */
+  get rating() {
+    if (this.state.livesLeft <= RatingSettings.MIN_LIVES) {
+      return RatingSettings.RESULT_FAIL_TRIES;
+    }
+    if (this.state.timeLeft <= RatingSettings.MIN_TIME_LEFT) {
+      return RatingSettings.RESULT_FAIL_TIME;
+    }
+    let newStatistics = this._statistics.slice();
+    newStatistics.push(this.score);
+    newStatistics.sort((a, b) => b - a);
+    const position = newStatistics.indexOf(this.score) + RatingSettings.POSITION_INCREMENT;
+    const playersCount = newStatistics.length;
+    const playerRating = Math.floor(((playersCount - position) / playersCount) * 100);
+    return `Вы заняли ${position} место из ${playersCount} игроков. Это лучше, чем у ${playerRating}% игроков`;
   }
 
   /**
@@ -77,16 +132,6 @@ export default class GameModel {
     } else {
       this._state.currentLevel = this._state.currentLevel + Settings.LEVEL_INCREMENT;
     }
-  }
-
-  /**
-   * Обрабатывает ответ игрока
-   * @param {Array|Number} answer Ответ игрока
-   */
-  setAnswer(answer) {
-    this._saveAnswer(answer);
-    this._recountLives();
-    this._changeLevel();
   }
 
   /**
@@ -126,7 +171,42 @@ export default class GameModel {
     const lastAnswer = this.state.answers[lastIndexOfAnswers].success;
     const livesResultForFail = this.state.livesLeft - Settings.LIVES_DECREMENT;
     this._state.livesLeft = lastAnswer ? this.state.livesLeft : livesResultForFail;
-    this.onUpdateLives();
+  }
+
+  /**
+   * Функция обновления таймеров
+   * @private
+   */
+  _tick() {
+    if (this.state.timeLeft > 0) {
+      this._state.timeLeft--;
+      this.onUpdateTimer();
+      this.startTimers();
+    } else {
+      this.onTimeLeft();
+    }
+
+    if (this.state.bonusTimeLeft > 0) {
+      this._state.bonusTimeLeft--;
+    }
+  }
+
+  /**
+   * Начинает новую игру
+   */
+  startNewGame() {
+    this._state = JSON.parse(JSON.stringify(NEW_GAME));
+  }
+
+  /**
+   * Обрабатывает ответ игрока
+   * @param {Array|Number} answer Ответ игрока
+   */
+  setAnswer(answer) {
+    this._saveAnswer(answer);
+    this._recountLives();
+    this._changeLevel();
+    this._state.bonusTimeLeft = NEW_GAME.bonusTimeLeft;
   }
 
   /**
@@ -135,7 +215,6 @@ export default class GameModel {
   startTimers() {
     this._timer = setTimeout(() => {
       this._tick();
-      this.startTimers();
     }, Timer.DATE_MS_TO_SEC_MULTIPLY);
   }
 
@@ -147,17 +226,6 @@ export default class GameModel {
   }
 
   /**
-   * Функция обновления таймеров
-   * @private
-   */
-  _tick() {
-    this._state.timeLeft--;
-    this.onUpdateTimer();
-    this._state.bonusTimeLeft--;
-    this.onUpdateBonusTimer();
-  }
-
-  /**
    * Слушатель на обновление основного таймера
    */
   onUpdateTimer() {
@@ -165,17 +233,11 @@ export default class GameModel {
   }
 
   /**
-   * Слушатель на обновление бонусного таймера
+   * Слушатель на истечение таймера
    */
-  onUpdateBonusTimer() {
+  onTimeLeft() {
 
   }
 
-  /**
-   * Слушатель на обновление жизней
-   */
-  onUpdateLives() {
-
-  }
 }
 
