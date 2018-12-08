@@ -1,5 +1,6 @@
 import {assert} from 'chai';
 import GameModel from "./game-model";
+import 'jsdom-global/register';
 import {Settings} from '../constants/constants';
 
 describe(`Модель игры`, () => {
