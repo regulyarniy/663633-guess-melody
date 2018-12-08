@@ -98,7 +98,9 @@ export const ANSWERS_DATA = Object.freeze([
 ]);
 
 // Настройки игры
+const hash = window.location.hash.replace(`#`, ``);
 export const Settings = Object.freeze({
+  DEBUG: hash.toLowerCase() === `debug`, // Режим отладки (вход по адресу /#debug)
   LEVEL_MAX: 9, // Максимальный уровень
   LEVEL_INCREMENT: 1, // Инкремент уровня
   LEVEL_ENDGAME: -1, // Уровень конца игры

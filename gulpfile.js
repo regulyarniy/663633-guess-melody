@@ -87,6 +87,7 @@ gulp.task(`serve`, [`assemble`], () => {
     server: `./build`,
     notify: false,
     open: true,
+    startPath: `/#debug`,
     port: 3502,
     ui: false
   });

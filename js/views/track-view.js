@@ -1,4 +1,5 @@
 import AbstractView from "./abstract-view";
+import {Settings} from "../constants/constants";
 
 const classes = {
   PLAY: `track__button--play`,
@@ -11,7 +12,14 @@ export default class TrackView extends AbstractView {
    * @param {Object} data Данные для представления
    */
   constructor(data) {
-    super(`div`, [`track`]);
+    const trackClasses = [`track`];
+
+    // DEBUG
+    if (Settings.DEBUG && data.valid) {
+      trackClasses.push(`track--valid`);
+    }
+
+    super(`div`, trackClasses);
     Object.assign(this, data);
     this._isPaused = false; // Начальное состояние кнопки проигрывания
   }

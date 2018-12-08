@@ -1,4 +1,5 @@
 import AbstractView from "./abstract-view";
+import {Settings} from "../constants/constants";
 
 export default class ArtistView extends AbstractView {
   /**
@@ -6,7 +7,14 @@ export default class ArtistView extends AbstractView {
    * @param {Object} data Данные для представления
    */
   constructor(data) {
-    super(`div`, [`artist`]);
+    const artistClasses = [`artist`];
+
+    // DEBUG
+    if (Settings.DEBUG && data.valid) {
+      artistClasses.push(`artist--valid`);
+    }
+
+    super(`div`, artistClasses);
     Object.assign(this, data);
   }
 
