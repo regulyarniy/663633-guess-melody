@@ -144,3 +144,9 @@ export const RatingSettings = {
   MIN_TIME_LEFT: 0, // Минимальное количество секунд до проигрыша
   POSITION_INCREMENT: 1 // Инкремент для поправки места игрока с учетом нумерации индексов в массиве
 };
+
+// Настройки анимации круглого таймера
+export const RoundTimer = {
+  RADIX: 10, // Основание системы счисления
+  CIRCLE_FORMULA: 2 * Math.PI// Радиус круга
+};

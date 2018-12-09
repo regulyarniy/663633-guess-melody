@@ -73,7 +73,7 @@ export default class AbstractGameView extends AbstractView {
    * Функция старта анимации бонусного таймера
    * @param {number} bonusTimeLeft Количество секунд
    */
-  startBonusTimerAnimation(bonusTimeLeft) {
-    this._gameStatus.startBonusTimerAnimation(bonusTimeLeft);
+  startRoundTimerAnimation(bonusTimeLeft) {
+    this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
   }
 }
