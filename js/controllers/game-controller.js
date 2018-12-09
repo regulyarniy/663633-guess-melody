@@ -26,7 +26,7 @@ export default class GameController {
 
     this.bind();
     changeScreen(this.view.element);
-    this.view.startBonusTimerAnimation(this.model.state.bonusTimeLeft);
+    this.view.startBonusTimerAnimation(this.model.state.timeLeft); // TODO отрисовка начального положения таймера
     this.model.startTimers();
   }
 

@@ -1,11 +1,12 @@
-import {NEW_GAME, ANSWERS_DATA, Settings, Timer, ScoreSettings, RatingSettings} from '../constants/constants';
+import {NEW_GAME, Settings, Timer, ScoreSettings, RatingSettings} from '../constants/constants';
 
 export default class GameModel {
   /**
    * Модель игры
    */
   constructor() {
-    this.startNewGame();
+    this._questions = [];
+    this._state = null;
   }
 
   /**
@@ -21,34 +22,22 @@ export default class GameModel {
    * @return {Readonly<Array>}
    */
   get questions() {
-    return ANSWERS_DATA;
+    return this._questions;
   }
 
   /**
-   * Данные для вопроса //TODO test
+   * Данные для вопроса
    * @return {*}
    */
   get questionData() {
-    if (this.isCurrentQuestionAboutGenre) {
-      return {
-        genre: this.currentQuestion.genre,
-        tracks: this.currentQuestion.answers,
-        livesLeft: this.state.livesLeft,
-      };
-    } else {
-      return {
-        audioURL: this.currentQuestion.audioURL,
-        artists: this.currentQuestion.answers,
-        livesLeft: this.state.livesLeft,
-      };
-    }
+    return {state: this.state, question: this._currentQuestion};
   }
 
   /**
    * Возвращает текущий вопрос
    * @return {Object} Обьект с данными вопроса
    */
-  get currentQuestion() {
+  get _currentQuestion() {
     return this.questions[this._state.currentLevel];
   }
 
@@ -57,7 +46,7 @@ export default class GameModel {
    * @return {boolean} true если вопрос о жанре
    */
   get isCurrentQuestionAboutGenre() {
-    return this.currentQuestion.hasOwnProperty(`genre`);
+    return this._currentQuestion.type === `genre`;
   }
 
   /**
@@ -123,6 +112,28 @@ export default class GameModel {
   }
 
   /**
+   * Загружает вопросы с сервера
+   * @private
+   */
+  loadQuestions() {
+    const URL = `https://es.dump.academy/guess-melody/questions`;
+    const whenQuestionsLoaded = fetch(URL);
+
+    whenQuestionsLoaded.
+      then((response)=> {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
+      }).
+      then((data) => {
+        this._questions = [...data];
+        this.onQuestionsLoaded();
+      }).
+      catch(); // TODO call modal
+  }
+
+  /**
    * Переключает игру на следующий уровень
    * @private
    */
@@ -143,21 +154,14 @@ export default class GameModel {
     // Игра на жанр
     let isAnswerFalse;
     if (this.isCurrentQuestionAboutGenre) {
-      const equalAnswers = this.currentQuestion.answers.map((value, index) => {
-        return value.valid === answer[index];
+      const equalAnswers = this._currentQuestion.answers.map((value, index) => {
+        return (value.genre === this._currentQuestion.genre) === answer[index];
       });
       isAnswerFalse = equalAnswers.some((item) => {
         return item === Settings.FAILED_ANSWER;
       });
     } else { // Игра на артиста
-      let validId;
-      for (const question of this.currentQuestion.answers) {
-        if (question.valid === Settings.SUCCESS_ANSWER) {
-          validId = question.id;
-          break;
-        }
-      }
-      isAnswerFalse = validId !== answer;
+      isAnswerFalse = answer !== Settings.SUCCESS_ANSWER;
     }
     this._state.answers.push({success: !isAnswerFalse, time: this.state.bonusTimeLeft});
   }
@@ -236,6 +240,13 @@ export default class GameModel {
    * Слушатель на истечение таймера
    */
   onTimeLeft() {
+
+  }
+
+  /**
+   * Слушатель на окончание загрузки вопросов
+   */
+  onQuestionsLoaded() {
 
   }
 

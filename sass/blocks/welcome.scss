@@ -36,11 +36,23 @@
   border-left-color: $color-orange;
   border-width: 70px 0 70px 100px;
 
-  &:hover {
+  &--loading {
+    left: 340px;
+    top: 442px;
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-left: 5px solid #ff9749;
+    border-top: 5px solid #ff9749;
+    border-radius: 50%;
+    animation: 2s linear 0s infinite loader;
+  }
+
+  &:hover:not(.welcome__button--loading) {
     transform: scale(1.05);
   }
 
-  &:active {
+  &:active:not(.welcome__button--loading) {
     transform: scale(1.04);
   }
 }

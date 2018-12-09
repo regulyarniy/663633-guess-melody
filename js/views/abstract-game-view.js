@@ -17,9 +17,9 @@ export default class AbstractGameView extends AbstractView {
    */
   initializeGameStatus() {
     this._statusData = {
-      livesLeft: this.livesLeft,
-      timeLeft: this.timeLeft,
-      bonusTimeLeft: this.bonusTimeLeft};
+      livesLeft: this.state.livesLeft,
+      timeLeft: this.state.timeLeft,
+      bonusTimeLeft: this.state.bonusTimeLeft};
     this._gameStatus = new GameStatus(this._statusData);
     this._statusTemplate = this._gameStatus.element;
   }

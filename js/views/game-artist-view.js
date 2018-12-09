@@ -20,7 +20,7 @@ export default class GameArtistView extends AbstractGameView {
     <h2 class="game__title">Кто исполняет эту песню?</h2>
     <div class="game__track">
       <button class="track__button track__button--play" type="button"></button>
-      <audio src="${this.audioURL}"></audio>
+      <audio src="${this.src}"></audio>
     </div>
 
     <form class="game__artist">
@@ -42,12 +42,12 @@ export default class GameArtistView extends AbstractGameView {
    */
   initializeArtists() {
     this._artistInstances = [];
-    this.artists.forEach((data) => {
-      const artistInstance = new ArtistView(data);
+    this.question.answers.forEach((artist, index) => {
+      const artistInstance = new ArtistView(artist, index);
       this._artistInstances.push(artistInstance);
       // Подписываемся на слушатель ответа
-      artistInstance.onAnswer = (answerId) => {
-        this.answer = answerId; // Меняем ответ
+      artistInstance.onAnswer = (isCorrect) => {
+        this.answer = isCorrect; // Меняем ответ
       };
     });
   }

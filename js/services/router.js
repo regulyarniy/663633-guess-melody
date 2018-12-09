@@ -7,13 +7,13 @@ import ResultController from "../controllers/result-controller";
 export default class Router {
   // Страница приветствия
   static showWelcome() {
-    const welcomeController = new WelcomeController();
+    const gameModel = new GameModel();
+    const welcomeController = new WelcomeController(gameModel);
     welcomeController.init();
   }
 
   // Страница игрового процесса
-  static showGame() {
-    const gameModel = new GameModel();
+  static showGame(gameModel) {
     const gameController = new GameController(gameModel);
     gameController.init();
   }

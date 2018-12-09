@@ -5,25 +5,33 @@ import Router from "../services/router";
 export default class WelcomeController {
   /**
    * Класс контроллера страницы приветствия
+   * @param {GameModel} model Модель игры
    */
-  constructor() {
-    this.view = new WelcomeView();
+  constructor(model) {
+    this._model = model;
+    this._view = new WelcomeView();
   }
 
   /**
    * Старт контроллера
    */
   init() {
+    this._model.loadQuestions();
     this.bind();
-    changeScreen(this.view.element);
+    changeScreen(this._view.element);
   }
 
   /**
    * Связывание обработчиков
    */
   bind() {
-    this.view.onStartGame = () => {
-      Router.showGame();
+    this._view.onStartGame = () => {
+      this._model.startNewGame();
+      Router.showGame(this._model);
+    };
+
+    this._model.onQuestionsLoaded = () => {
+      this._view.enableStartGame();
     };
   }
 
