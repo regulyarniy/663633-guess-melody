@@ -86,7 +86,7 @@ export default class GameController {
    * @param {boolean} isTimeFail Проигрыш по времени?
    */
   showFail(isTimeFail) {
-    Router.showFail(isTimeFail);
+    Router.showFail(this.model, isTimeFail);
   }
 
   /**

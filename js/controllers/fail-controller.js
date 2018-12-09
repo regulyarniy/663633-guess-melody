@@ -7,9 +7,11 @@ import FailTimeView from "../views/fail-time-view";
 export default class FailController {
   /**
    * Класс контроллера страницы проигрыша
+   * @param {gameModel} model Модель игры
    * @param {boolean} isTimeFail Проигрыш по времени?
    */
-  constructor(isTimeFail) {
+  constructor(model, isTimeFail) {
+    this.model = model;
     this.view = isTimeFail ? new FailTimeView() : new FailTriesView();
   }
 
@@ -26,7 +28,8 @@ export default class FailController {
    */
   bind() {
     this.view.onResetGame = () => {
-      Router.showWelcome();
+      this.model.startNewGame();
+      Router.showGame(this.model);
     };
   }
 }

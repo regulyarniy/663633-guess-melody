@@ -19,14 +19,14 @@ export default class Router {
   }
 
   // Страница проигрыша
-  static showFail(isTimeFail) {
-    const failController = new FailController(isTimeFail);
+  static showFail(gameModel, isTimeFail) {
+    const failController = new FailController(gameModel, isTimeFail);
     failController.init();
   }
 
   // Страница результатов и статистики
-  static showResult(model) {
-    const resultController = new ResultController(model);
+  static showResult(gameModel) {
+    const resultController = new ResultController(gameModel);
     resultController.init();
   }
 }
