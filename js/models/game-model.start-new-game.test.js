@@ -15,6 +15,8 @@ describe(`Модель игры`, () => {
       score: 0
     };
 
+    gameModel.startNewGame(); // Первая инициализация
+
     gameModel._state.currentLevel++;
     gameModel._state.livesLeft--;
     gameModel._state.answers.push(true);
@@ -22,7 +24,7 @@ describe(`Модель игры`, () => {
     gameModel._state.bonusTimeLeft--;
     gameModel._state.score++;
 
-    gameModel.startNewGame();
+    gameModel.startNewGame(); // Рестарт
 
     assert.deepEqual(gameModel.state, testState);
   });
