@@ -6,27 +6,26 @@ import ResultController from "../controllers/result-controller";
 
 export default class Router {
   // Страница приветствия
-  static showWelcome() {
-    const gameModel = new GameModel();
-    const welcomeController = new WelcomeController(gameModel);
+  static showWelcome(model = new GameModel(), context) {
+    const welcomeController = new WelcomeController(model, context);
     welcomeController.init();
   }
 
   // Страница игрового процесса
-  static showGame(gameModel) {
-    const gameController = new GameController(gameModel);
+  static showGame(model, context) {
+    const gameController = new GameController(model, context);
     gameController.init();
   }
 
   // Страница проигрыша
-  static showFail(gameModel, isTimeFail) {
-    const failController = new FailController(gameModel, isTimeFail);
+  static showFail(model, context, isTimeFail) {
+    const failController = new FailController(model, context, isTimeFail);
     failController.init();
   }
 
   // Страница результатов и статистики
-  static showResult(gameModel) {
-    const resultController = new ResultController(gameModel);
+  static showResult(model, context) {
+    const resultController = new ResultController(model, context);
     resultController.init();
   }
 }

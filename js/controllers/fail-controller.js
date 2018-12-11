@@ -1,35 +1,36 @@
 import {changeScreen} from "../services/utils";
-import Router from "../services/router";
 import FailTriesView from "../views/fail-tries-view";
 import FailTimeView from "../views/fail-time-view";
+import AbstractController from "./abstract-controller";
 
 
-export default class FailController {
+export default class FailController extends AbstractController {
   /**
    * Класс контроллера страницы проигрыша
-   * @param {gameModel} model Модель игры
+   * @param {GameModel} model Модель игры
+   * @param {Object} context Обьект контекста
    * @param {boolean} isTimeFail Проигрыш по времени?
    */
-  constructor(model, isTimeFail) {
-    this.model = model;
-    this.view = isTimeFail ? new FailTimeView() : new FailTriesView();
+  constructor(model, context, isTimeFail) {
+    super(model, context);
+    this._view = isTimeFail ? new FailTimeView() : new FailTriesView();
   }
 
   /**
    * Старт контроллера
    */
   init() {
-    this.bind();
-    changeScreen(this.view.element);
+    this._bind();
+    changeScreen(this._view.element);
   }
 
   /**
    * Связывание обработчиков
    */
-  bind() {
-    this.view.onResetGame = () => {
-      this.model.startNewGame();
-      Router.showGame(this.model);
+  _bind() {
+    this._view.onResetGame = () => {
+      this._model.startNewGame();
+      this._context.Router.showGame(this._model, this._context);
     };
   }
 }
