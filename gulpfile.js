@@ -87,6 +87,7 @@ gulp.task(`serve`, [`assemble`], () => {
     server: `./build`,
     notify: false,
     open: true,
+    startPath: `/#debug`,
     port: 3502,
     ui: false
   });
@@ -116,7 +117,7 @@ gulp.task(`test`, () => {
       plugins: [
         commonjs()
       ],
-      external: [`chai`, `jsdom`]}, `cjs`))
+      external: [`chai`, `jsdom`, `jsdom-global`, `jsdom-global/register`]}, `cjs`))
     .pipe(gulp.dest(`build/test`))
     .pipe(mocha({
       reporter: `min`

@@ -1,5 +1,5 @@
 import AbstractEndGameView from './abstract-end-game-view';
-import utils from '../services/utils';
+import utils, {convertMistakesToPluralString} from '../services/utils';
 
 const {convertSecondsToHumanReadableString} = utils;
 
@@ -26,7 +26,7 @@ export default class SuccessView extends AbstractEndGameView {
    * @return {String} Возвращает строку с количеством ошибок за игру
    */
   get mistakesText() {
-    return this.mistakes; // TODO реализовать склонение
+    return convertMistakesToPluralString(this.mistakes);
   }
 
   /** Шаблон
@@ -36,7 +36,7 @@ export default class SuccessView extends AbstractEndGameView {
     return `<section class="result">
   <div class="result__logo"><img src="img/melody-logo.png" alt="Угадай мелодию" width="186" height="83"></div>
   <h2 class="result__title">Вы настоящий меломан!</h2>
-  <p class="result__total">За ${this.timeText} вы набрали ${this.score} баллов (${this.bonusScore} быстрых), совершив ${this.mistakesText} ошибки</p>
+  <p class="result__total">За ${this.timeText} вы набрали ${this.score} баллов (${this.bonusScore} быстрых), совершив ${this.mistakesText}</p>
   <p class="result__text">${this.rating}</p>
   <button class="result__replay" type="button">Сыграть ещё раз</button>
 </section>`;

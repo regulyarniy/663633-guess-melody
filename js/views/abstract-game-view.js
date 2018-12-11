@@ -17,9 +17,9 @@ export default class AbstractGameView extends AbstractView {
    */
   initializeGameStatus() {
     this._statusData = {
-      livesLeft: this.livesLeft,
-      timeLeft: this.timeLeft,
-      bonusTimeLeft: this.bonusTimeLeft};
+      livesLeft: this.state.livesLeft,
+      timeLeft: this.state.timeLeft,
+      bonusTimeLeft: this.state.bonusTimeLeft};
     this._gameStatus = new GameStatus(this._statusData);
     this._statusTemplate = this._gameStatus.element;
   }
@@ -61,4 +61,19 @@ export default class AbstractGameView extends AbstractView {
     throw new Error(`You have to implement the method 'onAnswer'!`);
   }
 
+  /** // TODO test
+   * Функция обновления таймера
+   * @param {number} timeLeft Количество секунд
+   */
+  updateTimer(timeLeft) {
+    this._gameStatus.updateTimer(timeLeft);
+  }
+
+  /** // TODO test?
+   * Функция старта анимации бонусного таймера
+   * @param {number} bonusTimeLeft Количество секунд
+   */
+  startRoundTimerAnimation(bonusTimeLeft) {
+    this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
+  }
 }

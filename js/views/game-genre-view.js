@@ -19,7 +19,7 @@ export default class GameGenreView extends AbstractGameView {
     return `<section class="game game--genre">
 
   <section class="game__screen">
-    <h2 class="game__title">Выберите ${this.genre} треки</h2>
+    <h2 class="game__title">${this.question.question}</h2>
     <form class="game__tracks">
       <button class="game__submit button" disabled="" type="submit">Ответить</button>
     </form>
@@ -43,8 +43,9 @@ export default class GameGenreView extends AbstractGameView {
    */
   initializeTracks() {
     this._trackInstances = [];
-    this.tracks.forEach((data) => {
-      const trackInstance = new TrackView(data);
+    this.question.answers.forEach((track, index) => {
+      const isValid = track.genre === this.question.genre;
+      const trackInstance = new TrackView(track, index, isValid);
       this._trackInstances.push(trackInstance);
       const answerIndexOfInstance = this.answers.length;
       this.answers.push(false); // Создаем ответ в массиве ответов TODO move to constants

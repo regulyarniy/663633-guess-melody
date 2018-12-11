@@ -1,4 +1,5 @@
 import AbstractView from "./abstract-view";
+import {Settings} from "../constants/constants";
 
 const classes = {
   PLAY: `track__button--play`,
@@ -9,21 +10,31 @@ export default class TrackView extends AbstractView {
   /**
    * Класс представления трека для основного игрового экрана игры на жанр
    * @param {Object} data Данные для представления
+   * @param {Number} id Идентификатор трека в списке
+   * @param {boolean} isValid Это правильный ответ?
    */
-  constructor(data) {
-    super(`div`, [`track`]);
+  constructor(data, id, isValid) {
+    const trackClasses = [`track`];
+
+    // DEBUG
+    if (Settings.DEBUG && isValid) {
+      trackClasses.push(`track--valid`);
+    }
+
+    super(`div`, trackClasses);
     Object.assign(this, data);
+    this._id = id;
     this._isPaused = false; // Начальное состояние кнопки проигрывания
   }
 
   get template() {
     return `<button class="track__button track__button--play" type="button"></button>
   <div class="track__status">
-    <audio src="${this.audioURL}"></audio>
+    <audio src="${this.src}"></audio>
   </div>
   <div class="game__answer">
-    <input class="game__input visually-hidden" type="checkbox" name="answer" value="${this.id}" id="answer-${this.id}">
-    <label class="game__check" for="answer-${this.id}">Отметить</label>
+    <input class="game__input visually-hidden" type="checkbox" name="answer" value="${this._id}" id="answer-${this._id}">
+    <label class="game__check" for="answer-${this._id}">Отметить</label>
   </div>`;
   }
 

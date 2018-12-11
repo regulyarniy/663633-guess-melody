@@ -138,3 +138,9 @@ img {
     transform: translateY(0);
   }
 }
+
+@keyframes loader {
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

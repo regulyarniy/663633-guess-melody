@@ -31,6 +31,7 @@
     "gulp-sourcemaps": "2.6.4",
     "gulp-svgstore": "6.1.1",
     "jsdom": "13.0.0",
+    "jsdom-global": "3.0.2",
     "rollup-plugin-commonjs": "9.2.0",
     "stylelint": "9.4.x",
     "stylelint-config-htmlacademy": "0.1.x"
