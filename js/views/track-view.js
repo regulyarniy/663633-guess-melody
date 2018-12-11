@@ -30,7 +30,7 @@ export default class TrackView extends AbstractView {
   get template() {
     return `<button class="track__button track__button--play" type="button"></button>
   <div class="track__status">
-    <audio src="${this.src}"></audio>
+    <audio data-src="${this.src}"></audio>
   </div>
   <div class="game__answer">
     <input class="game__input visually-hidden" type="checkbox" name="answer" value="${this._id}" id="answer-${this._id}">

@@ -43,6 +43,7 @@ export default class AbstractGameView extends AbstractView {
   bind() {
     // Всплытие события из блока статуса
     this._gameStatus.onResetGame = () => {
+      // this._pauseAudio();
       this.onResetGame();
     };
   }
