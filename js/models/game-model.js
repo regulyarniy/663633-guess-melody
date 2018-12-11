@@ -128,9 +128,55 @@ export default class GameModel {
       }).
       then((data) => {
         this._questions = [...data];
-        this.onQuestionsLoaded();
+        this.loadAudio(); // Загружаем треки после загрузки вопросов
       }).
       catch(); // TODO call modal
+  }
+
+  /**
+   * Загружает треки из вопросов в кэш
+   */
+  loadAudio() {
+    // Создаем массив URL треков
+    const audioURLS = new Set();
+    this.questions.forEach((question) => {
+      if (question.src) {
+        audioURLS.add(question.src);
+      } else {
+        const genreAudioURLs = question.answers.map((answer) => {
+          return answer.src;
+        });
+        genreAudioURLs.forEach((url) => {
+          audioURLS.add(url);
+        });
+      }
+    });
+
+    /**
+     * Функция предзагрузки аудио
+     * @param {string} url Ссылка на аудио
+     * @return {Promise} Возвращает Promise
+     */
+    const preloadAudio = (url) => {
+      return new Promise((onSuccess, onFail) => {
+        const audio = new Audio();
+        audio.addEventListener(`canplaythrough`, () => {
+          onSuccess();
+        }, false);
+        audio.addEventListener(`error`, (event) => {
+          onFail(event); // TODO error handle
+        });
+        audio.src = url;
+      });
+
+    };
+    const loadingAudios = [];
+    audioURLS.forEach((url)=> {
+      loadingAudios.push(preloadAudio(url));
+    });
+    Promise.all(loadingAudios)
+      .then(this.onAudioLoaded);
+
   }
 
   /**
@@ -244,9 +290,9 @@ export default class GameModel {
   }
 
   /**
-   * Слушатель на окончание загрузки вопросов
+   * Слушатель на окончание загрузки треков
    */
-  onQuestionsLoaded() {
+  onAudioLoaded() {
 
   }
 

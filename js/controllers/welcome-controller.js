@@ -31,7 +31,7 @@ export default class WelcomeController extends AbstractController {
       this._context.Router.showGame(this._model, this._context);
     };
 
-    this._model.onQuestionsLoaded = () => {
+    this._model.onAudioLoaded = () => {
       this._view.enableStartGame();
     };
   }
