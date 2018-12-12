@@ -48,6 +48,14 @@ export default class GameController extends AbstractController {
       this._restartGame();
     };
 
+    this._view.onPlayAudio = (url) => {
+      this._model.audios[url].play();
+    };
+
+    this._view.onPauseAudio = (url) => {
+      this._model.audios[url].pause();
+    };
+
     // Обновление таймера
     this._model.onUpdateTimer = () => {
       this._view.updateTimer(this._model.state.timeLeft);
@@ -96,6 +104,4 @@ export default class GameController extends AbstractController {
   _restartGame() {
     this._context.Router.showWelcome(this._model, this._context);
   }
-
-
 }

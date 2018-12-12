@@ -8,8 +8,6 @@ export default class GameArtistView extends AbstractGameView {
    */
   constructor(data) {
     super(data);
-    this._audio = null;
-    this._isAudioPlaying = false;
     this._playButton = null;
     this.initializeArtists();
   }
@@ -22,10 +20,8 @@ export default class GameArtistView extends AbstractGameView {
   <section class="game__screen">
     <h2 class="game__title">Кто исполняет эту песню?</h2>
     <div class="game__track">
-      <button class="track__button track__button--play" type="button"></button>
-      <audio data-src="${this.question.src}"></audio>
+      <button class="track__button track__button--play" data-src="${this.question.src}" type="button"></button>
     </div>
-
     <form class="game__artist">
     </form>
   </section>
@@ -70,27 +66,6 @@ export default class GameArtistView extends AbstractGameView {
     return resultTemplate;
   }
 
-  _pauseAudio(playButton) {
-    playButton.classList.add(`track__button--play`);
-    playButton.classList.remove(`track__button--pause`);
-    this._audio.pause();
-  }
-
-  _playAudio(playButton) {
-    playButton.classList.remove(`track__button--play`);
-    playButton.classList.add(`track__button--pause`);
-    this._audio.play();
-  }
-
-  _toggleAudio(playButton) {
-    if (!this._isAudioPlaying) {
-      this._playAudio(playButton);
-    } else {
-      this._pauseAudio(playButton);
-    }
-    this._isAudioPlaying = !this._isAudioPlaying;
-  }
-
   /**
    * Добавляет обработчики
    */
@@ -99,14 +74,12 @@ export default class GameArtistView extends AbstractGameView {
 
     // play audio
     this._playButton = this.element.querySelector(`.track__button`);
-    const audioElement = this.element.querySelector(`audio`);
-    const url = audioElement.dataset.src;
-    this._audio = new Audio(url);
-    this._toggleAudio(this._playButton);
+    const url = this._playButton.dataset.src;
+    this._toggleAudio(this._playButton, url);
 
     this._playButton.addEventListener(`click`, (event) => {
       event.preventDefault();
-      this._toggleAudio(this._playButton);
+      this._toggleAudio(this._playButton, url);
     });
   }
 

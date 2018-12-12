@@ -7,6 +7,7 @@ export default class GameModel {
   constructor() {
     this._questions = [];
     this._state = null;
+    this.audios = {};
   }
 
   /**
@@ -167,6 +168,7 @@ export default class GameModel {
           onFail(event); // TODO error handle
         });
         audio.src = url;
+        this.audios[url] = audio;
       });
 
     };
@@ -189,6 +191,11 @@ export default class GameModel {
     } else {
       this._state.currentLevel = this._state.currentLevel + Settings.LEVEL_INCREMENT;
     }
+    // Остановить все треки и перемотать на начало
+    Object.keys(this.audios).forEach((key) => {
+      this.audios[key].pause();
+      this.audios[key].currentTime = 0;
+    });
   }
 
   /**
