@@ -8,6 +8,7 @@ export default class AbstractGameView extends AbstractView {
    */
   constructor(data) {
     super();
+    this._isAudioPlaying = false;
     Object.assign(this, data);
     this.initializeGameStatus();
   }
@@ -43,22 +44,9 @@ export default class AbstractGameView extends AbstractView {
   bind() {
     // Всплытие события из блока статуса
     this._gameStatus.onResetGame = () => {
+      // this._pauseAudio();
       this.onResetGame();
     };
-  }
-
-  /** Слушатель на событие сброса игры
-   * @abstract
-   */
-  onResetGame() {
-    throw new Error(`You have to implement the method 'onResetGame'!`);
-  }
-
-  /** Слушатель на событие ответа
-   * @abstract
-   */
-  onAnswer() {
-    throw new Error(`You have to implement the method 'onAnswer'!`);
   }
 
   /** // TODO test
@@ -75,5 +63,54 @@ export default class AbstractGameView extends AbstractView {
    */
   startRoundTimerAnimation(bonusTimeLeft) {
     this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
+  }
+
+  _pauseAudio(playButton) {
+    playButton.classList.add(`track__button--play`);
+    playButton.classList.remove(`track__button--pause`);
+  }
+
+  _playAudio(playButton) {
+    playButton.classList.remove(`track__button--play`);
+    playButton.classList.add(`track__button--pause`);
+  }
+
+  _toggleAudio(playButton, url) {
+    if (!this._isAudioPlaying) {
+      this._playAudio(playButton);
+      this.onPlayAudio(url);
+    } else {
+      this._pauseAudio(playButton);
+      this.onPauseAudio(url);
+    }
+    this._isAudioPlaying = !this._isAudioPlaying;
+  }
+
+  /** Слушатель на событие сброса игры
+   * @abstract
+   */
+  onResetGame() {
+    throw new Error(`You have to implement the method 'onResetGame'!`);
+  }
+
+  /** Слушатель на событие ответа
+   * @abstract
+   */
+  onAnswer() {
+    throw new Error(`You have to implement the method 'onAnswer'!`);
+  }
+
+  /**
+   * Слушатель на событие воспроизведения аудио
+   */
+  onPlayAudio() {
+
+  }
+
+  /**
+   * Слушатель на событие паузы аудио
+   */
+  onPauseAudio() {
+
   }
 }

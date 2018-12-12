@@ -8,6 +8,7 @@ export default class GameArtistView extends AbstractGameView {
    */
   constructor(data) {
     super(data);
+    this._playButton = null;
     this.initializeArtists();
   }
 
@@ -19,10 +20,8 @@ export default class GameArtistView extends AbstractGameView {
   <section class="game__screen">
     <h2 class="game__title">Кто исполняет эту песню?</h2>
     <div class="game__track">
-      <button class="track__button track__button--play" type="button"></button>
-      <audio src="${this.src}"></audio>
+      <button class="track__button track__button--play" data-src="${this.question.src}" type="button"></button>
     </div>
-
     <form class="game__artist">
     </form>
   </section>
@@ -72,6 +71,16 @@ export default class GameArtistView extends AbstractGameView {
    */
   bind() {
     super.bind();
+
+    // play audio
+    this._playButton = this.element.querySelector(`.track__button`);
+    const url = this._playButton.dataset.src;
+    this._toggleAudio(this._playButton, url);
+
+    this._playButton.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      this._toggleAudio(this._playButton, url);
+    });
   }
 
   /** Слушатель на событие ответа

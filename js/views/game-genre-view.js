@@ -39,6 +39,17 @@ export default class GameGenreView extends AbstractGameView {
   }
 
   /**
+   * Возвращает элементы кнопок проигрывания
+   * @return {HTMLElement}
+   */
+  get playButtons() {
+    if (!this._playButtons) {
+      this._playButtons = this.element.querySelectorAll(`.track__button`);
+    }
+    return this._playButtons;
+  }
+
+  /**
    * Генерирует треки
    */
   initializeTracks() {
@@ -82,9 +93,20 @@ export default class GameGenreView extends AbstractGameView {
   bind() {
     super.bind();
 
+    // answer
     this.buttonAnswer.addEventListener(`click`, (e) => {
       e.preventDefault();
       this.onAnswer(this.answers);
+    });
+
+    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
+
+    // play audio
+    this.playButtons.forEach((button) => {
+      button.addEventListener(`click`, (event) => {
+        event.preventDefault();
+        this._toggleAudio(button, button.dataset.src);
+      });
     });
   }
 

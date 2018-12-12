@@ -1,17 +1,18 @@
 import {changeScreen} from "../services/utils";
-import Router from "../services/router";
 import SuccessView from "../views/success-view";
 import {NEW_GAME} from "../constants/constants";
+import AbstractController from "./abstract-controller";
 
-export default class ResultController {
+export default class ResultController extends AbstractController {
   /**
    * Класс контроллера страницы результатов
-   * @param {GameModel} model Модель игры
+   * @param {model} model Модель
+   * @param {Object} context Обьект контекста
    */
-  constructor(model) {
-    this._model = model;
+  constructor(model, context) {
+    super(model, context);
     this._data = {};
-    this.view = null;
+    this._view = null;
   }
 
   /**
@@ -24,18 +25,18 @@ export default class ResultController {
     this._data.rating = this._model.rating;
     this._data.time = this._model.state.timeLeft;
 
-    this.view = new SuccessView(this._data);
+    this._view = new SuccessView(this._data);
 
-    this.bind();
-    changeScreen(this.view.element);
+    this._bind();
+    changeScreen(this._view.element);
   }
 
   /**
    * Связывание обработчиков
    */
-  bind() {
-    this.view.onResetGame = () => {
-      Router.showWelcome();
+  _bind() {
+    this._view.onResetGame = () => {
+      this._context.Router.showWelcome(this._model, this._context);
     };
   }
 

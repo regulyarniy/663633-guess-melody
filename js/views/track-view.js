@@ -1,11 +1,6 @@
 import AbstractView from "./abstract-view";
 import {Settings} from "../constants/constants";
 
-const classes = {
-  PLAY: `track__button--play`,
-  PAUSE: `track__button--pause`
-};
-
 export default class TrackView extends AbstractView {
   /**
    * Класс представления трека для основного игрового экрана игры на жанр
@@ -28,24 +23,12 @@ export default class TrackView extends AbstractView {
   }
 
   get template() {
-    return `<button class="track__button track__button--play" type="button"></button>
-  <div class="track__status">
-    <audio src="${this.src}"></audio>
-  </div>
+    return `<button class="track__button track__button--play" data-src="${this.src}" type="button"></button>
+  <div class="track__status"></div>
   <div class="game__answer">
     <input class="game__input visually-hidden" type="checkbox" name="answer" value="${this._id}" id="answer-${this._id}">
     <label class="game__check" for="answer-${this._id}">Отметить</label>
   </div>`;
-  }
-
-  /**
-   * Переключает классы на кнопке проигрывания
-   * @param {HTMLElement} element Элемент кнопки
-   */
-  togglePlayButtonClass(element) {
-    element.classList.toggle(classes.PLAY, this._isPaused);
-    element.classList.toggle(classes.PAUSE, !this._isPaused);
-    this._isPaused = !this.isPaused;
   }
 
   /**
@@ -58,15 +41,6 @@ export default class TrackView extends AbstractView {
     buttonAnswer.addEventListener(`click`, () => {
       this.onChangeAnswer();
     });
-
-    // Проигрывание\пауза
-    const buttonControlAudio = this.element.querySelector(`.track__button`);
-
-    buttonControlAudio.addEventListener(`click`, (e) => {
-      e.preventDefault();
-      this.togglePlayButtonClass(buttonControlAudio);
-      this.onControlAudio();
-    });
   }
 
   /**
@@ -76,10 +50,4 @@ export default class TrackView extends AbstractView {
 
   }
 
-  /**
-   * Слушатель на проигрывание трека
-   */
-  onControlAudio() {
-
-  }
 }

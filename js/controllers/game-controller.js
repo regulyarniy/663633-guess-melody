@@ -1,61 +1,70 @@
 import GameGenreView from '../views/game-genre-view';
 import GameArtistView from '../views/game-artist-view';
 import {changeScreen} from "../services/utils";
-import Router from "../services/router";
 import {FailCases} from "../constants/constants";
+import AbstractController from "./abstract-controller";
 
-export default class GameController {
+export default class GameController extends AbstractController {
   /**
    * Класс контроллера игры
    * @param {model} model Модель
+   * @param {Object} context Обьект контекста
    */
-  constructor(model) {
-    this.model = model;
-    this.view = null;
+  constructor(model, context) {
+    super(model, context);
+    this._view = null;
   }
 
   /**
    * Метод начала игры
    */
   init() {
-    if (this.model.isCurrentQuestionAboutGenre) {
-      this.view = new GameGenreView(this.model.questionData);
+    if (this._model.isCurrentQuestionAboutGenre) {
+      this._view = new GameGenreView(this._model.questionData);
     } else {
-      this.view = new GameArtistView(this.model.questionData);
+      this._view = new GameArtistView(this._model.questionData);
     }
 
-    this.bind();
-    changeScreen(this.view.element);
-    this.view.startRoundTimerAnimation(this.model.state.timeLeft); // TODO отрисовка начального положения таймера
-    this.model.startTimers();
+    this._bind();
+    changeScreen(this._view.element);
+    this._view.startRoundTimerAnimation(this._model.state.timeLeft); // TODO отрисовка начального положения таймера
+    this._model.startTimers();
   }
 
   /**
    * Связывание обработчиков
    */
-  bind() {
+  _bind() {
     // Ответ игрока
-    this.view.onAnswer = (answers) => {
-      this.model.stopTimers();
-      this.model.setAnswer(answers);
-      this.showNextQuestion();
+    this._view.onAnswer = (answers) => {
+      this._model.stopTimers();
+      this._model.setAnswer(answers);
+      this._showNextQuestion();
     };
 
     // Сброс игры // TODO сначала вызвать модалку
-    this.view.onResetGame = () => {
-      this.model.stopTimers();
-      this.restartGame();
+    this._view.onResetGame = () => {
+      this._model.stopTimers();
+      this._restartGame();
+    };
+
+    this._view.onPlayAudio = (url) => {
+      this._model.audios[url].play();
+    };
+
+    this._view.onPauseAudio = (url) => {
+      this._model.audios[url].pause();
     };
 
     // Обновление таймера
-    this.model.onUpdateTimer = () => {
-      this.view.updateTimer(this.model.state.timeLeft);
+    this._model.onUpdateTimer = () => {
+      this._view.updateTimer(this._model.state.timeLeft);
     };
 
     // Истечение времени
-    this.model.onTimeLeft = () => {
-      this.model.stopTimers();
-      this.showFail(FailCases.BY_TIME);
+    this._model.onTimeLeft = () => {
+      this._model.stopTimers();
+      this._showFail(FailCases.BY_TIME);
     };
   }
 
@@ -63,38 +72,36 @@ export default class GameController {
   /**
    * Показать следующий вопрос
    */
-  showNextQuestion() {
-    if (!(this.model.state.currentLevel === -1)) {
+  _showNextQuestion() {
+    if (!(this._model.state.currentLevel === -1)) {
       this.init();
-    } else if (this.model.state.livesLeft > 0) {
-      this.showResults();
+    } else if (this._model.state.livesLeft > 0) {
+      this._showResults();
     } else {
-      this.model.stopTimers();
-      this.showFail(FailCases.BY_TRIES);
+      this._model.stopTimers();
+      this._showFail(FailCases.BY_TRIES);
     }
   }
 
   /**
    * Перейти к результатам
    */
-  showResults() {
-    Router.showResult(this.model);
+  _showResults() {
+    this._context.Router.showResult(this._model, this._context);
   }
 
   /**
    * Перейти к проигрышу
    * @param {boolean} isTimeFail Проигрыш по времени?
    */
-  showFail(isTimeFail) {
-    Router.showFail(this.model, isTimeFail);
+  _showFail(isTimeFail) {
+    this._context.Router.showFail(this._model, this._context, isTimeFail);
   }
 
   /**
    * Перезапустить игру
    */
-  restartGame() {
-    Router.showWelcome();
+  _restartGame() {
+    this._context.Router.showWelcome(this._model, this._context);
   }
-
-
 }
