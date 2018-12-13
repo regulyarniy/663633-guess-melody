@@ -35,7 +35,7 @@ export const FailCases = {
 
 // Настройки подсчёта очков
 export const ScoreSettings = {
-  BONUS_TIME: 30, //  Время для бонуса
+  BONUS_TIME_END: 0, //  Время окончания бонусного времени
   BONUS_SUCCESS: 2, // Мультипликатор для бонуса
   BONUS_FAIL: 1, // Мультипликатор без бонуса
   FAIL_RESULT: -1, // Возвращаемое значение при проигрыше
