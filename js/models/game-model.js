@@ -1,4 +1,4 @@
-import {NEW_GAME, Settings, Timer, ScoreSettings, RatingSettings} from '../constants/constants';
+import {NEW_GAME, Settings, Timer, ScoreSettings, RatingSettings, Endpoint} from '../constants/constants';
 
 export default class GameModel {
   /**
@@ -60,7 +60,7 @@ export default class GameModel {
     }
     const reducer = (accumulator, currentValue) => {
       const {success, time} = currentValue;
-      const bonus = (time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.BONUS_SUCCESS : ScoreSettings.BONUS_FAIL;
+      const bonus = (time > ScoreSettings.BONUS_TIME_END) ? ScoreSettings.BONUS_SUCCESS : ScoreSettings.BONUS_FAIL;
       const increment = (success) ? ScoreSettings.SCORE_SUCCESS * bonus : ScoreSettings.SCORE_FAIL;
       return accumulator + increment;
     };
@@ -77,19 +77,23 @@ export default class GameModel {
     }
     const reducer = (accumulator, currentValue) => {
       const {success, time} = currentValue;
-      const increment = (success && time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.SCORE_SUCCESS * ScoreSettings.BONUS_SUCCESS : ScoreSettings.SCORE_FAIL_FOR_BONUS_SCORE;
+      const increment = (success && time > ScoreSettings.BONUS_TIME_END) ? ScoreSettings.SCORE_SUCCESS * ScoreSettings.BONUS_SUCCESS : ScoreSettings.SCORE_FAIL_FOR_BONUS_SCORE;
       return accumulator + increment;
     };
     return this.state.answers.reduce(reducer, ScoreSettings.REDUCER_INITIAL_VALUE);
   }
 
   /**
-   * Статистика игроков
+   * Статистика очков игроков
    * @return {number[]}
    * @private
    */
   get _statistics() {
-    return [4, 6, 8, 1, 12, 10, 6, 8, 2]; // TODO it's fake
+    const scoreStatistics = [];
+    this._pastGamesResults.forEach((result) => {
+      scoreStatistics.push(result.score);
+    });
+    return scoreStatistics;
   }
 
   /**
@@ -117,15 +121,14 @@ export default class GameModel {
    * @private
    */
   loadQuestions() {
-    const URL = `https://es.dump.academy/guess-melody/questions`;
-    const whenQuestionsLoaded = fetch(URL);
+    const whenQuestionsLoaded = fetch(Endpoint.QUESTIONS);
 
     whenQuestionsLoaded.
       then((response)=> {
         if (response.ok) {
           return response.json();
         }
-        throw new Error(`Неизвестный статус: ${response.status} ${response.statusText}`);
+        throw new Error(`Ошибка при загрузке вопросов: ${response.status} ${response.statusText}`);
       }).
       then((data) => {
         this._questions = [...data];
@@ -153,6 +156,7 @@ export default class GameModel {
       }
     });
 
+
     /**
      * Функция предзагрузки аудио
      * @param {string} url Ссылка на аудио
@@ -179,6 +183,59 @@ export default class GameModel {
     Promise.all(loadingAudios)
       .then(this.onAudioLoaded);
 
+  }
+
+  /**
+   * Отсылает результат игры на сервер
+   */
+  sendResult() {
+
+    const result = {
+      timeLeft: this.state.timeLeft,
+      answers: this.state.answers,
+      score: this.score
+    };
+
+    const request = {
+      body: JSON.stringify(result),
+      headers: {
+        'Content-Type': `application/json`
+      },
+      method: `POST`
+    };
+
+    const whenResultSended = fetch(Endpoint.STATS, request);
+
+    whenResultSended.
+    then((response) => {
+      if (!response.ok) {
+        throw new Error(`Ошибка при отправке результата: ${response.status} ${response.statusText}`);
+      }
+    }).
+    then(() => {
+      this.onResultSend();
+    }).
+    catch(); // TODO call modal
+  }
+
+  /**
+   * Получение статистики прошлых игр с сервера
+   */
+  loadPastResults() {
+    const whenStatsLoaded = fetch(Endpoint.STATS);
+
+    whenStatsLoaded.
+    then((response) => {
+      if (response.ok) {
+        return response.json();
+      }
+      throw new Error(`Ошибка при загрузке статистики: ${response.status} ${response.statusText}`);
+    }).
+    then((data) => {
+      this._pastGamesResults = [...data];
+      this.sendResult();
+    }).
+    catch(); // TODO call modal
   }
 
   /**
@@ -300,6 +357,13 @@ export default class GameModel {
    * Слушатель на окончание загрузки треков
    */
   onAudioLoaded() {
+
+  }
+
+  /**
+   * Слушатель на отправку результата на сервер
+   */
+  onResultSend() {
 
   }
 

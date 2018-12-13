@@ -35,7 +35,7 @@ export const FailCases = {
 
 // Настройки подсчёта очков
 export const ScoreSettings = {
-  BONUS_TIME: 30, //  Время для бонуса
+  BONUS_TIME_END: 0, //  Время окончания бонусного времени
   BONUS_SUCCESS: 2, // Мультипликатор для бонуса
   BONUS_FAIL: 1, // Мультипликатор без бонуса
   FAIL_RESULT: -1, // Возвращаемое значение при проигрыше
@@ -60,4 +60,10 @@ export const RatingSettings = {
 export const RoundTimer = {
   RADIX: 10, // Основание системы счисления
   CIRCLE_FORMULA: 2 * Math.PI// Радиус круга
+};
+
+// URL для backend
+export const Endpoint = {
+  QUESTIONS: `https://es.dump.academy/guess-melody/questions`,
+  STATS: `https://es.dump.academy/guess-melody/stats/663633`
 };
