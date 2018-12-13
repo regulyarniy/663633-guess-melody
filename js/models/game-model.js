@@ -163,19 +163,53 @@ export default class GameModel {
      * @return {Promise} Возвращает Promise
      */
     const preloadAudio = (url) => {
-      return new Promise((onSuccess, onFail) => {
-        const audio = new Audio();
-        audio.addEventListener(`canplaythrough`, () => {
-          onSuccess();
-        }, false);
-        audio.addEventListener(`error`, (event) => {
-          onFail(event); // TODO error handle
-        });
-        audio.src = url;
-        this.audios[url] = audio;
-      });
+      // return new Promise((onSuccess, onFail) => {
+      //   const audio = new Audio();
+      //   audio.addEventListener(`canplaythrough`, () => {
+      //     onSuccess();
+      //   }, false);
+      //   audio.addEventListener(`error`, (event) => {
+      //     onFail(event); // TODO error handle
+      //   });
+      //   audio.src = url;
+      //   this.audios[url] = audio;
+      // });
 
+      /**
+       * AudioContext option TODO
+       */
+      const audio = new AudioContext();
+      const audioSource = audio.createBufferSource();
+
+      const fetchOptions = {
+        mode: `no-cors`,
+        headers: {
+          "Access-Control-Allow-Origin": `*`
+        },
+        redirect: `follow`
+      };
+      return fetch(url, fetchOptions).
+        then((responce) => {
+          console.log(responce.redirected);
+          return responce;
+        }).
+        then((response) => {
+          return response.arrayBuffer();
+        }).
+        then((buffer) => {
+          console.log(buffer);
+          audio.decodeAudioData(buffer).
+            then((decodedData) => {
+              audioSource.buffer = decodedData;
+              audioSource.connect(audio.destination);
+            });
+          this.audios[url] = audioSource;
+        }).
+        catch((error) => {
+          throw new Error(`Ошибка при загрузке треков: ${error}`);
+        });
     };
+
     const loadingAudios = [];
     audioURLS.forEach((url)=> {
       loadingAudios.push(preloadAudio(url));
@@ -250,7 +284,9 @@ export default class GameModel {
     }
     // Остановить все треки и перемотать на начало
     Object.keys(this.audios).forEach((key) => {
-      this.audios[key].pause();
+      if (!this.audios[key].paused) {
+        this.audios[key].pause();
+      }
       this.audios[key].currentTime = 0;
     });
   }
