@@ -60,7 +60,7 @@ export default class GameModel {
     }
     const reducer = (accumulator, currentValue) => {
       const {success, time} = currentValue;
-      const bonus = (time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.BONUS_SUCCESS : ScoreSettings.BONUS_FAIL;
+      const bonus = (time > ScoreSettings.BONUS_TIME_END) ? ScoreSettings.BONUS_SUCCESS : ScoreSettings.BONUS_FAIL;
       const increment = (success) ? ScoreSettings.SCORE_SUCCESS * bonus : ScoreSettings.SCORE_FAIL;
       return accumulator + increment;
     };
@@ -77,7 +77,7 @@ export default class GameModel {
     }
     const reducer = (accumulator, currentValue) => {
       const {success, time} = currentValue;
-      const increment = (success && time <= ScoreSettings.BONUS_TIME) ? ScoreSettings.SCORE_SUCCESS * ScoreSettings.BONUS_SUCCESS : ScoreSettings.SCORE_FAIL_FOR_BONUS_SCORE;
+      const increment = (success && time > ScoreSettings.BONUS_TIME_END) ? ScoreSettings.SCORE_SUCCESS * ScoreSettings.BONUS_SUCCESS : ScoreSettings.SCORE_FAIL_FOR_BONUS_SCORE;
       return accumulator + increment;
     };
     return this.state.answers.reduce(reducer, ScoreSettings.REDUCER_INITIAL_VALUE);
