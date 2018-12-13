@@ -45,6 +45,7 @@ export default class GameController extends AbstractController {
     // Сброс игры // TODO сначала вызвать модалку
     this._view.onResetGame = () => {
       this._model.stopTimers();
+      this._model.rewindAudio();
       this._restartGame();
     };
 
