@@ -49,10 +49,12 @@ export default class GameController extends AbstractController {
       this._restartGame();
     };
 
+    // Воспроизведение
     this._view.onPlayAudio = (url) => {
       this._model.audios[url].play();
     };
 
+    // Пауза
     this._view.onPauseAudio = (url) => {
       this._model.audios[url].pause();
     };
@@ -67,6 +69,12 @@ export default class GameController extends AbstractController {
       this._model.stopTimers();
       this._showFail(FailCases.BY_TIME);
     };
+
+    // Ошибки загрузки\отправки
+    this._model.onError = (error) => {
+      this._context.Router.showError(error);
+    };
+
   }
 
 

@@ -124,17 +124,21 @@ export default class GameModel {
     const whenQuestionsLoaded = fetch(Endpoint.QUESTIONS);
 
     whenQuestionsLoaded.
-      then((response)=> {
-        if (response.ok) {
-          return response.json();
+      then((response) => {
+        if (!response.ok) {
+          this.onError(response.status);
+          return [];
         }
-        throw new Error(`Ошибка при загрузке вопросов: ${response.status} ${response.statusText}`);
+        return response.json();
       }).
       then((data) => {
         this._questions = [...data];
         this.loadAudio(); // Загружаем треки после загрузки вопросов
       }).
-      catch(); // TODO call modal
+      catch((error) => {
+        this.onError(error);
+        throw new Error(error);
+      });
   }
 
   /**
@@ -169,7 +173,7 @@ export default class GameModel {
           onSuccess();
         }, false);
         audio.addEventListener(`error`, (event) => {
-          onFail(event); // TODO error handle
+          onFail(event);
         });
         audio.src = url;
         this.audios[url] = audio;
@@ -184,6 +188,10 @@ export default class GameModel {
       .then(() => {
         this.onAudioLoaded();
         this.rewindAudio();
+      }).
+      catch((error) => {
+        this.onError(`Аудио не загружается`);
+        throw new Error(error);
       });
   }
 
@@ -211,13 +219,16 @@ export default class GameModel {
     whenResultSended.
     then((response) => {
       if (!response.ok) {
-        throw new Error(`Ошибка при отправке результата: ${response.status} ${response.statusText}`);
+        this.onError(response.status);
       }
     }).
     then(() => {
       this.onResultSend();
     }).
-    catch(); // TODO call modal
+    catch((error) => {
+      this.onError(error);
+      throw new Error(error);
+    });
   }
 
   /**
@@ -228,16 +239,20 @@ export default class GameModel {
 
     whenStatsLoaded.
     then((response) => {
-      if (response.ok) {
-        return response.json();
+      if (!response.ok) {
+        this.onError(response.status);
+        return [];
       }
-      throw new Error(`Ошибка при загрузке статистики: ${response.status} ${response.statusText}`);
+      return response.json();
     }).
     then((data) => {
       this._pastGamesResults = [...data];
       this.sendResult();
     }).
-    catch(); // TODO call modal
+    catch((error) => {
+      this.onError(error);
+      throw new Error(error);
+    });
   }
 
   /**
@@ -376,6 +391,13 @@ export default class GameModel {
    * Слушатель на отправку результата на сервер
    */
   onResultSend() {
+
+  }
+
+  /**
+   * Слушатель на ошибки загрузки\отправки
+   */
+  onError() {
 
   }
 

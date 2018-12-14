@@ -42,6 +42,11 @@ export default class ResultController extends AbstractController {
       this._view.onResetGame = () => {
         this._context.Router.showWelcome(this._model, this._context);
       };
+
+      // Ошибки загрузки\отправки
+      this._model.onError = (error) => {
+        this._context.Router.showError(error);
+      };
     };
   }
 
