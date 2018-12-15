@@ -126,7 +126,7 @@ export default class GameModel {
     whenQuestionsLoaded.
       then((response) => {
         if (!response.ok) {
-          this.onError(response.status);
+          this.onError(`Вопросы не загружаются. Статус: ${response.status}`);
           return [];
         }
         return response.json();
@@ -145,22 +145,6 @@ export default class GameModel {
    * Загружает треки из вопросов в кэш
    */
   loadAudio() {
-    // Создаем массив URL треков
-    const audioURLS = new Set();
-    this.questions.forEach((question) => {
-      if (question.src) {
-        audioURLS.add(question.src);
-      } else {
-        const genreAudioURLs = question.answers.map((answer) => {
-          return answer.src;
-        });
-        genreAudioURLs.forEach((url) => {
-          audioURLS.add(url);
-        });
-      }
-    });
-
-
     /**
      * Функция предзагрузки аудио
      * @param {string} url Ссылка на аудио
@@ -180,6 +164,21 @@ export default class GameModel {
       });
     };
 
+    // Создаем массив URL треков
+    const audioURLS = new Set();
+    this.questions.forEach((question) => {
+      if (question.src) {
+        audioURLS.add(question.src);
+      } else {
+        const genreAudioURLs = question.answers.map((answer) => {
+          return answer.src;
+        });
+        genreAudioURLs.forEach((url) => {
+          audioURLS.add(url);
+        });
+      }
+    });
+
     const loadingAudios = [];
     audioURLS.forEach((url)=> {
       loadingAudios.push(preloadAudio(url));
@@ -190,7 +189,7 @@ export default class GameModel {
         this.rewindAudio();
       }).
       catch((error) => {
-        this.onError(`Аудио не загружается`);
+        this.onError(`Аудио не загружается!`);
         throw new Error(error);
       });
   }
@@ -219,7 +218,7 @@ export default class GameModel {
     whenResultSended.
     then((response) => {
       if (!response.ok) {
-        this.onError(response.status);
+        this.onError(`Результаты не отправлены. Статус: ${response.status}`);
       }
     }).
     then(() => {
@@ -240,7 +239,7 @@ export default class GameModel {
     whenStatsLoaded.
     then((response) => {
       if (!response.ok) {
-        this.onError(response.status);
+        this.onError(`Статистика не загружается. Статус: ${response.status}`);
         return [];
       }
       return response.json();
