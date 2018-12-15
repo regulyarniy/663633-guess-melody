@@ -189,7 +189,7 @@ export default class GameModel {
         this.rewindAudio();
       }).
       catch((error) => {
-        this.onError(`Аудио не загружается!`);
+        this.onError(`Аудио не загружается`);
         throw new Error(error);
       });
   }

@@ -1,5 +1,6 @@
 import AbstractView from './abstract-view';
 import GameStatus from './game-status-view';
+import ModalConfirmView from "./modal-confirm-view";
 
 export default class AbstractGameView extends AbstractView {
   /**
@@ -11,6 +12,7 @@ export default class AbstractGameView extends AbstractView {
     this._isAudioPlaying = false;
     Object.assign(this, data);
     this.initializeGameStatus();
+    this.initializeModal();
   }
 
   /**
@@ -22,7 +24,15 @@ export default class AbstractGameView extends AbstractView {
       timeLeft: this.state.timeLeft,
       bonusTimeLeft: this.state.bonusTimeLeft};
     this._gameStatus = new GameStatus(this._statusData);
-    this._statusTemplate = this._gameStatus.element;
+    this._gameStatusTemplate = this._gameStatus.element;
+  }
+
+  /**
+   * Генерирует блок модального окна
+   */
+  initializeModal() {
+    this._modalConfirm = new ModalConfirmView();
+    this._modalConfirmTemplate = this._modalConfirm.element;
   }
 
   /**
@@ -34,7 +44,10 @@ export default class AbstractGameView extends AbstractView {
     const resultTemplate = super.render();
     const gameLayout = resultTemplate.querySelector(`.game`);
     const gameScreen = gameLayout.querySelector(`.game__screen`);
-    gameLayout.insertBefore(this._statusTemplate, gameScreen);
+    // Добавляем блок статуса перед экраном игры
+    gameLayout.insertBefore(this._gameStatusTemplate, gameScreen);
+    // Добавляем блок модального окна
+    resultTemplate.appendChild(this._modalConfirmTemplate);
     return resultTemplate;
   }
 
@@ -42,11 +55,10 @@ export default class AbstractGameView extends AbstractView {
    * Добавление обработчиков
    */
   bind() {
-    // Всплытие события из блока статуса
-    this._gameStatus.onResetGame = () => {
-      // this._pauseAudio();
-      this.onResetGame();
-    };
+    // Модальное окно подтверждения
+    this._gameStatus.onResetGame = () => this._modalConfirm.show();
+    this._modalConfirm.onConfirm = () => this.onResetGame();
+    this._modalConfirm.onCancel = () => this._modalConfirm.hide();
   }
 
   /** // TODO test
