@@ -19,7 +19,6 @@ export default class TrackView extends AbstractView {
     super(`div`, trackClasses);
     Object.assign(this, data);
     this._id = id;
-    this._isPaused = false; // Начальное состояние кнопки проигрывания
   }
 
   get template() {

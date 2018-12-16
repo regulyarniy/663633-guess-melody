@@ -102,12 +102,27 @@ export default class GameGenreView extends AbstractGameView {
     this.playButtons.forEach((button) => {
       button.addEventListener(`click`, (event) => {
         event.preventDefault();
-        this._toggleAudio(button, button.dataset.src);
+        if (this.playingURL !== button.dataset.src) {
+          this._pauseAllAudio();
+        }
+        this.toggleAudio(button, button.dataset.src);
       });
     });
 
     // Проигрываем первый трек
-    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
+    this.toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
+  }
+
+  /**
+   * Переводит все кнопки вопроизведения в паузу
+   * @param {NodeList} playButtons
+   */
+  _pauseAllAudio() {
+    this.playButtons.forEach((button) => {
+      AbstractGameView.pauseAudio(button);
+      this.onPauseAudio(button.dataset.src);
+    });
+    this.isAudioPlaying = false;
   }
 
   /** Слушатель на событие сброса игры

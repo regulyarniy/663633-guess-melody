@@ -51,6 +51,7 @@ export default class GameController extends AbstractController {
 
     // Воспроизведение
     this._view.onPlayAudio = (url) => {
+      this._model.rewindAudio();
       this._model.audios[url].play();
     };
 

@@ -9,7 +9,8 @@ export default class AbstractGameView extends AbstractView {
    */
   constructor(data) {
     super();
-    this._isAudioPlaying = false;
+    this.isAudioPlaying = false;
+    this.playingURL = null;
     Object.assign(this, data);
     this.initializeGameStatus();
     this.initializeModal();
@@ -84,25 +85,43 @@ export default class AbstractGameView extends AbstractView {
     this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
   }
 
-  _pauseAudio(playButton) {
+  /**
+   * Переключает кнопку в положение на паузе
+   * @param {HTMLElement} playButton Элемент кнопки
+   * @private
+   */
+  static pauseAudio(playButton) {
     playButton.classList.add(`track__button--play`);
     playButton.classList.remove(`track__button--pause`);
   }
 
-  _playAudio(playButton) {
+  /**
+   * Переключает кнопку в положение проигрывается
+   * @param {HTMLElement} playButton Элемент кнопки
+   * @private
+   */
+  static playAudio(playButton) {
     playButton.classList.remove(`track__button--play`);
     playButton.classList.add(`track__button--pause`);
   }
 
-  _toggleAudio(playButton, url) {
-    if (!this._isAudioPlaying) {
-      this._playAudio(playButton);
+  /**
+   * Переключает воспроизведение трека
+   * @param {HTMLElement} playButton Элемент кнопки
+   * @param {string} url URL трека
+   * @private
+   */
+  toggleAudio(playButton, url) {
+    if (!this.isAudioPlaying) {
+      AbstractGameView.playAudio(playButton);
+      this.playingURL = url;
       this.onPlayAudio(url);
     } else {
-      this._pauseAudio(playButton);
+      AbstractGameView.pauseAudio(playButton);
+      this.playingURL = null;
       this.onPauseAudio(url);
     }
-    this._isAudioPlaying = !this._isAudioPlaying;
+    this.isAudioPlaying = !this.isAudioPlaying;
   }
 
   /** Слушатель на событие сброса игры
