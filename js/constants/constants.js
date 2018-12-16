@@ -1,7 +1,7 @@
 // Начальное состояние игры
 export const NEW_GAME = Object.freeze({
   currentLevel: 0,
-  livesLeft: 4,
+  livesLeft: 3,
   answers: [],
   timeLeft: 300,
   bonusTimeLeft: 30,
@@ -45,7 +45,7 @@ export const ScoreSettings = {
   SCORE_SUCCESS: 1, // Баллы за успешный ответ
   SCORE_FAIL: -2, // Баллы за ошибку
   MIN_LIVES: 0, // Минимум жизней
-  MAX_QUESTIONS: 10, // Вопросов на игру
+  MAX_QUESTIONS: Settings.LEVEL_MAX + 1, // Вопросов на игру
   REDUCER_INITIAL_VALUE: 0, // Начальное значение для аккумулятора
   SCORE_FAIL_FOR_BONUS_SCORE: 0, // Баллы для ошибки в подсчете бонусов
 };
@@ -78,4 +78,4 @@ export const MountPoint = {
 };
 
 // Максимальное кол-во ошибок, которые может допустить игрок
-export const MAX_MISTAKES = NEW_GAME.livesLeft - 1;
+export const MAX_MISTAKES = NEW_GAME.livesLeft;

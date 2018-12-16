@@ -20,7 +20,7 @@ export default class GameStatusView extends AbstractView {
    * @return {string}
    */
   get livesLeftTemplate() {
-    const mistakesIndex = this.livesLeft - 1; // Индекс с которого начинать рисовать красные ноты
+    const mistakesIndex = this.livesLeft; // Индекс с которого начинать рисовать красные ноты
 
     return Array(MAX_MISTAKES)
       .fill(`<div class="correct"></div>`, 0, mistakesIndex)
