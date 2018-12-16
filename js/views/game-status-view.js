@@ -12,6 +12,7 @@ export default class GameStatusView extends AbstractView {
     Object.assign(this, data); // Сливаем свойства data с инстансом
     this._minutesElement = null;
     this._secondsElement = null;
+    this._isTimerExpires = false;
   }
 
   /**
@@ -71,9 +72,10 @@ export default class GameStatusView extends AbstractView {
     });
 
     // Кешируем элементы таймеров
-    this._minutesElement = this.element.querySelector(`.timer__mins`);
-    this._secondsElement = this.element.querySelector(`.timer__secs`);
     this._roundTimerElement = this.element.querySelector(`.timer__line`);
+    this._timerValue = this.element.querySelector(`.timer__value`);
+    this._minutesElement = this._timerValue.querySelector(`.timer__mins`);
+    this._secondsElement = this._timerValue.querySelector(`.timer__secs`);
 
     // Обновляем начальное состояние таймера
     this.updateTimer(this.timeLeft);
@@ -88,6 +90,16 @@ export default class GameStatusView extends AbstractView {
     const secondsLeft = timeLeft % 60;
     this._minutesElement.textContent = minutesLeft < 10 ? `0` + minutesLeft : minutesLeft;
     this._secondsElement.textContent = secondsLeft < 10 ? `0` + secondsLeft : secondsLeft;
+  }
+
+  /**
+   * Индикация что время подходит к концу
+   */
+  blinkTimer() {
+    if (!this._isTimerExpires) {
+      this._timerValue.classList.add(`timer__value--finished`);
+      this._isTimerExpires = true;
+    }
   }
 
   /**

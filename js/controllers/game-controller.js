@@ -66,9 +66,15 @@ export default class GameController extends AbstractController {
 
     // Истечение времени
     this._model.onTimeLeft = () => {
+      this._model.rewindAudio();
       this._model.stopTimers();
       this._showFail(FailCases.BY_TIME);
     };
+
+    // Индикация что время подходит к концу
+    this._model.onTimeExpires = () => {
+      this._view.blinkTimer();
+    }
 
     // Ошибки загрузки\отправки
     this._model.onError = (error) => {

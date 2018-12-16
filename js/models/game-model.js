@@ -318,16 +318,21 @@ export default class GameModel {
    * @private
    */
   _tick() {
-    if (this.state.timeLeft > 0) {
+    // Основной таймер
+    if (this.state.timeLeft > Timer.END) {
       this._state.timeLeft--;
       this.onUpdateTimer();
       this.startTimers();
     } else {
       this.onTimeLeft();
     }
-
-    if (this.state.bonusTimeLeft > 0) {
+    // Бонусный таймер
+    if (this.state.bonusTimeLeft > Timer.END) {
       this._state.bonusTimeLeft--;
+    }
+    // Индикация истечения времени
+    if (this.state.timeLeft < Timer.EXPIRE) {
+      this.onTimeExpires();
     }
   }
 
@@ -373,9 +378,16 @@ export default class GameModel {
   }
 
   /**
-   * Слушатель на истечение таймера
+   * Слушатель на истечение таймера(полное)
    */
   onTimeLeft() {
+
+  }
+
+  /**
+   * Слушатель на событие, когда таймер подходит к концу
+   */
+  onTimeExpires() {
 
   }
 

@@ -69,6 +69,13 @@ export default class AbstractGameView extends AbstractView {
     this._gameStatus.updateTimer(timeLeft);
   }
 
+  /**
+   * Индикация что время подходит к концу
+   */
+  blinkTimer() {
+    this._gameStatus.blinkTimer();
+  }
+
   /** // TODO test?
    * Функция старта анимации бонусного таймера
    * @param {number} bonusTimeLeft Количество секунд
