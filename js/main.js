@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import Router from "./services/router";
 
 document.addEventListener(`DOMContentLoaded`, () => {
