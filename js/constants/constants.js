@@ -17,7 +17,9 @@ export const Settings = Object.freeze({
   LEVEL_ENDGAME: -1, // Уровень конца игры
   LIVES_DECREMENT: 1, // Декремент количества попыток при неправильном ответе
   SUCCESS_ANSWER: true, // Успешный ответ
-  FAILED_ANSWER: false // Неуспешный  ответ
+  FAILED_ANSWER: false, // Неуспешный  ответ
+  POSITIVE_ANSWER: true, // Положительный ответ
+  NEGATIVE_ANSWER: false, // Отрицательный ответ(при выборе нескольких)
 });
 
 // Константы для функции вычисления времени таймера GameModel.getTimeLeft
@@ -68,3 +70,12 @@ export const Endpoint = {
   QUESTIONS: `https://es.dump.academy/guess-melody/questions`,
   STATS: `https://es.dump.academy/guess-melody/stats/663633`
 };
+
+// Привязки к DOM
+export const MountPoint = {
+  ROOT: `.app`,
+  SCREEN: `.main`,
+};
+
+// Максимальное кол-во ошибок, которые может допустить игрок
+export const MAX_MISTAKES = NEW_GAME.livesLeft - 1;

@@ -97,7 +97,7 @@ export default class GameModel {
   }
 
   /**
-   * Вычисляет сообщение о результате игрока // TODO move to view?
+   * Вычисляет сообщение о результате игрока
    * @return {string} Возвращает строку с результатом игры
    */
   get rating() {

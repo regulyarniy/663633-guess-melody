@@ -1,7 +1,5 @@
 import AbstractEndGameView from './abstract-end-game-view';
-import utils, {convertMistakesToPluralString} from '../services/utils';
-
-const {convertSecondsToHumanReadableString} = utils;
+import {convertSecondsToHumanReadableString, convertMistakesToPluralString} from '../services/utils';
 
 export default class SuccessView extends AbstractEndGameView {
   /**

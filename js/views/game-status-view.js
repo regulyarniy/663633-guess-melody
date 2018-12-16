@@ -1,6 +1,6 @@
 import AbstractView from "./abstract-view";
 import animateBonusTimer from '../services/animate-timer';
-import {NEW_GAME} from "../constants/constants";
+import {NEW_GAME, MAX_MISTAKES} from "../constants/constants";
 
 export default class GameStatusView extends AbstractView {
   /**
@@ -20,12 +20,11 @@ export default class GameStatusView extends AbstractView {
    * @return {string}
    */
   get livesLeftTemplate() {
-    const MAX_TRIES = 3; // Количество попыток // TODO link to constant
     const mistakesIndex = this.livesLeft - 1; // Индекс с которого начинать рисовать красные ноты
 
-    return Array(MAX_TRIES)
+    return Array(MAX_MISTAKES)
       .fill(`<div class="correct"></div>`, 0, mistakesIndex)
-      .fill(`<div class="wrong"></div>`, mistakesIndex, MAX_TRIES + 1)
+      .fill(`<div class="wrong"></div>`, mistakesIndex, MAX_MISTAKES + 1)
       .join(``);
   }
 
@@ -81,7 +80,7 @@ export default class GameStatusView extends AbstractView {
     this.updateTimer(this.timeLeft);
   }
 
-  /** // TODO test
+  /**
    * Функция обновления таймера
    * @param {number} timeLeft Количество секунд
    */

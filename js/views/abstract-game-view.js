@@ -61,7 +61,7 @@ export default class AbstractGameView extends AbstractView {
     this._modalConfirm.onCancel = () => this._modalConfirm.hide();
   }
 
-  /** // TODO test
+  /**
    * Функция обновления таймера
    * @param {number} timeLeft Количество секунд
    */
@@ -76,7 +76,7 @@ export default class AbstractGameView extends AbstractView {
     this._gameStatus.blinkTimer();
   }
 
-  /** // TODO test?
+  /**
    * Функция старта анимации бонусного таймера
    * @param {number} bonusTimeLeft Количество секунд
    */

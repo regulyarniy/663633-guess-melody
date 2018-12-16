@@ -1,5 +1,6 @@
 import AbstractGameView from './abstract-game-view';
 import TrackView from './track-view';
+import {Settings} from "../constants/constants";
 
 export default class GameGenreView extends AbstractGameView {
   /**
@@ -59,14 +60,12 @@ export default class GameGenreView extends AbstractGameView {
       const trackInstance = new TrackView(track, index, isValid);
       this._trackInstances.push(trackInstance);
       const answerIndexOfInstance = this.answers.length;
-      this.answers.push(false); // Создаем ответ в массиве ответов TODO move to constants
+      this.answers.push(Settings.NEGATIVE_ANSWER); // Создаем ответ в массиве ответов
       // Подписываемся на слушатель отметки трека
       trackInstance.onChangeAnswer = () => {
         this.answers[answerIndexOfInstance] = !this.answers[answerIndexOfInstance]; // Меняем ответ
         // Кнопка неактивна если не выбран ответ
-        const answered = this.answers.some((item) => {
-          return item === true;
-        });
+        const answered = this.answers.some((item) => item === Settings.POSITIVE_ANSWER);
         this.buttonAnswer.toggleAttribute(`disabled`, !answered);
       };
     });
@@ -93,13 +92,11 @@ export default class GameGenreView extends AbstractGameView {
   bind() {
     super.bind();
 
-    // answer
+    // Ответ пользователя
     this.buttonAnswer.addEventListener(`click`, (e) => {
       e.preventDefault();
       this.onAnswer(this.answers);
     });
-
-    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
 
     // play audio
     this.playButtons.forEach((button) => {
@@ -108,6 +105,9 @@ export default class GameGenreView extends AbstractGameView {
         this._toggleAudio(button, button.dataset.src);
       });
     });
+
+    // Проигрываем первый трек
+    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
   }
 
   /** Слушатель на событие сброса игры

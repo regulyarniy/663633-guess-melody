@@ -27,7 +27,7 @@ export default class GameController extends AbstractController {
 
     this._bind();
     changeScreen(this._view.element);
-    this._view.startRoundTimerAnimation(this._model.state.timeLeft); // TODO отрисовка начального положения таймера
+    this._view.startRoundTimerAnimation(this._model.state.timeLeft);
     this._model.startTimers();
   }
 
@@ -42,7 +42,7 @@ export default class GameController extends AbstractController {
       this._showNextQuestion();
     };
 
-    // Сброс игры // TODO сначала вызвать модалку
+    // Сброс игры
     this._view.onResetGame = () => {
       this._model.stopTimers();
       this._model.rewindAudio();
@@ -74,7 +74,7 @@ export default class GameController extends AbstractController {
     // Индикация что время подходит к концу
     this._model.onTimeExpires = () => {
       this._view.blinkTimer();
-    }
+    };
 
     // Ошибки загрузки\отправки
     this._model.onError = (error) => {
