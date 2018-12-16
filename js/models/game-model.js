@@ -227,8 +227,8 @@ export default class GameModel {
         audio.addEventListener(`canplaythrough`, () => {
           onSuccess();
         }, false);
-        audio.addEventListener(`error`, (event) => {
-          onFail(event);
+        audio.addEventListener(`error`, (evt) => {
+          onFail(evt);
         });
         audio.src = url;
         this.audios[url] = audio;

@@ -42,8 +42,8 @@ export default class WelcomeView extends AbstractView {
   bind() {
     // Старт игры
     this._buttonPlay = this.element.querySelector(`.welcome__button`);
-    this._buttonPlay.addEventListener(`click`, (event) => {
-      event.preventDefault();
+    this._buttonPlay.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onStartGame();
     });
   }

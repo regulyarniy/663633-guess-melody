@@ -106,15 +106,15 @@ export default class GameGenreView extends AbstractGameView {
     super.bind();
 
     // Ответ пользователя
-    this.buttonAnswer.addEventListener(`click`, (e) => {
-      e.preventDefault();
+    this.buttonAnswer.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onAnswer(this.answers);
     });
 
     // play audio
     this.playButtons.forEach((button) => {
-      button.addEventListener(`click`, (event) => {
-        event.preventDefault();
+      button.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
         if (this._playingURL !== button.dataset.src) {
           this._pauseAllAudio();
         }

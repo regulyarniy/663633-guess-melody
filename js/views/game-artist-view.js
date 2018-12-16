@@ -67,8 +67,8 @@ export default class GameArtistView extends AbstractGameView {
     const url = this._playButton.dataset.src;
     this._toggleAudio(this._playButton, url);
 
-    this._playButton.addEventListener(`click`, (event) => {
-      event.preventDefault();
+    this._playButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this._toggleAudio(this._playButton, url);
     });
   }

@@ -16,8 +16,8 @@ export default class AbstractEndGameView extends AbstractView {
   bind() {
     const buttonReset = this.element.querySelector(`.result__replay`);
 
-    buttonReset.addEventListener(`click`, (event) => {
-      event.preventDefault();
+    buttonReset.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onResetGame();
     });
   }

@@ -49,8 +49,8 @@ export default class ModalConfirmView extends AbstractView {
     }));
     // Подтвержение действия
     const confirmButtons = this.element.querySelectorAll(`.js-confirm`);
-    confirmButtons.forEach((button) => button.addEventListener(`click`, (event) => {
-      event.preventDefault();
+    confirmButtons.forEach((button) => button.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onConfirm();
     }));
   }

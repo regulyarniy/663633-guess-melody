@@ -87,8 +87,8 @@ export default class GameStatusView extends AbstractView {
   bind() {
     const buttonReset = this.element.querySelector(`.game__back`);
 
-    buttonReset.addEventListener(`click`, (e) => {
-      e.preventDefault();
+    buttonReset.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onResetGame();
     });
 
