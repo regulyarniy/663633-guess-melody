@@ -50,5 +50,4 @@ export default class ResultController extends AbstractController {
     };
   }
 
-
 }

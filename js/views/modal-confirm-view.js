@@ -24,18 +24,6 @@ export default class ModalConfirmView extends AbstractView {
   }
 
   /**
-   * Добавляет обработчики
-   */
-  bind() {
-    // Отмена действия
-    const cancelButtons = this.element.querySelectorAll(`.js-cancel`);
-    cancelButtons.forEach((button) => button.addEventListener(`click`, this._onCancel.bind(this)));
-    // Подтвержение действия
-    const confirmButtons = this.element.querySelectorAll(`.js-confirm`);
-    confirmButtons.forEach((button) => button.addEventListener(`click`, this._onConfirm.bind(this)));
-  }
-
-  /**
    * Включает отображение модального окна
    */
   show() {
@@ -50,23 +38,21 @@ export default class ModalConfirmView extends AbstractView {
   }
 
   /**
-   * Слушатель на DOM
-   * @param {Event} event Событие
-   * @private
+   * Добавляет обработчики
    */
-  _onConfirm(event) {
-    event.preventDefault();
-    this.onConfirm();
-  }
-
-  /**
-   * Слушатель на DOM
-   * @param {Event} event Событие
-   * @private
-   */
-  _onCancel(event) {
-    event.preventDefault();
-    this.onCancel();
+  bind() {
+    // Отмена действия
+    const cancelButtons = this.element.querySelectorAll(`.js-cancel`);
+    cancelButtons.forEach((button) => button.addEventListener(`click`, () => {
+      event.preventDefault();
+      this.onCancel();
+    }));
+    // Подтвержение действия
+    const confirmButtons = this.element.querySelectorAll(`.js-confirm`);
+    confirmButtons.forEach((button) => button.addEventListener(`click`, (event) => {
+      event.preventDefault();
+      this.onConfirm();
+    }));
   }
 
   /**

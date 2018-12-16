@@ -9,17 +9,40 @@ export default class AbstractGameView extends AbstractView {
    */
   constructor(data) {
     super();
-    this.isAudioPlaying = false;
-    this.playingURL = null;
     Object.assign(this, data);
-    this.initializeGameStatus();
-    this.initializeModal();
+    this._isAudioPlaying = false;
+    this._playingURL = null;
+    this._initializeGameStatus();
+    this._initializeModal();
+  }
+
+  /**
+   * Функция обновления таймера
+   * @param {number} timeLeft Количество секунд
+   */
+  updateTimer(timeLeft) {
+    this._gameStatus.updateTimer(timeLeft);
+  }
+
+  /**
+   * Индикация что время подходит к концу
+   */
+  blinkTimer() {
+    this._gameStatus.blinkTimer();
+  }
+
+  /**
+   * Функция старта анимации бонусного таймера
+   * @param {number} bonusTimeLeft Количество секунд
+   */
+  startRoundTimerAnimation(bonusTimeLeft) {
+    this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
   }
 
   /**
    * Генерирует блок статуса игры
    */
-  initializeGameStatus() {
+  _initializeGameStatus() {
     this._statusData = {
       livesLeft: this.state.livesLeft,
       timeLeft: this.state.timeLeft,
@@ -31,9 +54,28 @@ export default class AbstractGameView extends AbstractView {
   /**
    * Генерирует блок модального окна
    */
-  initializeModal() {
+  _initializeModal() {
     this._modalConfirm = new ModalConfirmView();
     this._modalConfirmTemplate = this._modalConfirm.element;
+  }
+
+  /**
+   * Переключает воспроизведение трека
+   * @param {HTMLElement} playButton Элемент кнопки
+   * @param {string} url URL трека
+   * @private
+   */
+  _toggleAudio(playButton, url) {
+    if (!this._isAudioPlaying) {
+      AbstractGameView.playAudio(playButton);
+      this._playingURL = url;
+      this.onPlayAudio(url);
+    } else {
+      AbstractGameView.pauseAudio(playButton);
+      this._playingURL = null;
+      this.onPauseAudio(url);
+    }
+    this._isAudioPlaying = !this._isAudioPlaying;
   }
 
   /**
@@ -63,26 +105,31 @@ export default class AbstractGameView extends AbstractView {
   }
 
   /**
-   * Функция обновления таймера
-   * @param {number} timeLeft Количество секунд
+   * Слушатель на событие сброса игры
    */
-  updateTimer(timeLeft) {
-    this._gameStatus.updateTimer(timeLeft);
+  onResetGame() {
+    throw new Error(`You have to implement the method 'onResetGame'!`);
   }
 
   /**
-   * Индикация что время подходит к концу
+   * Слушатель на событие ответа
    */
-  blinkTimer() {
-    this._gameStatus.blinkTimer();
+  onAnswer() {
+    throw new Error(`You have to implement the method 'onAnswer'!`);
   }
 
   /**
-   * Функция старта анимации бонусного таймера
-   * @param {number} bonusTimeLeft Количество секунд
+   * Слушатель на событие воспроизведения аудио
    */
-  startRoundTimerAnimation(bonusTimeLeft) {
-    this._gameStatus.startRoundTimerAnimation(bonusTimeLeft);
+  onPlayAudio() {
+    throw new Error(`You have to implement the method 'onPlayAudio'!`);
+  }
+
+  /**
+   * Слушатель на событие паузы аудио
+   */
+  onPauseAudio() {
+    throw new Error(`You have to implement the method 'onPauseAudio'!`);
   }
 
   /**
@@ -103,52 +150,5 @@ export default class AbstractGameView extends AbstractView {
   static playAudio(playButton) {
     playButton.classList.remove(`track__button--play`);
     playButton.classList.add(`track__button--pause`);
-  }
-
-  /**
-   * Переключает воспроизведение трека
-   * @param {HTMLElement} playButton Элемент кнопки
-   * @param {string} url URL трека
-   * @private
-   */
-  toggleAudio(playButton, url) {
-    if (!this.isAudioPlaying) {
-      AbstractGameView.playAudio(playButton);
-      this.playingURL = url;
-      this.onPlayAudio(url);
-    } else {
-      AbstractGameView.pauseAudio(playButton);
-      this.playingURL = null;
-      this.onPauseAudio(url);
-    }
-    this.isAudioPlaying = !this.isAudioPlaying;
-  }
-
-  /** Слушатель на событие сброса игры
-   * @abstract
-   */
-  onResetGame() {
-    throw new Error(`You have to implement the method 'onResetGame'!`);
-  }
-
-  /** Слушатель на событие ответа
-   * @abstract
-   */
-  onAnswer() {
-    throw new Error(`You have to implement the method 'onAnswer'!`);
-  }
-
-  /**
-   * Слушатель на событие воспроизведения аудио
-   */
-  onPlayAudio() {
-
-  }
-
-  /**
-   * Слушатель на событие паузы аудио
-   */
-  onPauseAudio() {
-
   }
 }

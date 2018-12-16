@@ -35,14 +35,6 @@ export default class GameModel {
   }
 
   /**
-   * Возвращает текущий вопрос
-   * @return {Object} Обьект с данными вопроса
-   */
-  get _currentQuestion() {
-    return this.questions[this._state.currentLevel];
-  }
-
-  /**
    * Возвращает, является ли текущий вопрос о жанре, или об артисте
    * @return {boolean} true если вопрос о жанре
    */
@@ -84,19 +76,6 @@ export default class GameModel {
   }
 
   /**
-   * Статистика очков игроков
-   * @return {number[]}
-   * @private
-   */
-  get _statistics() {
-    const scoreStatistics = [];
-    this._pastGamesResults.forEach((result) => {
-      scoreStatistics.push(result.score);
-    });
-    return scoreStatistics;
-  }
-
-  /**
    * Вычисляет сообщение о результате игрока
    * @return {string} Возвращает строку с результатом игры
    */
@@ -117,6 +96,61 @@ export default class GameModel {
   }
 
   /**
+   * Возвращает текущий вопрос
+   * @return {Object} Обьект с данными вопроса
+   */
+  get _currentQuestion() {
+    return this.questions[this._state.currentLevel];
+  }
+
+  /**
+   * Статистика очков игроков
+   * @return {number[]}
+   * @private
+   */
+  get _statistics() {
+    const scoreStatistics = [];
+    this._pastGamesResults.forEach((result) => {
+      scoreStatistics.push(result.score);
+    });
+    return scoreStatistics;
+  }
+
+  /**
+   * Начинает новую игру
+   */
+  startNewGame() {
+    this._state = JSON.parse(JSON.stringify(NEW_GAME));
+  }
+
+  /**
+   * Запуск таймеров
+   */
+  startTimers() {
+    this._timer = setTimeout(() => {
+      this._tick();
+    }, Timer.DATE_MS_TO_SEC_MULTIPLY);
+  }
+
+  /**
+   * Остановка таймеров
+   */
+  stopTimers() {
+    clearTimeout(this._timer);
+  }
+
+  /**
+   * Обрабатывает ответ игрока
+   * @param {Array|Number} answer Ответ игрока
+   */
+  setAnswer(answer) {
+    this._saveAnswer(answer);
+    this._recountLives();
+    this._changeLevel();
+    this._state.bonusTimeLeft = NEW_GAME.bonusTimeLeft;
+  }
+
+  /**
    * Загружает вопросы с сервера
    * @private
    */
@@ -133,7 +167,7 @@ export default class GameModel {
       }).
       then((data) => {
         this._questions = [...data];
-        this.loadAudio(); // Загружаем треки после загрузки вопросов
+        this._loadAudio(); // Загружаем треки после загрузки вопросов
       }).
       catch((error) => {
         this.onError(error);
@@ -142,9 +176,46 @@ export default class GameModel {
   }
 
   /**
+   * Получение статистики прошлых игр с сервера
+   */
+  loadPastResults() {
+    const whenStatsLoaded = fetch(Endpoint.STATS);
+
+    whenStatsLoaded.
+    then((response) => {
+      if (!response.ok) {
+        this.onError(`Статистика не загружается. Статус: ${response.status}`);
+        return [];
+      }
+      return response.json();
+    }).
+    then((data) => {
+      this._pastGamesResults = [...data];
+      this._sendResult();
+    }).
+    catch((error) => {
+      this.onError(error);
+      throw new Error(error);
+    });
+  }
+
+  /**
+   * Перематывает все треки на начало и останавливает их
+   */
+  rewindAudio() {
+    // Остановить все треки и перемотать на начало
+    Object.keys(this.audios).forEach((key) => {
+      if (!this.audios[key].paused) {
+        this.audios[key].pause();
+      }
+      this.audios[key].currentTime = 0;
+    });
+  }
+
+  /**
    * Загружает треки из вопросов в кэш
    */
-  loadAudio() {
+  _loadAudio() {
     /**
      * Функция предзагрузки аудио
      * @param {string} url Ссылка на аудио
@@ -197,7 +268,7 @@ export default class GameModel {
   /**
    * Отсылает результат игры на сервер
    */
-  sendResult() {
+  _sendResult() {
 
     const result = {
       timeLeft: this.state.timeLeft,
@@ -231,30 +302,6 @@ export default class GameModel {
   }
 
   /**
-   * Получение статистики прошлых игр с сервера
-   */
-  loadPastResults() {
-    const whenStatsLoaded = fetch(Endpoint.STATS);
-
-    whenStatsLoaded.
-    then((response) => {
-      if (!response.ok) {
-        this.onError(`Статистика не загружается. Статус: ${response.status}`);
-        return [];
-      }
-      return response.json();
-    }).
-    then((data) => {
-      this._pastGamesResults = [...data];
-      this.sendResult();
-    }).
-    catch((error) => {
-      this.onError(error);
-      throw new Error(error);
-    });
-  }
-
-  /**
    * Переключает игру на следующий уровень
    * @private
    */
@@ -265,20 +312,6 @@ export default class GameModel {
       this._state.currentLevel = this._state.currentLevel + Settings.LEVEL_INCREMENT;
     }
     this.rewindAudio();
-  }
-
-  /**
-   * Перематывает все треки на начало и останавливает их
-   * @private
-   */
-  rewindAudio() {
-    // Остановить все треки и перемотать на начало
-    Object.keys(this.audios).forEach((key) => {
-      if (!this.audios[key].paused) {
-        this.audios[key].pause();
-      }
-      this.audios[key].currentTime = 0;
-    });
   }
 
   /**
@@ -334,40 +367,6 @@ export default class GameModel {
     if (this.state.timeLeft < Timer.EXPIRE) {
       this.onTimeExpires();
     }
-  }
-
-  /**
-   * Начинает новую игру
-   */
-  startNewGame() {
-    this._state = JSON.parse(JSON.stringify(NEW_GAME));
-  }
-
-  /**
-   * Обрабатывает ответ игрока
-   * @param {Array|Number} answer Ответ игрока
-   */
-  setAnswer(answer) {
-    this._saveAnswer(answer);
-    this._recountLives();
-    this._changeLevel();
-    this._state.bonusTimeLeft = NEW_GAME.bonusTimeLeft;
-  }
-
-  /**
-   * Запуск таймеров
-   */
-  startTimers() {
-    this._timer = setTimeout(() => {
-      this._tick();
-    }, Timer.DATE_MS_TO_SEC_MULTIPLY);
-  }
-
-  /**
-   * Остановка таймеров
-   */
-  stopTimers() {
-    clearTimeout(this._timer);
   }
 
   /**

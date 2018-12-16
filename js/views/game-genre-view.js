@@ -10,10 +10,11 @@ export default class GameGenreView extends AbstractGameView {
   constructor(data) {
     super(data);
     this.answers = [];
-    this.initializeTracks();
+    this._initializeTracks();
   }
 
-  /** Шаблон
+  /**
+   * Шаблон
    * @return {string} Возвращает разметку
    */
   get template() {
@@ -53,7 +54,7 @@ export default class GameGenreView extends AbstractGameView {
   /**
    * Генерирует треки
    */
-  initializeTracks() {
+  _initializeTracks() {
     this._trackInstances = [];
     this.question.answers.forEach((track, index) => {
       const isValid = track.genre === this.question.genre;
@@ -69,6 +70,18 @@ export default class GameGenreView extends AbstractGameView {
         this.buttonAnswer.toggleAttribute(`disabled`, !answered);
       };
     });
+  }
+
+  /**
+   * Переводит все кнопки вопроизведения в паузу
+   * @param {NodeList} playButtons
+   */
+  _pauseAllAudio() {
+    this.playButtons.forEach((button) => {
+      AbstractGameView.pauseAudio(button);
+      this.onPauseAudio(button.dataset.src);
+    });
+    this._isAudioPlaying = false;
   }
 
   /**
@@ -102,27 +115,15 @@ export default class GameGenreView extends AbstractGameView {
     this.playButtons.forEach((button) => {
       button.addEventListener(`click`, (event) => {
         event.preventDefault();
-        if (this.playingURL !== button.dataset.src) {
+        if (this._playingURL !== button.dataset.src) {
           this._pauseAllAudio();
         }
-        this.toggleAudio(button, button.dataset.src);
+        this._toggleAudio(button, button.dataset.src);
       });
     });
 
     // Проигрываем первый трек
-    this.toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
-  }
-
-  /**
-   * Переводит все кнопки вопроизведения в паузу
-   * @param {NodeList} playButtons
-   */
-  _pauseAllAudio() {
-    this.playButtons.forEach((button) => {
-      AbstractGameView.pauseAudio(button);
-      this.onPauseAudio(button.dataset.src);
-    });
-    this.isAudioPlaying = false;
+    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
   }
 
   /** Слушатель на событие сброса игры

@@ -21,6 +21,10 @@ export default class TrackView extends AbstractView {
     this._id = id;
   }
 
+  /**
+   * Шаблон
+   * @return {string} Возвращает разметку
+   */
   get template() {
     return `<button class="track__button track__button--play" data-src="${this.src}" type="button"></button>
   <div class="track__status"></div>

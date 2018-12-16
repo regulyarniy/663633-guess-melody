@@ -18,5 +18,6 @@ export default class ModalErrorView extends AbstractView {
   }
 
   bind() {
+
   }
 }

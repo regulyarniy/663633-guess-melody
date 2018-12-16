@@ -84,7 +84,6 @@ export default class GameController extends AbstractController {
 
   }
 
-
   /**
    * Показать следующий вопрос
    */

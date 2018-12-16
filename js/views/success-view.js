@@ -27,7 +27,8 @@ export default class SuccessView extends AbstractEndGameView {
     return convertMistakesToPluralString(this.mistakes);
   }
 
-  /** Шаблон
+  /**
+   * Шаблон
    * @return {string} Возвращает разметку
    */
   get template() {

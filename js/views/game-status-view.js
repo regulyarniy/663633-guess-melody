@@ -53,34 +53,6 @@ export default class GameStatusView extends AbstractView {
   }
 
   /**
-   * Слушатель на кнопку сброса игры
-   */
-  onResetGame() {
-
-  }
-
-  /**
-   * Добавление обработчиков
-   */
-  bind() {
-    const buttonReset = this.element.querySelector(`.game__back`);
-
-    buttonReset.addEventListener(`click`, (e) => {
-      e.preventDefault();
-      this.onResetGame();
-    });
-
-    // Кешируем элементы таймеров
-    this._roundTimerElement = this.element.querySelector(`.timer__line`);
-    this._timerValue = this.element.querySelector(`.timer__value`);
-    this._minutesElement = this._timerValue.querySelector(`.timer__mins`);
-    this._secondsElement = this._timerValue.querySelector(`.timer__secs`);
-
-    // Обновляем начальное состояние таймера
-    this.updateTimer(this.timeLeft);
-  }
-
-  /**
    * Функция обновления таймера
    * @param {number} timeLeft Количество секунд
    */
@@ -107,6 +79,34 @@ export default class GameStatusView extends AbstractView {
    */
   startRoundTimerAnimation(timeLeft) {
     animateBonusTimer(this._roundTimerElement, timeLeft, NEW_GAME.timeLeft);
+  }
+
+  /**
+   * Добавление обработчиков
+   */
+  bind() {
+    const buttonReset = this.element.querySelector(`.game__back`);
+
+    buttonReset.addEventListener(`click`, (e) => {
+      e.preventDefault();
+      this.onResetGame();
+    });
+
+    // Кешируем элементы таймеров
+    this._roundTimerElement = this.element.querySelector(`.timer__line`);
+    this._timerValue = this.element.querySelector(`.timer__value`);
+    this._minutesElement = this._timerValue.querySelector(`.timer__mins`);
+    this._secondsElement = this._timerValue.querySelector(`.timer__secs`);
+
+    // Обновляем начальное состояние таймера
+    this.updateTimer(this.timeLeft);
+  }
+
+  /**
+   * Слушатель на кнопку сброса игры
+   */
+  onResetGame() {
+
   }
 
 }
