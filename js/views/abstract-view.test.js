@@ -24,7 +24,7 @@ describe(`Класс AbstractView`, () => {
   });
 
   afterEach(() => {
-    jsdomGlobal();
+    document.destroy();
   });
 
   const abstractView = new AbstractView();
