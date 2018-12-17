@@ -9,10 +9,11 @@ export default class GameArtistView extends AbstractGameView {
   constructor(data) {
     super(data);
     this._playButton = null;
-    this.initializeArtists();
+    this._initializeArtists();
   }
 
-  /** Шаблон
+  /**
+   * Шаблон
    * @return {string} Возвращает разметку
    */
   get template() {
@@ -29,25 +30,15 @@ export default class GameArtistView extends AbstractGameView {
   }
 
   /**
-   * Вызывает событие при получении ответа
-   * @param {Number} answerId ID ответа
-   */
-  set answer(answerId) {
-    this.onAnswer(answerId);
-  }
-
-  /**
    * Генерирует блоки артистов
    */
-  initializeArtists() {
+  _initializeArtists() {
     this._artistInstances = [];
     this.question.answers.forEach((artist, index) => {
       const artistInstance = new ArtistView(artist, index);
       this._artistInstances.push(artistInstance);
       // Подписываемся на слушатель ответа
-      artistInstance.onAnswer = (isCorrect) => {
-        this.answer = isCorrect; // Меняем ответ
-      };
+      artistInstance.onAnswer = (isCorrect) => this.onAnswer(isCorrect);
     });
   }
 
@@ -59,10 +50,9 @@ export default class GameArtistView extends AbstractGameView {
     // Добавляем артистов в разметку
     const resultTemplate = super.render();
     const form = resultTemplate.querySelector(`.game__artist`);
-    this._artistInstances.reverse().forEach((instance) => {
-      const firstChildInForm = form.firstChild;
-      form.insertBefore(instance.element, firstChildInForm);
-    });
+    this._artistInstances
+      .reverse()
+      .forEach((instance) => form.insertBefore(instance.element, form.firstChild));
     return resultTemplate;
   }
 
@@ -72,13 +62,13 @@ export default class GameArtistView extends AbstractGameView {
   bind() {
     super.bind();
 
-    // play audio
+    // Проигрывание аудио
     this._playButton = this.element.querySelector(`.track__button`);
     const url = this._playButton.dataset.src;
     this._toggleAudio(this._playButton, url);
 
-    this._playButton.addEventListener(`click`, (event) => {
-      event.preventDefault();
+    this._playButton.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this._toggleAudio(this._playButton, url);
     });
   }

@@ -29,20 +29,23 @@ export default class WelcomeView extends AbstractView {
   }
 
   /**
-   * Привязывает обработчики
+   * Активирует кнопку старта игры
    */
-  bind() {
-    this._buttonPlay = this.element.querySelector(`.welcome__button`);
-
-    this._buttonPlay.addEventListener(`click`, (e) => {
-      e.preventDefault();
-      this.onStartGame();
-    });
-  }
-
   enableStartGame() {
     this._buttonPlay.removeAttribute(`disabled`);
     this._buttonPlay.classList.remove(`welcome__button--loading`);
+  }
+
+  /**
+   * Привязывает обработчики
+   */
+  bind() {
+    // Старт игры
+    this._buttonPlay = this.element.querySelector(`.welcome__button`);
+    this._buttonPlay.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      this.onStartGame();
+    });
   }
 
   /**

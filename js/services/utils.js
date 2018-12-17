@@ -1,5 +1,4 @@
-const APP_ROOT_ELEMENT_SELECTOR = `.app`;
-const APP_SCREEN_ELEMENT_SELECTOR = `.main`;
+import {MountPoint} from "../constants/constants";
 
 /**
  * Конвертирует число секунд или минут в числительное в множественной форме
@@ -10,6 +9,7 @@ const APP_SCREEN_ELEMENT_SELECTOR = `.main`;
  * @param {String} numericString
  * @return {*}
  */
+
 export const convertTimeCounterToPluralString = (number, numericString) => {
   const numberLong = number % 100;
   if (numberLong > 10 && numberLong < 15) {
@@ -37,53 +37,31 @@ export const convertMistakesToPluralString = (mistakes) => {
     default:
       return `${mistakes} ошибки`;
   }
-
 };
 
 /**
  * Функция смены экранов в DOM-дереве
  * @param {HTMLElement} newScreen Узел нового экрана
- * @param {HTMLElement} [parentElement = .APP_ROOT_ELEMENT_SELECTOR] Корневой узел
+ * @param {HTMLElement} [parentElement = .MountPoint.ROOT] Корневой узел
  */
-export const changeScreen = (newScreen, parentElement = document.querySelector(APP_ROOT_ELEMENT_SELECTOR)) => {
-  const oldScreen = parentElement.querySelector(APP_SCREEN_ELEMENT_SELECTOR);
+const defaultParentElement = document.querySelector(MountPoint.ROOT);
+export const changeScreen = (newScreen, parentElement = defaultParentElement) => {
+  const oldScreen = parentElement.querySelector(MountPoint.SCREEN);
   parentElement.replaceChild(newScreen, oldScreen);
 };
 
-export default {
-  /**
-   * Генерирует HTML-элемент section из строки
-   * @param {string} template Строка с разметкой
-   * @return {HTMLElement} Возвращает HTML-элемент section
-   */
-  generateFragment: (template) => {
-    const wrapper = document.createElement(`section`);
-    wrapper.innerHTML = template.trim();
-    wrapper.classList.add(`main`);
-    return wrapper;
-  },
-  /**
-   * Генерирует целое случайное число в интервале
-   * @param {Number} min Минимум (включительно >=)
-   * @param {Number} max Максимум (исключительно <)
-   * @return {Number} Возвращает целое число от min до max
-   */
-  getRandomInt: (min, max) => {
-    return Math.floor(Math.random() * (max - min)) + min;
-  },
-  /**
-   * Конвертирует секунды в удобочитаемую строку
-   * @param {Number} seconds Количество секунд
-   * @return {String} Возвращает строку вида - 1 минута и 10 секунд
-   */
-  convertSecondsToHumanReadableString: (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const secondsAfterMinutes = seconds % 60;
-    let minutesString = ``;
-    const secondsString = `${secondsAfterMinutes} ${convertTimeCounterToPluralString(secondsAfterMinutes, `секунд`)}`;
-    if (minutes > 0) {
-      minutesString = `${minutes} ${convertTimeCounterToPluralString(minutes, `минут`)} и `;
-    }
-    return `${minutesString}${secondsString}`;
+/**
+ * Конвертирует секунды в удобочитаемую строку
+ * @param {Number} seconds Количество секунд
+ * @return {String} Возвращает строку вида - 1 минута и 10 секунд
+ */
+export const convertSecondsToHumanReadableString = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const secondsAfterMinutes = seconds % 60;
+  let minutesString = ``;
+  const secondsString = `${secondsAfterMinutes} ${convertTimeCounterToPluralString(secondsAfterMinutes, `секунд`)}`;
+  if (minutes > 0) {
+    minutesString = `${minutes} ${convertTimeCounterToPluralString(minutes, `минут`)} и `;
   }
+  return `${minutesString}${secondsString}`;
 };

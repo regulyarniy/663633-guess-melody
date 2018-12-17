@@ -35,10 +35,10 @@ export default class ArtistView extends AbstractView {
    * Добавление обработчиков
    */
   bind() {
+    // Ответ игрока
     const buttonAnswer = this.element.querySelector(`.artist__input`);
-
-    buttonAnswer.addEventListener(`click`, (e) => {
-      e.preventDefault();
+    buttonAnswer.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onAnswer(this.isCorrect);
     });
   }

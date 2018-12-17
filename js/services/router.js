@@ -3,6 +3,7 @@ import GameController from "../controllers/game-controller";
 import WelcomeController from "../controllers/welcome-controller";
 import FailController from "../controllers/fail-controller";
 import ResultController from "../controllers/result-controller";
+import ErrorController from "../controllers/error-controller";
 
 export default class Router {
   // Страница приветствия
@@ -27,5 +28,11 @@ export default class Router {
   static showResult(model, context) {
     const resultController = new ResultController(model, context);
     resultController.init();
+  }
+
+  // Страница ошибки
+  static showError(error) {
+    const errorController = new ErrorController(error);
+    errorController.init();
   }
 }

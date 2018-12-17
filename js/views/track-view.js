@@ -19,9 +19,12 @@ export default class TrackView extends AbstractView {
     super(`div`, trackClasses);
     Object.assign(this, data);
     this._id = id;
-    this._isPaused = false; // Начальное состояние кнопки проигрывания
   }
 
+  /**
+   * Шаблон
+   * @return {string} Возвращает разметку
+   */
   get template() {
     return `<button class="track__button track__button--play" data-src="${this.src}" type="button"></button>
   <div class="track__status"></div>

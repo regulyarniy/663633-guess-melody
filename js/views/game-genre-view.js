@@ -1,5 +1,6 @@
 import AbstractGameView from './abstract-game-view';
 import TrackView from './track-view';
+import {Settings} from "../constants/constants";
 
 export default class GameGenreView extends AbstractGameView {
   /**
@@ -9,10 +10,11 @@ export default class GameGenreView extends AbstractGameView {
   constructor(data) {
     super(data);
     this.answers = [];
-    this.initializeTracks();
+    this._initializeTracks();
   }
 
-  /** Шаблон
+  /**
+   * Шаблон
    * @return {string} Возвращает разметку
    */
   get template() {
@@ -52,24 +54,34 @@ export default class GameGenreView extends AbstractGameView {
   /**
    * Генерирует треки
    */
-  initializeTracks() {
+  _initializeTracks() {
     this._trackInstances = [];
     this.question.answers.forEach((track, index) => {
       const isValid = track.genre === this.question.genre;
       const trackInstance = new TrackView(track, index, isValid);
       this._trackInstances.push(trackInstance);
       const answerIndexOfInstance = this.answers.length;
-      this.answers.push(false); // Создаем ответ в массиве ответов TODO move to constants
+      this.answers.push(Settings.NEGATIVE_ANSWER); // Создаем ответ в массиве ответов
       // Подписываемся на слушатель отметки трека
       trackInstance.onChangeAnswer = () => {
         this.answers[answerIndexOfInstance] = !this.answers[answerIndexOfInstance]; // Меняем ответ
         // Кнопка неактивна если не выбран ответ
-        const answered = this.answers.some((item) => {
-          return item === true;
-        });
+        const answered = this.answers.some((item) => item === Settings.POSITIVE_ANSWER);
         this.buttonAnswer.toggleAttribute(`disabled`, !answered);
       };
     });
+  }
+
+  /**
+   * Переводит все кнопки вопроизведения в паузу
+   * @param {NodeList} playButtons
+   */
+  _pauseAllAudio() {
+    this.playButtons.forEach((button) => {
+      AbstractGameView.pauseAudio(button);
+      this.onPauseAudio(button.dataset.src);
+    });
+    this._isAudioPlaying = false;
   }
 
   /**
@@ -93,21 +105,25 @@ export default class GameGenreView extends AbstractGameView {
   bind() {
     super.bind();
 
-    // answer
-    this.buttonAnswer.addEventListener(`click`, (e) => {
-      e.preventDefault();
+    // Ответ пользователя
+    this.buttonAnswer.addEventListener(`click`, (evt) => {
+      evt.preventDefault();
       this.onAnswer(this.answers);
     });
 
-    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
-
     // play audio
     this.playButtons.forEach((button) => {
-      button.addEventListener(`click`, (event) => {
-        event.preventDefault();
+      button.addEventListener(`click`, (evt) => {
+        evt.preventDefault();
+        if (this._playingURL !== button.dataset.src) {
+          this._pauseAllAudio();
+        }
         this._toggleAudio(button, button.dataset.src);
       });
     });
+
+    // Проигрываем первый трек
+    this._toggleAudio(this.playButtons[0], this.playButtons[0].dataset.src);
   }
 
   /** Слушатель на событие сброса игры

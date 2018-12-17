@@ -1,7 +1,7 @@
 // Начальное состояние игры
 export const NEW_GAME = Object.freeze({
   currentLevel: 0,
-  livesLeft: 4,
+  livesLeft: 3,
   answers: [],
   timeLeft: 300,
   bonusTimeLeft: 30,
@@ -17,14 +17,17 @@ export const Settings = Object.freeze({
   LEVEL_ENDGAME: -1, // Уровень конца игры
   LIVES_DECREMENT: 1, // Декремент количества попыток при неправильном ответе
   SUCCESS_ANSWER: true, // Успешный ответ
-  FAILED_ANSWER: false // Неуспешный  ответ
+  FAILED_ANSWER: false, // Неуспешный  ответ
+  POSITIVE_ANSWER: true, // Положительный ответ
+  NEGATIVE_ANSWER: false, // Отрицательный ответ(при выборе нескольких)
 });
 
 // Константы для функции вычисления времени таймера GameModel.getTimeLeft
 export const Timer = Object.freeze({
   DATE_MS_TO_SEC_MULTIPLY: 1000, // Множитель миллисекунд в секунды
-  TIMER_END: 0, // Конец отчёта в секундах
-  TIMER_END_RESULT: -1, // Вывод функции при истекшем таймере
+  END: 0, // Конец отчёта в секундах
+  END_RESULT: -1, // Вывод функции при истекшем таймере
+  EXPIRE: 30, // Значение таймера для индикации истечения времени игры
 });
 
 // Варианты экранов проигрыша
@@ -42,7 +45,7 @@ export const ScoreSettings = {
   SCORE_SUCCESS: 1, // Баллы за успешный ответ
   SCORE_FAIL: -2, // Баллы за ошибку
   MIN_LIVES: 0, // Минимум жизней
-  MAX_QUESTIONS: 10, // Вопросов на игру
+  MAX_QUESTIONS: Settings.LEVEL_MAX + 1, // Вопросов на игру
   REDUCER_INITIAL_VALUE: 0, // Начальное значение для аккумулятора
   SCORE_FAIL_FOR_BONUS_SCORE: 0, // Баллы для ошибки в подсчете бонусов
 };
@@ -67,3 +70,12 @@ export const Endpoint = {
   QUESTIONS: `https://es.dump.academy/guess-melody/questions`,
   STATS: `https://es.dump.academy/guess-melody/stats/663633`
 };
+
+// Привязки к DOM
+export const MountPoint = {
+  ROOT: `.app`,
+  SCREEN: `.main`,
+};
+
+// Максимальное кол-во ошибок, которые может допустить игрок
+export const MAX_MISTAKES = NEW_GAME.livesLeft;

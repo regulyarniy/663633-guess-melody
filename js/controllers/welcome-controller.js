@@ -26,13 +26,20 @@ export default class WelcomeController extends AbstractController {
    * Связывание обработчиков
    */
   _bind() {
+    // Когда пользователь нажал кнопку старта игры
     this._view.onStartGame = () => {
       this._model.startNewGame();
       this._context.Router.showGame(this._model, this._context);
     };
 
+    // Когда аудио загружено
     this._model.onAudioLoaded = () => {
       this._view.enableStartGame();
+    };
+
+    // Ошибки загрузки\отправки
+    this._model.onError = (error) => {
+      this._context.Router.showError(error);
     };
   }
 

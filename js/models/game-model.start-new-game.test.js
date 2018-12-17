@@ -8,7 +8,7 @@ describe(`Модель игры`, () => {
   it(`метод startNewGame() сбрасывает состояние игры на начало`, () => {
     const testState = {
       currentLevel: 0,
-      livesLeft: 4,
+      livesLeft: 3,
       answers: [],
       timeLeft: 300,
       bonusTimeLeft: 30,

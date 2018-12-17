@@ -5,8 +5,8 @@ export default class AbstractView {
    * @param {Array} [wrapperClasses = [`main`]] Массив с классами для обертки
    */
   constructor(wrapperTag = `section`, wrapperClasses = [`main`]) {
-    this.wrapperTag = wrapperTag;
-    this.wrapperClasses = wrapperClasses;
+    this._wrapperTag = wrapperTag;
+    this._wrapperClasses = wrapperClasses;
   }
 
   /** Возвращает разметку
@@ -33,9 +33,9 @@ export default class AbstractView {
    * @return {HTMLElement}
    */
   render() {
-    const wrapper = document.createElement(this.wrapperTag);
+    const wrapper = document.createElement(this._wrapperTag);
     wrapper.innerHTML = this.template.trim();
-    this.wrapperClasses.forEach((item) => {
+    this._wrapperClasses.forEach((item) => {
       wrapper.classList.add(item);
     });
     return wrapper;

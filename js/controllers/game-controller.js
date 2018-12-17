@@ -27,7 +27,7 @@ export default class GameController extends AbstractController {
 
     this._bind();
     changeScreen(this._view.element);
-    this._view.startRoundTimerAnimation(this._model.state.timeLeft); // TODO отрисовка начального положения таймера
+    this._view.startRoundTimerAnimation(this._model.state.timeLeft);
     this._model.startTimers();
   }
 
@@ -42,16 +42,20 @@ export default class GameController extends AbstractController {
       this._showNextQuestion();
     };
 
-    // Сброс игры // TODO сначала вызвать модалку
+    // Сброс игры
     this._view.onResetGame = () => {
       this._model.stopTimers();
+      this._model.rewindAudio();
       this._restartGame();
     };
 
+    // Воспроизведение
     this._view.onPlayAudio = (url) => {
+      this._model.rewindAudio();
       this._model.audios[url].play();
     };
 
+    // Пауза
     this._view.onPauseAudio = (url) => {
       this._model.audios[url].pause();
     };
@@ -63,11 +67,22 @@ export default class GameController extends AbstractController {
 
     // Истечение времени
     this._model.onTimeLeft = () => {
+      this._model.rewindAudio();
       this._model.stopTimers();
       this._showFail(FailCases.BY_TIME);
     };
-  }
 
+    // Индикация что время подходит к концу
+    this._model.onTimeExpires = () => {
+      this._view.blinkTimer();
+    };
+
+    // Ошибки загрузки\отправки
+    this._model.onError = (error) => {
+      this._context.Router.showError(error);
+    };
+
+  }
 
   /**
    * Показать следующий вопрос
