@@ -1,7 +1,6 @@
 import {assert} from 'chai';
 import AbstractView from './abstract-view';
 import jsdomGlobal from 'jsdom-global';
-jsdomGlobal();
 
 // Переопределяем асбтрактные методы
 const TestView = class TestView extends AbstractView {
@@ -19,6 +18,14 @@ const TestView = class TestView extends AbstractView {
 };
 
 describe(`Класс AbstractView`, () => {
+
+  beforeEach(() => {
+    jsdomGlobal();
+  });
+
+  afterEach(() => {
+    jsdomGlobal();
+  });
 
   const abstractView = new AbstractView();
   it(`имеет абстрактный геттер template`, () => {
@@ -53,9 +60,9 @@ describe(`Класс AbstractView`, () => {
   });
 
   it(`геттер element не вызывает bind при последующих обращениях`, () => {
-    assert(() => {
+    assert.doesNotThrow(() => {
       document.body.appendChild(testView.element);
-    }, `element не кешируется!`);
+    }, Error, `element не кешируется!`);
   });
 
 });
