@@ -1,8 +1,7 @@
 import {assert} from 'chai';
-import testSet from '../services/test-set';
 import AbstractView from './abstract-view';
-
-testSet();
+import jsdomGlobal from 'jsdom-global';
+jsdomGlobal();
 
 // Переопределяем асбтрактные методы
 const TestView = class TestView extends AbstractView {
