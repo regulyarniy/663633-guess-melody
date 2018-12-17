@@ -19,12 +19,13 @@ const TestView = class TestView extends AbstractView {
 
 describe(`Класс AbstractView`, () => {
 
+  let jsdom;
   beforeEach(() => {
-    jsdomGlobal();
+    jsdom = jsdomGlobal();
   });
 
   afterEach(() => {
-    document.destroy();
+    jsdom();
   });
 
   const abstractView = new AbstractView();
