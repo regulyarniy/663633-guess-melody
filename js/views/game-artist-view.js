@@ -46,9 +46,9 @@ export default class GameArtistView extends AbstractGameView {
    * Создает DOM-элемент из разметки
    * @return {HTMLElement}
    */
-  render() {
+  createElement() {
     // Добавляем артистов в разметку
-    const resultTemplate = super.render();
+    const resultTemplate = super.createElement();
     const form = resultTemplate.querySelector(`.game__artist`);
     this._artistInstances
       .reverse()

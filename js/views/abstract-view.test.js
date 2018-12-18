@@ -51,7 +51,7 @@ describe(`Класс AbstractView`, () => {
   const testView = new TestView();
 
   it(`метод render возвращает разметку`, () => {
-    assert.equal(testView.render().outerHTML, `<div class="test"><p>test</p></div>`);
+    assert.equal(testView.createElement().outerHTML, `<div class="test"><p>test</p></div>`);
   });
 
   it(`геттер element вызывает bind при первом обращении`, () => {

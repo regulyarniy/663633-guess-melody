@@ -82,9 +82,9 @@ export default class AbstractGameView extends AbstractView {
    * Создает DOM-элемент из разметки
    * @return {HTMLElement}
    */
-  render() {
+  createElement() {
     // Добавляем блок статуса перед экраном игры
-    const resultTemplate = super.render();
+    const resultTemplate = super.createElement();
     const gameLayout = resultTemplate.querySelector(`.game`);
     const gameScreen = gameLayout.querySelector(`.game__screen`);
     // Добавляем блок статуса перед экраном игры

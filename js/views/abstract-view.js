@@ -22,7 +22,7 @@ export default class AbstractView {
    */
   get element() {
     if (!this._element) {
-      this._element = this.render();
+      this._element = this.createElement();
       this.bind();
     }
     return this._element;
@@ -32,7 +32,7 @@ export default class AbstractView {
    * Создает DOM-элемент из разметки
    * @return {HTMLElement}
    */
-  render() {
+  createElement() {
     const wrapper = document.createElement(this._wrapperTag);
     wrapper.innerHTML = this.template.trim();
     this._wrapperClasses.forEach((item) => {

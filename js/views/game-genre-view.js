@@ -88,9 +88,9 @@ export default class GameGenreView extends AbstractGameView {
    * Создает DOM-элемент из разметки
    * @return {HTMLElement}
    */
-  render() {
+  createElement() {
     // Добавляем треки в разметку
-    const resultTemplate = super.render();
+    const resultTemplate = super.createElement();
     const form = resultTemplate.querySelector(`.game__tracks`);
     this._trackInstances.reverse().forEach((instance) => {
       const firstChildInForm = form.firstChild;
