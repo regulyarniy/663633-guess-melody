@@ -33,7 +33,7 @@ export default class ResultController extends AbstractController {
       this._data.bonusScore = this._model.bonusScore;
       this._data.mistakes = NEW_GAME.livesLeft - this._model.state.livesLeft;
       this._data.rating = this._model.rating;
-      this._data.time = this._model.state.timeLeft;
+      this._data.time = NEW_GAME.timeLeft - this._model.state.timeLeft;
 
       this._view = new SuccessView(this._data);
 
