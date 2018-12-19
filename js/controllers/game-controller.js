@@ -117,6 +117,7 @@ export default class GameController extends AbstractController {
    * Перезапустить игру
    */
   _restartGame() {
-    this._context.Router.showWelcome(this._model, this._context);
+    this._model.startNewGame();
+    this._context.Router.showGame(this._model, this._context);
   }
 }
