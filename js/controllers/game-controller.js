@@ -1,7 +1,7 @@
 import GameGenreView from '../views/game-genre-view';
 import GameArtistView from '../views/game-artist-view';
 import {changeScreen} from "../services/utils";
-import {FailCases} from "../constants/constants";
+import {FailCases, Settings} from "../constants/constants";
 import AbstractController from "./abstract-controller";
 
 export default class GameController extends AbstractController {
@@ -88,7 +88,7 @@ export default class GameController extends AbstractController {
    * Показать следующий вопрос
    */
   _showNextQuestion() {
-    if (!(this._model.state.currentLevel === -1)) {
+    if (!(this._model.state.currentLevel === Settings.LEVEL_ENDGAME)) {
       this.init();
     } else if (this._model.state.livesLeft > 0) {
       this._showResults();
@@ -117,6 +117,7 @@ export default class GameController extends AbstractController {
    * Перезапустить игру
    */
   _restartGame() {
-    this._context.Router.showWelcome(this._model, this._context);
+    this._model.startNewGame();
+    this._context.Router.showGame(this._model, this._context);
   }
 }

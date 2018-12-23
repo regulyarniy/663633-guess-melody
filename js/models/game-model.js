@@ -86,7 +86,7 @@ export default class GameModel {
     if (this.state.timeLeft <= RatingSettings.MIN_TIME_LEFT) {
       return RatingSettings.RESULT_FAIL_TIME;
     }
-    let newStatistics = this._statistics.slice();
+    const newStatistics = this._statistics.slice();
     newStatistics.push(this.score);
     newStatistics.sort((a, b) => b - a);
     const position = newStatistics.indexOf(this.score) + RatingSettings.POSITION_INCREMENT;
