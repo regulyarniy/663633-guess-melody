@@ -7,10 +7,9 @@ export default class ResultController extends AbstractController {
   /**
    * Класс контроллера страницы результатов
    * @param {model} model Модель
-   * @param {Object} context Обьект контекста
    */
-  constructor(model, context) {
-    super(model, context);
+  constructor(model) {
+    super(model);
     this._data = {};
     this._view = null;
   }
@@ -41,12 +40,12 @@ export default class ResultController extends AbstractController {
 
       this._view.onResetGame = () => {
         this._model.startNewGame();
-        this._context.Router.showGame(this._model, this._context);
+        this._router.showGame(this._model);
       };
 
       // Ошибки загрузки\отправки
       this._model.onError = (error) => {
-        this._context.Router.showError(error);
+        this._router.showError(error);
       };
     };
   }

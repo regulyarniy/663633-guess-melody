@@ -6,10 +6,9 @@ export default class WelcomeController extends AbstractController {
   /**
    * Класс контроллера страницы приветствия
    * @param {*} model Модель
-   * @param {Object} context Обьект контекста
    */
-  constructor(model, context) {
-    super(model, context);
+  constructor(model) {
+    super(model);
     this._view = new WelcomeView();
   }
 
@@ -29,7 +28,7 @@ export default class WelcomeController extends AbstractController {
     // Когда пользователь нажал кнопку старта игры
     this._view.onStartGame = () => {
       this._model.startNewGame();
-      this._context.Router.showGame(this._model, this._context);
+      this._router.showGame(this._model);
     };
 
     // Когда аудио загружено
@@ -39,7 +38,7 @@ export default class WelcomeController extends AbstractController {
 
     // Ошибки загрузки\отправки
     this._model.onError = (error) => {
-      this._context.Router.showError(error);
+      this._router.showError(error);
     };
   }
 

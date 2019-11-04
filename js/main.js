@@ -1,7 +1,10 @@
 import '@babel/polyfill';
 import Router from "./services/router";
+import Service from './services/service';
+
+Service.register({name: `router`, module: Router});
 
 document.addEventListener(`DOMContentLoaded`, () => {
-  const context = {Router};
-  Router.showWelcome(undefined, context);
+  const router = new Router();
+  router.showWelcome();
 });

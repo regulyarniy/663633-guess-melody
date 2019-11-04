@@ -6,32 +6,42 @@ import ResultController from "../controllers/result-controller";
 import ErrorController from "../controllers/error-controller";
 
 export default class Router {
+  constructor() {
+    if (Router.instance) {
+      return Router.instance;
+    }
+
+    Router.instance = this;
+
+    return this;
+  }
+
   // Страница приветствия
-  static showWelcome(model = new GameModel(), context) {
-    const welcomeController = new WelcomeController(model, context);
+  showWelcome(model = new GameModel()) {
+    const welcomeController = new WelcomeController(model);
     welcomeController.init();
   }
 
   // Страница игрового процесса
-  static showGame(model, context) {
-    const gameController = new GameController(model, context);
+  showGame(model) {
+    const gameController = new GameController(model);
     gameController.init();
   }
 
   // Страница проигрыша
-  static showFail(model, context, isTimeFail) {
-    const failController = new FailController(model, context, isTimeFail);
+  showFail(model, isTimeFail) {
+    const failController = new FailController(model, isTimeFail);
     failController.init();
   }
 
   // Страница результатов и статистики
-  static showResult(model, context) {
-    const resultController = new ResultController(model, context);
+  showResult(model) {
+    const resultController = new ResultController(model);
     resultController.init();
   }
 
   // Страница ошибки
-  static showError(error) {
+  showError(error) {
     const errorController = new ErrorController(error);
     errorController.init();
   }

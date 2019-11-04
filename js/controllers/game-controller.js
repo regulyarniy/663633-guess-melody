@@ -8,10 +8,9 @@ export default class GameController extends AbstractController {
   /**
    * Класс контроллера игры
    * @param {model} model Модель
-   * @param {Object} context Обьект контекста
    */
-  constructor(model, context) {
-    super(model, context);
+  constructor(model) {
+    super(model);
     this._view = null;
   }
 
@@ -79,7 +78,7 @@ export default class GameController extends AbstractController {
 
     // Ошибки загрузки\отправки
     this._model.onError = (error) => {
-      this._context.Router.showError(error);
+      this._router.showError(error);
     };
 
   }
@@ -102,7 +101,7 @@ export default class GameController extends AbstractController {
    * Перейти к результатам
    */
   _showResults() {
-    this._context.Router.showResult(this._model, this._context);
+    this._router.showResult(this._model);
   }
 
   /**
@@ -110,7 +109,7 @@ export default class GameController extends AbstractController {
    * @param {boolean} isTimeFail Проигрыш по времени?
    */
   _showFail(isTimeFail) {
-    this._context.Router.showFail(this._model, this._context, isTimeFail);
+    this._router.showFail(this._model, isTimeFail);
   }
 
   /**
@@ -118,6 +117,6 @@ export default class GameController extends AbstractController {
    */
   _restartGame() {
     this._model.startNewGame();
-    this._context.Router.showGame(this._model, this._context);
+    this._router.showGame(this._model);
   }
 }

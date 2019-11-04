@@ -1,12 +1,14 @@
+import Service from "../services/service";
+
 export default class AbstractController {
   /**
    * Базовый класс для контроллеров
    * @param {*} model Модель
-   * @param {Object} context Обьект контекста
    */
-  constructor(model, context) {
+  constructor(model) {
     this._model = model;
-    this._context = context;
+    const Router = Service.discover(`router`);
+    this._router = new Router();
   }
 
 }
